@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import {Route,BrowserRouter as Router,Switch} from 'react-router-dom';
+// import Home from './HomeAdmin';
+import Login from './components/Login';
+import Courses from './components/ContentCourses';
+import Add from './components/Add';
+import Students from './components/ContentStudents';
+import System from './components/ContentSystem';
+import AddStudent from './components/AddStudent';
+
+class App extends Component {
+    render() {
+        return(
+            <Router>
+                <Switch>
+                    <Route path="/" exact component={Login} />
+                    <Route path="/HomeAdmin" exact component={Courses} />
+                    <Route path="/HomeAdmin/Courses" exact component={Courses} />
+                    <Route path="/HomeAdmin/Students" exact component={Students} />
+                    <Route path="/HomeAdmin/System" exact component={System} />
+                    <Route path="/HomeAdmin/Add" exact component={Add} />
+                    <Route path="/HomeAdmin/AddStudent" exact component={AddStudent} />
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default App;
