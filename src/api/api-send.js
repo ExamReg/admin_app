@@ -37,6 +37,5 @@ export function sendDeleteRequest(route) {
 
 export function sendPostRequestWithoutToken(route, payload) {
     let url = `${URL_BASE}${route}`;
-    console.log(url)
     return axios.post(url, payload).then(handleResult);
 }

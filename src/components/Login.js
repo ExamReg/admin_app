@@ -22,9 +22,8 @@ class Login extends Component {
         var value = target.value;
         this.setState({[name] : value });
         
-    }
+    };
     handleSubmit = event => {
-        console.log(this.state);
         if(this.state.username==="" && this.state.password===""){
                 alert("Nhap tai khoan va mat khau");
         }

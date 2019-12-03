@@ -1,10 +1,11 @@
 import React from 'react';
 
-import "./style.css";
+import "./login.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import {login} from "../../api/authentication-api"
 import {notification} from "../../utils/noti";
+import {Redirect} from "react-router-dom";
 
 class Login extends React.Component{
 
@@ -17,7 +18,10 @@ class Login extends React.Component{
 
         this.state={
             username:"",
-            password:""
+            password:"",
+
+            redirectTo: "",
+            redirect: false
         }
     }
     handleChange(e){
@@ -27,7 +31,6 @@ class Login extends React.Component{
     }
     async handleLogin(){
         const {username, password} = this.state;
-        console.log("login")
         if(username && password)
         {
             let data = {
@@ -37,7 +40,11 @@ class Login extends React.Component{
             let response = await login(data);
             if(response.success)
             {
-                console.log("success")
+                notification("success","Login success.");
+                this.setState({
+                    redirect: true,
+                    redirectTo: "/dashboard"
+                })
             }else{
                 notification("error",response.message);
             }
@@ -49,29 +56,38 @@ class Login extends React.Component{
 
     }
 
+    renderRedirect = () => {
+        if(this.state.redirect){
+            return <Redirect to={this.state.redirectTo}/>
+        }
+    };
+
     render() {
         return(
-            <div className="login-page">
-                <div className="login-card">
-                    <div className="login-card-header">
-                        <h2 className="login-card-title">Đăng nhập </h2>
-                    </div>
-                    <div className="login-card-body">
-                        <form>
-                            <div className="login-group">
-                                <label>Tên đăng nhập: </label>
-                                <input type="text" name="username" onChange={this.handleChange}/>
-                            </div>
-                            <div className="login-group">
-                                <label>Mật khẩu : </label>
-                                <input type="password" name="password" onChange={this.handleChange}/>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="login-card-footer">
-                        <button className="btn-login" onClick={this.handleLogin}>
-                            Đăng nhập
-                        </button>
+            <div>
+                {this.renderRedirect()}
+                <div className="login-page">
+                    <div className="login-card">
+                        <div className="login-card-header">
+                            <h2 className="login-card-title">Đăng nhập </h2>
+                        </div>
+                        <div className="login-card-body">
+                            <form>
+                                <div className="login-group">
+                                    <label>Tên đăng nhập: </label>
+                                    <input type="text" name="username" onChange={this.handleChange}/>
+                                </div>
+                                <div className="login-group">
+                                    <label>Mật khẩu : </label>
+                                    <input type="password" name="password" onChange={this.handleChange}/>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="login-card-footer">
+                            <button className="btn-login" onClick={this.handleLogin}>
+                                Đăng nhập
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
