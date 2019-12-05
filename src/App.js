@@ -4,8 +4,18 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
+import eRerender from "./utils/eventsRerender";
 
 class App extends Component {
+
+    componentDidMount() {
+        eRerender.on("re-render", () => {
+            this.forceUpdate(()=> {
+                console.log('Re-render success')
+            })
+        })
+    }
+
     render() {
         return (
             <div>
@@ -15,7 +25,6 @@ class App extends Component {
                             APP_ROUTES.map(route => (
                                 <Route
                                     path={route.path}
-                                    {...{exact: route.exact}}
                                     component={
                                         route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)
                                     }

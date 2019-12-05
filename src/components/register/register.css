@@ -1,0 +1,113 @@
+.register-page{
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 50px;
+    position: absolute;
+    background-color: #f2f2f2;
+}
+.register-card{
+    background-color: #fff;
+    border-radius: 5px;
+    max-width: 500px;
+    margin: 30px auto;
+    position: relative;
+    border: 1px solid #bfbfbf;
+}
+/*header*/
+.register-card-header{
+    height: 65px;
+    border-bottom: 1px solid #bfbfbf;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.register-card-header .register-card-title{
+    margin: 19px 20px;
+}
+
+/*body*/
+.register-card-body{
+    min-height: 110px;
+    margin: 10px 20px;
+}
+.register-group{
+    height: 50px;
+    margin-top: 10px;
+}
+.register-group label{
+    float: left;
+    width: 150px;
+    margin: 15px 0px;
+    font-size: 15px;
+}
+.register-group input{
+    border-radius: 3px;
+    height: 30px;
+    padding: 5px;
+    width: 260px;
+    float: right;
+    margin-top: 7px;
+    border: 1px solid #007BFF;
+    font-size: 15px;
+}
+/*help*/
+.register-card-help{
+    height: 30px;
+    padding-top: 15px;
+}
+.register-card-help .group-link{
+    justify-content: flex-end;
+    display: flex;
+    margin: 0px 20px;
+}
+.register-card-help .group-link .link-help{
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 14px;
+}
+.register-card-help .group-link .link-help:hover{
+    text-decoration: underline;
+}
+.register-card-help .group-link .btn-forgetpass{
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    color: #007BFF;
+}
+.register-card-help .group-link .btn-forgetpass:hover{
+    text-decoration: underline;
+}
+
+/*footer*/
+.register-card-footer{
+    height: 65px;
+    border-top: 1px solid #bfbfbf;
+    justify-content: flex-end;
+    display: flex;
+}
+
+/*button*/
+.btn-register{
+    font-size: 15px;
+    padding: 0px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 15px 20px;
+    background-color: #007BFF;
+    color: #fff;
+}
+.btn-register:hover {
+    background-color:#1a8cff ;
+}
+
+.link-help{
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 14px;
+}

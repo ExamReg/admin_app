@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import {login} from "../../api/authentication-api"
 import {notification} from "../../utils/noti";
-import {Redirect} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import eRerender from "../../utils/eventsRerender";
 
 class Login extends React.Component{
 
@@ -41,10 +42,12 @@ class Login extends React.Component{
             if(response.success)
             {
                 notification("success","Login success.");
-                this.setState({
-                    redirect: true,
-                    redirectTo: "/dashboard"
-                })
+                localStorage.setItem("token", response.data.token);
+                eRerender.emit("re-render")
+                // this.setState({
+                //     redirect: true,
+                //     redirectTo: "/dashboard"
+                // })
             }else{
                 notification("error",response.message);
             }
@@ -84,6 +87,7 @@ class Login extends React.Component{
                             </form>
                         </div>
                         <div className="login-card-footer">
+                            <Link to="/register" className="">Đăng kí</Link>
                             <button className="btn-login" onClick={this.handleLogin}>
                                 Đăng nhập
                             </button>
