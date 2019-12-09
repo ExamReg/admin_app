@@ -1,1 +1,35 @@
-i
+.student-header{
+    display: flex;
+}
+
+.student-select{
+    margin: 10px 15px;
+    display: inline-block;
+    width: 20rem;
+    height: 2rem;
+}
+
+.student-input{
+    margin: 11px 15px;
+    display: inline-block;
+}
+
+.student-input input{
+    height: 2.3rem;
+}
+
+.student-content .tbl-student table{
+    width: 100%;
+}
+
+.student-content .tbl-student thead tr{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.student-content .tbl-student thead tr th{
+    align-items: center;
+    padding-right: 100px;
+}
