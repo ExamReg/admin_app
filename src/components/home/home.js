@@ -3,9 +3,8 @@ import Header from "../header/header";
 import MenuBar from "../menuBar/menuBar";
 import "./home.css"
 import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {HOME_ROUTES} from "./home_routes";
 
-import Course from '../course/course'
-import Student from "../student/student";
 
 class Home extends React.Component {
     constructor(props) {
@@ -23,8 +22,12 @@ class Home extends React.Component {
                     <div className="content-left"><MenuBar/></div>
                     <div className="content-right">
                         <Switch>
-                            <Route path="/dashboard/course" component={Course}/>
-                            <Route path="/dashboard/student" component={Student}/>
+                            {
+                                HOME_ROUTES.map(e => (
+                                    <Route path={e.path} component={e.component}/>
+                                    )
+                                )
+                            }
                         </Switch>
                     </div>
                 </div>

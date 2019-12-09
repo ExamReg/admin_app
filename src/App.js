@@ -4,19 +4,12 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
-import eRerender from "./utils/eventsRerender";
 
 class App extends Component {
 
-    componentDidMount() {
-        eRerender.on("re-render", () => {
-            this.forceUpdate(()=> {
-                console.log('Re-render success')
-            })
-        })
-    }
-
     render() {
+        if(window.location.pathname === "/") window.location.replace("/login");
+        else
         return (
             <div>
                 <Router>

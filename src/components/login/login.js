@@ -42,7 +42,7 @@ class Login extends React.Component{
             {
                 notification("success","Login success.");
                 localStorage.setItem("token", response.data.token);
-                window.location.replace("/dashboard");
+                window.location.replace("/dashboard/course");
                 this.setState({
                     redirect: true,
                     redirectTo: "/dashboard"
