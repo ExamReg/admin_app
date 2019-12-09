@@ -22,3 +22,7 @@
 .list-menu li:hover{
     background-color: white;
 }
+
+.nav-link  {
+    text-decoration: none
+}
