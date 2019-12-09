@@ -47,4 +47,4 @@ function checkUnAuthen(component) {
     return !localStorage.getItem("token") ? component : () => <Redirect to="/dashboard"/>
 }
 
-export default App;
+export default App

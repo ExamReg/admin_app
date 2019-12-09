@@ -1,7 +1,21 @@
 .content{
-    position: absolute;
     right: 0;
     left: 0;
     bottom: 0;
-    top: 72px;
+    top: 3rem;
+    display: flex;
+    position: absolute;
 }
+
+.content-left{
+    width: 15%;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    background-color: #f4f7fe;
+    display: inline-block;
+}
+.content-right{
+    display: inline-block;
+}
+

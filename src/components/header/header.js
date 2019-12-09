@@ -1,10 +1,10 @@
 import React from 'react'
 import "./header.css"
-import eRerender from "../../utils/eventsRerender";
+
 class Header extends React.Component{
     logOut = () => {
         localStorage.removeItem("token");
-        eRerender.emit("re-render", {});
+        window.location.replace("/login")
     };
     render() {
         return (

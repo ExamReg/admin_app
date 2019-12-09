@@ -7,8 +7,8 @@ export default class MenuBar extends React.Component{
         return (
             <div className="list-menu">
                 <ul>
-                    <Link to="/dashboard/task1" classname="nav-link"><li>This is line one</li></Link>
-                    <Link to="/dashboard/task1" classname="nav-link"><li>This is line Tow</li></Link>
+                    <li><Link to="/dashboard/course" className="nav-link">Quản lí các khoá học</Link></li>
+                    <li><Link to="/dashboard/task2" className="nav-link">Quản lí sinh viên</Link></li>
                 </ul>
             </div>
         )

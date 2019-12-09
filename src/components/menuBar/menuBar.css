@@ -15,14 +15,13 @@
 
 .list-menu li{
     list-style-type: none;
-    height: 35px;
-    margin-bottom: 5px;
-    padding-top: 11px;
 }
 .list-menu li:hover{
     background-color: white;
 }
 
-.nav-link  {
-    text-decoration: none
+.nav-link{
+    text-decoration: none;
+    padding: 11px 2px;
+    display: block;
 }
