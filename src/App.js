@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
 import {ToastContainer} from "react-toastify";
+import 'jquery'
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.bundle'
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
 
