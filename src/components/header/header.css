@@ -1,5 +1,5 @@
-.header{
-    height: 3rem;
+.header {
+    height: 6rem;
     border-bottom: 1px solid #e7e7e7;
     right: 0;
     left: 0;
@@ -8,15 +8,51 @@
     position: absolute;
 }
 
-.header-right input{
+.header-right input {
     height: 2rem;
 }
 
 .header-right {
     display: flex;
     align-items: center;
+    margin-right: 1em;
 }
 
-.header-right input{
+.header-right input {
     margin-right: 15px;
+}
+
+.logo {
+    height: 5rem;
+    width: 5rem;
+    display: inline-block;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.title {
+    display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+.btn-user,
+.btn-logout {
+    cursor: pointer;
+    display: block;
+    margin-left: 20px;
+    padding-top: 5px;
+}
+
+.btn-user:hover,
+.btn-logout:hover {
+    background-color: white;
+}
+
+.dropdown-menu {
+    background-color: #f4f7fe;
+    width: 100%;
+}
+
+.icons {
+    margin-right: 30px;
 }
