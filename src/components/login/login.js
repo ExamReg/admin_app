@@ -86,8 +86,8 @@ class Login extends React.Component{
                             </form>
                         </div>
                         <div>
-                            <Link to="/register" className="">Đăng kí</Link>
-                            <Link to="/forget-password" className="">Forget password</Link>
+                            <Link to="/register" className="login-register">Đăng kí</Link>
+                            <Link to="/forget-password" className="login-forget-password">Quên mật khẩu?</Link>
                         </div>
                         <div className="login-card-footer">
                             <button className="btn-login" onClick={this.handleLogin}>
