@@ -23,9 +23,6 @@ export default class Student extends React.Component {
     }
 
     handleChange = (e) => {
-        if(e.target.name === "text"){
-
-        }
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -64,6 +61,7 @@ export default class Student extends React.Component {
                                 <th>STT</th>
                                 <th>MSSV</th>
                                 <th>Name</th>
+                                <th>Birthday</th>
                                 <th>Birthday</th>
                                 <th className="title-edit">Sửa</th>
                             </tr>
