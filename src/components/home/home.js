@@ -7,12 +7,7 @@ import {HOME_ROUTES} from "./home_routes";
 
 
 class Home extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            path: "/dashboard/course"
-        }
-    }
+
 
     render() {
         return (
