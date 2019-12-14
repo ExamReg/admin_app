@@ -24,7 +24,8 @@ class Home extends React.Component {
                         <Switch>
                             {
                                 HOME_ROUTES.map(e => (
-                                    <Route path={e.path} component={e.component}/>
+                                
+                                    <Route  key={e.path} path={e.path} component={e.component}/>
                                     )
                                 )
                             }

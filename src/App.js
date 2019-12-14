@@ -20,6 +20,7 @@ class App extends Component {
                         {
                             APP_ROUTES.map(route => (
                                 <Route
+                                key={route.path}
                                     path={route.path}
                                     component={
                                         route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)

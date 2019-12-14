@@ -29,16 +29,16 @@ class Header extends React.Component {
             <div className="title">CỔNG THÔNG TIN ĐĂNG KÍ HỌC </div>
           </div>
           <div className="header-right">
-            <div class="dropdown">
+            <div className="dropdown">
               <button
-                class="btn btn-primary dropdown-toggle"
+                className="btn btn-primary dropdown-toggle"
                 type="button"
                 data-toggle="dropdown"
               >
                 chào mừng: Hạp Tiến Quân - <b>1702xxxx</b>
-                <span class="caret"></span>
+                <span className="caret"></span>
               </button>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <li className="btn-user">
                   <div>
                     <img src={iconPerson} alt="icon-person" className="icons"/>
