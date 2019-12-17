@@ -1,3 +1,15 @@
 .row {
     margin: 5px;
 }
+
+.btn-create {
+    height: 38px;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.25rem;
+    color: white;
+}
+
+.birthday {
+    width: 205px;
+}

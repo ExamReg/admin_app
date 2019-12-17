@@ -72,7 +72,7 @@ export default class Course extends React.Component {
             />
           </div>
           <div className="header-items">
-            <select>
+            <select className="select-item">
               {
                  this.state.semesters.map((e,index) => {
                       return (
@@ -99,8 +99,8 @@ export default class Course extends React.Component {
             <thead>
               <tr>
                 <th>STT</th>
-                <th>Course number</th>
-                <th>Course name</th>
+                <th>Mã số môn học</th>
+                <th>Tên môn học</th>
               </tr>
             </thead>
             <tbody>

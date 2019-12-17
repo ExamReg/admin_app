@@ -2,5 +2,14 @@
     display: inline-block;
     width: 19rem;
     margin: 10px 15px;
-    height: 2rem;
+    height: 38px;
+}
+
+.select-item {
+    width: 304px;
+    height: 38px;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.25rem;
+    color: white;
 }
