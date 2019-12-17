@@ -12,7 +12,7 @@ export default class createCourse extends React.Component {
           data-target="#myModal"
           className="btn-create"
         >
-          Thêm khóa học
+          Thêm sinh viên
         </button>
 
         <div
@@ -26,7 +26,7 @@ export default class createCourse extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h4 className="modal-title" id="myModalLabel">
-                  Tạo khóa học
+                  Thêm sinh viên
                 </h4>
                 <button
                   type="button"
@@ -39,15 +39,21 @@ export default class createCourse extends React.Component {
               </div>
               <div className="modal-body">
                 <div className="row">
-                  <div className="col-md-4">Mã số môn học :</div>
+                  <div className="col-md-4">MSSV :</div>
                   <div className="col-md-4 col-md-offset-4">
                     <input type="text" name="" id=""/>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-4">Tên môn học :</div>
+                  <div className="col-md-4">Học và tên :</div>
                   <div className="col-md-4 col-md-offset-4">
                     <input type="text" name="" id=""/>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-4">Ngày sinh :</div>
+                  <div className="col-md-4 col-md-offset-4">
+                    <input className="birthday" type="date" name="" id=""/>
                   </div>
                 </div>
               </div>

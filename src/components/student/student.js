@@ -1,6 +1,7 @@
 import React from 'react'
 import './student.css'
 import {getStudent} from "../../api/student-api";
+import CreateStudent from '../modal/createStudent';
 
 
 export default class Student extends React.Component {
@@ -53,8 +54,11 @@ export default class Student extends React.Component {
         return (
             <div className="student">
                 <div className="student-header">
-                    <div className="student-input"><input type="text" className="form-control" placeholder="Name or mssv" onChange={this.handleChange} name="text"/></div>
-                    <div className="student-input"><input type="button" className="btn btn-primary" value="Create new"/></div>
+                    <div className="student-input"><input type="text" className="form-control" placeholder="Tên hoặc mã số sinh viên" onChange={this.handleChange} name="text"/></div>
+                    {/* <div className="student-input"><input type="button" className="btn btn-primary" value="Thêm sinh viên"/></div> */}
+                    <div className="student-input">
+                        <CreateStudent/>
+                    </div>
                 </div>
                 <div className="student-content">
                     <div className="tbl-student">
@@ -63,8 +67,8 @@ export default class Student extends React.Component {
                             <tr>
                                 <th>STT</th>
                                 <th>MSSV</th>
-                                <th>Name</th>
-                                <th>Birthday</th>
+                                <th>Họ và Tên</th>
+                                <th>Ngày sinh</th>
                                 <th className="title-edit">Sửa</th>
                             </tr>
                             </thead>
