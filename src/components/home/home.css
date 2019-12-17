@@ -1,13 +1,13 @@
-.content{
+.content {
     right: 0;
     left: 0;
     bottom: 0;
-    top: 3rem;
+    top: 6rem;
     display: flex;
     position: absolute;
 }
 
-.content-left{
+.content-left {
     width: 15%;
     top: 0;
     left: 0;
@@ -15,7 +15,8 @@
     background-color: #f4f7fe;
     display: inline-block;
 }
-.content-right{
-    display: inline-block;
-}
 
+.content-right {
+    display: inline-block;
+    width: 85%;
+}

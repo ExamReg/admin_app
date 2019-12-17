@@ -1,1 +1,17 @@
-i
+.student-header{
+    /*display: flex;*/
+    width: 100%;
+}
+
+.student-select{
+    margin: 10px 15px;
+    display: inline-block;
+    width: 19rem;
+}
+
+.student-input{
+    margin: 11px 15px;
+    display: inline-block;
+}
+
+
