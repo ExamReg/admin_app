@@ -1,17 +1,35 @@
-.student-header{
-    /*display: flex;*/
+/*STUDENT CSS*/
+.student{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+.student .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/*HEADER*/
+
+.student .student-header{
+    display: flex;
+    align-items: center;
     width: 100%;
 }
-
-.student-select{
-    margin: 10px 15px;
-    display: inline-block;
-    width: 19rem;
-}
-
-.student-input{
-    margin: 11px 15px;
-    display: inline-block;
+    .student .student-header .student-input{
+        display: flex;
+        align-items: center;
+        margin: 10px 20px 10px 0px;
+    }
+    .student .student-header .student-input .input-find{
+        border-radius: 3px;
+        border: 1px solid #007bff;
+        padding:6px 5px;
+        margin-right: 10px;
+        width: 250px;
+    }
+/*CONTENT*/
+.student .student-content{
+    margin: 10px 0px;
 }
 
 

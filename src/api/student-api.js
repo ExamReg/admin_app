@@ -1,11 +1,11 @@
-import {sendGetRequest} from "./api-send";
+import { sendGetRequestRoute1 } from "./api-send";
 
 
 
 export function getStudent(text) {
     let route = "/students?";
-    if(text){
+    if (text) {
         route = route + `text=${text}`
     }
-    return sendGetRequest(route)
+    return sendGetRequestRoute1(route)
 }

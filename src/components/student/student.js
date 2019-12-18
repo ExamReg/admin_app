@@ -4,7 +4,7 @@ import {getStudent} from "../../api/student-api";
 import Modal from "../modal/modal";
 
 export default class Student extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             students: [],
@@ -16,7 +16,7 @@ export default class Student extends React.Component {
 
     async componentDidMount() {
         let result = await getStudent();
-        if(result.success === true){
+        if (result.success === true) {
             this.setState({
                 students: result.data.students
             })
@@ -30,7 +30,7 @@ export default class Student extends React.Component {
     };
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevState.text !== this.state.text){
+        if (prevState.text !== this.state.text) {
             this.handleTimeOut();
         }
     }
@@ -39,7 +39,7 @@ export default class Student extends React.Component {
         clearTimeout(this.delayTime);
         this.delayTime = setTimeout(async () => {
             let result = await getStudent(this.state.text);
-            if(result.success === true){
+            if (result.success === true) {
                 this.setState({
                     students: result.data.students
                 })
@@ -56,20 +56,28 @@ export default class Student extends React.Component {
     render() {
         return (
             <div className="student">
+                <div className="title">Quản lý sinh viên</div>
                 <div className="student-header">
-                    <div className="student-input"><input type="text" className="form-control" placeholder="Name or mssv" onChange={this.handleChange} name="text"/></div>
-                    <div className="student-input"><input type="button" className="btn btn-primary" value="Create new" onClick={this.openModal}/></div>
+                    <div className="student-input">
+                        <input type="text" className="input-find" placeholder="Nhập mã/tên số sinh viên"
+                               onChange={this.handleChange} name="text"/>
+                    </div>
+                    <div className="student-input">
+                        <button className="btn btn-primary btn-size">
+                            <i className="fas fa-plus"/>
+                            Thêm mới học sinh
+                        </button>
+                    </div>
                 </div>
                 <div className="student-content">
                     <div className="tbl-student">
-                        <table className="table">
+                        <table className="table table-bordered">
                             <thead>
                             <tr>
                                 <th>STT</th>
                                 <th>MSSV</th>
-                                <th>Name</th>
-                                <th>Birthday</th>
-                                <th>Birthday</th>
+                                <th>Họ và Tên</th>
+                                <th>Ngày sinh</th>
                                 <th className="title-edit">Sửa</th>
                             </tr>
                             </thead>
@@ -85,7 +93,11 @@ export default class Student extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    <Modal title="Test" onClose={()=>{this.setState({show: false})}} show={this.state.show} addNew={() => {console.log("add new")}}/>
+                    <Modal title="Test" onClose={() => {
+                        this.setState({show: false})
+                    }} show={this.state.show} addNew={() => {
+                        console.log("add new")
+                    }}/>
                 </div>
             </div>
         )

@@ -5,21 +5,30 @@ import 'jquery'
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
+import '@fortawesome/fontawesome-free/css/all.css'
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
+import Redirector from "./utils/redirector";
+import {registerEvent} from "./service/authen-service";
 
 class App extends Component {
 
+    componentDidMount() {
+        registerEvent("App", () => {
+            this.forceUpdate();
+        });
+    }
+
     render() {
-        if(window.location.pathname === "/") window.location.replace("/login");
-        else
         return (
+            window.location.pathname === "/" ? <Redirect to="/login"/> :
             <div>
                 <Router>
                     <Switch>
                         {
                             APP_ROUTES.map(route => (
                                 <Route
+                                key={route.path}
                                     path={route.path}
                                     component={
                                         route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)
@@ -28,6 +37,7 @@ class App extends Component {
                             ))
                         }
                     </Switch>
+                    <Redirector />
                 </Router>
                 <ToastContainer/>
             </div>

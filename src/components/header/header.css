@@ -6,53 +6,61 @@
     display: flex;
     justify-content: space-between;
     position: absolute;
+    font-size: 14px;
+}
+/*HEADER LEFT*/
+.header-left{
+
+    margin-left: 15px;
+    /*hai cai nay hay*/
+    align-items: center;
+    display: flex;
+}
+.header-left .logo{
+
+    height: 5rem;
+    width: 5rem;
+
+}
+.header-left .title{
+    margin-left: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    color: #1c4d90;
 }
 
-.header-right input {
-    height: 2rem;
-}
-
+/*HEADER RIGHT*/
 .header-right {
     display: flex;
     align-items: center;
-    margin-right: 1em;
-}
-
-.header-right input {
     margin-right: 15px;
 }
+    .header-right .dropdown-menu {
+        width: 185px;
+        left: 87px !important;
+        background-color: #fff;
+    }
+        .header-right .dropdown .btn-user-main{
+            background-color: #428bca;
+            border: #428bca;
+            color: #fff;
+        }
+        .dropdown-menu .icons{
+            padding-right: 10px;
+        }
+        .dropdown-menu .btn-logout, .btn-user {
+            cursor: pointer;
+            display: block;
+        }
+        .dropdown-menu .btn-logout:hover, .btn-user:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+            .dropdown-menu .btn-logout div, .btn-user div{
+                margin: 0px 15px;
+                padding: 5px 0px;
+            }
+            .dropdown-menu .btn-logout div i, .btn-user div i{
+                margin-right:10px ;
+            }
 
-.logo {
-    height: 5rem;
-    width: 5rem;
-    display: inline-block;
-    margin: 0.5rem 1rem 0.5rem 1rem;
-}
-
-.title {
-    display: inline-block;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 30px;
-}
-
-.btn-user,
-.btn-logout {
-    cursor: pointer;
-    display: block;
-    margin-left: 20px;
-    padding-top: 5px;
-}
-
-.btn-user:hover,
-.btn-logout:hover {
-    background-color: white;
-}
-
-.dropdown-menu {
-    background-color: #f4f7fe;
-    width: 100%;
-}
-
-.icons {
-    margin-right: 30px;
-}
