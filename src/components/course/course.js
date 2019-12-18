@@ -64,7 +64,7 @@ export default class Course extends React.Component {
                 <div className="course-header">
                     <div className="header-items">
                         <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "/>
-                        <button type="button" className="btn btn-primary">
+                        <button type="button" className="btn btn-primary btn-size">
                             Tìm kiếm
                         </button>
                     </div>
@@ -82,7 +82,7 @@ export default class Course extends React.Component {
                         </select>
                     </div>
                     <div className="header-items">
-                        <button type="button" className="btn btn-primary">
+                        <button type="button" className="btn btn-primary btn-size">
                             + Thêm mới khóa học
                         </button>
                     </div>
