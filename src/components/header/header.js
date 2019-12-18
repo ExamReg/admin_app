@@ -47,18 +47,18 @@ class Header extends React.Component {
                 </div>
                 <div className="header-right">
                     <div className="dropdown">
-                        <button className="btn dropdown-toggle btn-primary" type="button" data-toggle="dropdown">
+                        <button className="btn dropdown-toggle btn-primary btn-size" type="button" data-toggle="dropdown">
                             Chào mừng: {this.state.name} - <b>{this.state.username}</b>
                             <span className="caret"></span>
                         </button>
                         <ul className="dropdown-menu">
-                            <li className="btn-user" data-toggle="modal" data-target="#modalChangePassword">
+                            <li className="btn-user btn-size" data-toggle="modal" data-target="#modalChangePassword">
                                 <div>
                                     <img src={iconPerson} alt="icon-person" className="icons"/>
                                     Thay đổi mật khẩu
                                 </div>
                             </li>
-                            <li className="btn-logout" onClick={this.logOut}>
+                            <li className="btn-logout btn-size" onClick={this.logOut}>
                                 <div>
                                     <img src={iconLogout} alt="icon-logout" className="icons"/>
                                     Đăng xuất
@@ -89,8 +89,8 @@ class Header extends React.Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Hủy</button>
-                                <button type="button" className="btn btn-primary">Thay đổi</button>
+                                <button type="button" className="btn btn-outline-dark btn-size" data-dismiss="modal">Hủy</button>
+                                <button type="button" className="btn btn-primary btn-size">Thay đổi</button>
                             </div>
                         </div>
 
