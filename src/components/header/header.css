@@ -34,24 +34,29 @@
     align-items: center;
     margin-right: 15px;
 }
-.header-right .dropdown-menu {
+    .header-right .dropdown-menu {
+        width: 200px;
+        left: 126px !important;
+        background-color: #f4f7fe;
+    }
+        .header-right .dropdown .btn-user-main{
+            background-color: #428bca;
+            border: #428bca;
+            color: #fff;
+        }
+        .dropdown-menu .icons{
+            padding-right: 10px;
+        }
+        .dropdown-menu .btn-logout, .btn-user {
+            cursor: pointer;
+            display: block;
+        }
+        .dropdown-menu .btn-logout:hover, .btn-user:hover {
+            background-color: #e8eefd;
+        }
+            .dropdown-menu .btn-logout div, .btn-user div{
+                margin: 0px 15px;
+                padding: 5px 0px;
+            }
 
-}
-.btn-user,
-.btn-logout {
-    cursor: pointer;
-    display: block;
-    margin-left: 20px;
-    padding-top: 5px;
-}
 
-.btn-user:hover,
-.btn-logout:hover {
-    background-color: white;
-}
-
-
-
-.icons {
-    margin-right: 30px;
-}

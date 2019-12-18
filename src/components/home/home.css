@@ -8,7 +8,7 @@
 }
 
 .content-left {
-    width: 15%;
+    width: 20%;
     top: 0;
     left: 0;
     min-height: 100%;
@@ -18,5 +18,5 @@
 
 .content-right {
     display: inline-block;
-    width: 85%;
+    width: 80%;
 }

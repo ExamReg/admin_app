@@ -1,10 +1,7 @@
 import { sendGetRequestRoute1, sendGetRequestRoute2 } from './api-send';
 
-export function getCourse() {
-    let route = "/courses";
-    // if (text) {
-    //     route = route + `text=${text}`
-    // }
+export function getCourse(id_semester) {
+    let route = `/courses?id_semester=${id_semester}`;
     return sendGetRequestRoute1(route)
 }
 export function getSemester() {

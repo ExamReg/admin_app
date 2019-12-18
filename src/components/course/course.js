@@ -1,123 +1,116 @@
 import React from "react";
-import Select from "react-select";
+
 import "./course.css";
-import { getCourse, getSemester } from "../../api/course-api";
-import CreateCourse from "../modal/createCourse";
+import {getCourse, getSemester} from "../../api/course-api";
+
 
 export default class Course extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedOption: null,
-      courses: [],
-      semesters: [],
-      text: ""
-    };
-    this.delayTime = null;
-  }
-  async componentDidMount() {
-    let result = await getCourse();
-    if (result.success === true) {
-      this.setState({
-        courses: result.data.courses
-      });
-      // console.log(this.state.courses)
-    }
-    let result2 = await getSemester();
-    if (result2.success === true) {
-      this.setState({
-        semesters: result2.data.semesters
-      });
-      console.log(this.state.semesters);
-    
-    }
-  }
-  handleChangeData = e => {
-    if (e.target.name === "text") {
-    }
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
-  };
-  async componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.text !== this.state.text) {
-      this.handleTimeOut();
-    }
-  }
+    constructor(props) {
+        super(props);
+        this.selectSemester = this.selectSemester.bind(this);
+        this.handleGetSemester = this.handleGetSemester.bind(this);
+        this.handleGetCourseByIdSemester = this.handleGetCourseByIdSemester.bind(this);
 
-  handleTimeOut = () => {
-    clearTimeout(this.delayTime);
-    this.delayTime = setTimeout(async () => {
-      let result = await getCourse(this.state.text);
-      if (result.success === true) {
-        this.setState({
-          students: result.data.students
-        });
-      }
-    }, 1000);
-  };
-  render() {
-    const { selectedOption } = this.state;
-    return (
-      <div className="course">
-        <div className="course-header">
-          <div className="header-items">
-            <input
-              className="form-control"
-              placeholder="Mã môn học hoặc tên môn học."
-              type="text"
-            />
-          </div>
-          <div className="header-items">
-            <select className="select-item">
-              {
-                 this.state.semesters.map((e,index) => {
-                      return (
-                    <option key={e.id_semester}>{e.value}</option>
-                      );
-                 })
-               }
-            </select>
-               
+        this.state = {
+            courses: [],
+            semesters: [],
+            idSemester: ""
+        };
+    }
 
-          
-          </div>
-          <div className="header-items">
-            {/* <input
-              className="btn btn-primary"
-              type="button"
-              value={"Create new"}
-            /> */}
-           <CreateCourse />
-          </div>
-        </div>
-        <div className="course-content">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>Mã số môn học</th>
-                <th>Tên môn học</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(this.state.courses || []).map((e, index) => {
-              
-                return (
-                  <tr key={index}>
-                    <td>{++index}</td>
-                    <td>{e.id_course}</td>
-                    <td>{e.course_name}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
+    selectSemester(event) {
+        const idSems = event.target[event.target.selectedIndex].value;
+        this.setState({idSemester: idSems});
+    }
+
+    async handleGetSemester() {
+        let res = await getSemester();
+        if (res.success) {
+            this.setState({
+                semesters: res.data.semesters
+            });
+        } else {
+            console.log(res.message)
+        }
+    }
+
+    async handleGetCourseByIdSemester() {
+        const {idSemester} = this.state;
+        const res = await getCourse(idSemester);
+        if (res.success) {
+            this.setState({
+                courses: res.data.courses
+            });
+        } else {
+            console.log(res.message)
+        }
+    }
+
+    componentDidMount() {
+        this.handleGetSemester();
+        this.handleGetCourseByIdSemester();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.idSemester !== prevState.idSemester) {
+            this.handleGetCourseByIdSemester();
+        }
+    }
+
+    render() {
+        return (
+            <div className="course">
+                <div className="title">Quản lý danh sách khóa học </div>
+                <div className="course-header">
+                    <div className="header-items">
+                        <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "/>
+                        <button type="button" className="btn btn-primary">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                    <div className="header-items">
+                        Học kì
+                        <select className="select-item" onChange={this.selectSemester}>
+                            <option key="" value="">---</option>
+                            {
+                                this.state.semesters.map((e, index) => {
+                                    return (
+                                        <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                    );
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div className="header-items">
+                        <button type="button" className="btn btn-primary">
+                            + Thêm mới khóa học
+                        </button>
+                    </div>
+                </div>
+                <div className="course-content">
+                    <table className="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã số khóa học</th>
+                            <th>Tên khóa học</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {(this.state.courses || []).map((e, index) => {
+
+                            return (
+                                <tr key={index}>
+                                    <td>{++index}</td>
+                                    <td>{e.id_course}</td>
+                                    <td>{e.course_name}</td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    }
 }

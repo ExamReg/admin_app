@@ -3,59 +3,103 @@ import logo from "./icons/logo-uet.jpg";
 import iconPerson from "./icons/icons8-person-24.png";
 import iconLogout from "./icons/icons8-exit-24 (1).png";
 import "./header.css";
+import {getProfile} from "../../api/authentication-api";
 
 class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isOpen: false
+    constructor() {
+        super();
+        this.logOut = this.logOut.bind(this);
+        this.handleGetProfile = this.handleGetProfile.bind(this);
+
+        this.state = {
+            name: "",
+            username: ""
+        };
+    }
+
+    async handleGetProfile() {
+        const res = await getProfile();
+        if (res.success) {
+            this.setState({
+                name: res.data.profile.name,
+                username: res.data.profile.user_name
+            })
+        } else {
+            console.log(res.message)
+        }
+    }
+
+    logOut() {
+        localStorage.removeItem("token");
+        window.location.replace("/login");
     };
-  }
-  handleClick = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  };
-  logOut = () => {
-    localStorage.removeItem("token");
-    window.location.replace("/login");
-  };
-  render() {
-      return (
-          <div className="header">
-            <div className="header-left">
-              <img className="logo" src={logo} alt={"logo-uet.jpg"} />
-              <div className="title">CỔNG THÔNG TIN ĐĂNG KÍ HỌC </div>
-            </div>
-            <div className="header-right">
-              <div className="dropdown">
-                <button
-                  className="btn btn-primary dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                >
-                  Chào mừng: Hạp Tiến Quân - <b>1702xxxx</b>
-                  <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu">
-                  <li className="btn-user">
-                    <div>
-                      <img src={iconPerson} alt="icon-person" className="icons"/>
-                      Thay đổi mật khẩu
+
+    componentDidMount() {
+        this.handleGetProfile();
+    }
+
+    render() {
+        return (
+            <div className="header">
+                <div className="header-left">
+                    <img className="logo" src={logo} alt={"logo-uet.jpg"}/>
+                    <div className="title">CỔNG THÔNG TIN ĐĂNG KÍ THI</div>
+                </div>
+                <div className="header-right">
+                    <div className="dropdown">
+                        <button className="btn dropdown-toggle btn-primary" type="button" data-toggle="dropdown">
+                            Chào mừng: {this.state.name} - <b>{this.state.username}</b>
+                            <span className="caret"></span>
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li className="btn-user" data-toggle="modal" data-target="#modalChangePassword">
+                                <div>
+                                    <img src={iconPerson} alt="icon-person" className="icons"/>
+                                    Thay đổi mật khẩu
+                                </div>
+                            </li>
+                            <li className="btn-logout" onClick={this.logOut}>
+                                <div>
+                                    <img src={iconLogout} alt="icon-logout" className="icons"/>
+                                    Đăng xuất
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                  </li>
-                  <li className="btn-logout" onClick={this.logOut}>
-                    <div>
-                      <img src={iconLogout} alt="icon-logout"  className="icons"/>
-                      Đăng xuất
+                </div>
+                <div id="modalChangePassword" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Thay đổi mật khẩu </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>Mật khẩu cũ :</label>
+                                    <input type="password" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Mật khẩu mới :</label>
+                                    <input type="password" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Nhập lại mật khẩu :</label>
+                                    <input type="password" className="form-control"/>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Hủy</button>
+                                <button type="button" className="btn btn-primary">Thay đổi</button>
+                            </div>
+                        </div>
+
                     </div>
-                  </li>
-                </ul>
-              </div>
+                </div>
             </div>
-          </div>
-      );
-  }
+
+        );
+    }
 }
 
 export default Header;
