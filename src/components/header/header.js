@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "./icons/logo-uet.jpg";
-import iconPerson from "./icons/icons8-person-24.png";
-import iconLogout from "./icons/icons8-exit-24 (1).png";
+
 import "./header.css";
 import {getProfile} from "../../api/authentication-api";
 
@@ -54,13 +53,13 @@ class Header extends React.Component {
                         <ul className="dropdown-menu">
                             <li className="btn-user btn-size" data-toggle="modal" data-target="#modalChangePassword">
                                 <div>
-                                    <img src={iconPerson} alt="icon-person" className="icons"/>
+                                    <i className="fas fa-user"></i>
                                     Thay đổi mật khẩu
                                 </div>
                             </li>
                             <li className="btn-logout btn-size" onClick={this.logOut}>
                                 <div>
-                                    <img src={iconLogout} alt="icon-logout" className="icons"/>
+                                    <i className="fas fa-sign-out-alt"></i>
                                     Đăng xuất
                                 </div>
                             </li>

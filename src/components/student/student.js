@@ -56,10 +56,16 @@ export default class Student extends React.Component {
                 <div className="student-header">
                     <div className="student-input">
                         <input type="text" className="input-find" placeholder="Nhập mã/tên số sinh viên" onChange={this.handleChange} name="text"/>
-                        <button className="btn btn-primary btn-size">Tìm kiếm </button>
+                        <button className="btn btn-primary btn-size">
+                            <i className="fas fa-search"></i>
+                            Tìm kiếm
+                        </button>
                     </div>
                     <div className="student-input">
-                        <button className="btn btn-primary btn-size">+ Thêm mới học sinh </button>
+                        <button className="btn btn-primary btn-size">
+                            <i className="fas fa-plus"></i>
+                            Thêm mới học sinh
+                        </button>
                     </div>
                 </div>
                 <div className="student-content">

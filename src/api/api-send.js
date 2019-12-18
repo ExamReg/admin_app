@@ -1,8 +1,7 @@
 import axios from "axios";
-const tmp1 = "/api/a";
-const tmp2 = "/api/g"
-const URL_BASE1 = process.env.REACT_APP_API_URL + tmp1;
-const URL_BASE2 = process.env.REACT_APP_API_URL + tmp2;
+
+const URL_BASE1 = process.env.REACT_APP_API_URL + "/api/a";
+const URL_BASE2 = process.env.REACT_APP_API_URL + "/api/g";
 
 
 

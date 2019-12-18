@@ -5,6 +5,7 @@ import 'jquery'
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
+import '@fortawesome/fontawesome-free/css/all.css'
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
 
