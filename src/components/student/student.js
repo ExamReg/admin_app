@@ -1,14 +1,15 @@
 import React from 'react'
 import './student.css'
 import {getStudent} from "../../api/student-api";
-
+import Modal from "../modal/modal";
 
 export default class Student extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             students: [],
-            text: ""
+            text: "",
+            show: false
         };
         this.delayTime = null;
     }
@@ -46,12 +47,18 @@ export default class Student extends React.Component {
         }, 1000);
     };
 
+    openModal = () => {
+        this.setState({
+            show: true
+        })
+    };
+
     render() {
         return (
             <div className="student">
                 <div className="student-header">
                     <div className="student-input"><input type="text" className="form-control" placeholder="Name or mssv" onChange={this.handleChange} name="text"/></div>
-                    <div className="student-input"><input type="button" className="btn btn-primary" value="Create new"/></div>
+                    <div className="student-input"><input type="button" className="btn btn-primary" value="Create new" onClick={this.openModal}/></div>
                 </div>
                 <div className="student-content">
                     <div className="tbl-student">
@@ -77,8 +84,8 @@ export default class Student extends React.Component {
                             })}
                             </tbody>
                         </table>
-
                     </div>
+                    <Modal title="Test" onClose={()=>{this.setState({show: false})}} show={this.state.show} addNew={() => {console.log("add new")}}/>
                 </div>
             </div>
         )
