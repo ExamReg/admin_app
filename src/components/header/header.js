@@ -6,8 +6,8 @@ import "./header.css";
 import {getProfile} from "../../api/authentication-api";
 
 class Header extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.logOut = this.logOut.bind(this);
         this.handleGetProfile = this.handleGetProfile.bind(this);
 

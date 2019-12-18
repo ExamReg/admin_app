@@ -1,13 +1,18 @@
 import axios from "axios";
+import {redirect_to} from '../utils/redirector';
 const tmp1 = "/api/a";
 const tmp2 = "/api/g"
 const URL_BASE1 = process.env.REACT_APP_API_URL + tmp1;
 const URL_BASE2 = process.env.REACT_APP_API_URL + tmp2;
 
-
-
 function handleResult(res) {
-    return res.data;
+    if(res.data.code === 23){
+        localStorage.removeItem("token");
+        setTimeout(() => {redirect_to('/login')}, 1000);
+        return res.data;
+    }else{
+        return res.data;
+    }
 }
 
 export function sendGetRequestRoute1(route) {

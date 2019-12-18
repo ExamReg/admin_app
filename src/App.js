@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
+import Redirector from "./utils/redirector";
 
 class App extends Component {
 
@@ -29,6 +30,7 @@ class App extends Component {
                             ))
                         }
                     </Switch>
+                    <Redirector />
                 </Router>
                 <ToastContainer/>
             </div>

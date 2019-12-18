@@ -11,6 +11,7 @@ class Home extends React.Component {
 
     render() {
         return (
+            // this.props.location.pathname === '/dashboard' ? <Redirect to=
             <BrowserRouter>
                 <div className="header"><Header/></div>
                 <div className="content">
@@ -20,7 +21,7 @@ class Home extends React.Component {
                             {
                                 HOME_ROUTES.map(e => (
                                 
-                                    <Route  key={e.path} path={e.path} component={e.component}/>
+                                    <Route  key={e.path} path={e.path} exact={e.exact} component={e.component}/>
                                     )
                                 )
                             }
