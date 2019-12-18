@@ -1,0 +1,39 @@
+/*COURSE CSS */
+.course{
+    margin: 15px 15px;
+}
+.course .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/*HEADER*/
+
+.course-header{
+    display: flex;
+    align-items: center;
+}
+.course-header .header-items {
+    display: flex;
+    align-items: center;
+    margin:10px 20px 10px 0px;
+}
+.course-header .header-items .input-find{
+    border-radius: 3px;
+    border: 1px solid #007bff;
+    padding:6px 5px;
+    margin-right: 10px;
+    width: 250px;
+
+}
+.course-header .header-items .select-item{
+    margin-left: 10px;
+    width: 300px;
+    background-color: #f2f2f2;
+    border-color: #007bff;
+    border-radius: 3px;
+}
+/*CONTENT*/
+.course-content{
+    margin: 10px 0px;
+}

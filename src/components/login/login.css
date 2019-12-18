@@ -1,5 +1,5 @@
-.login-page{
-    top:0;
+.login-page {
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
@@ -7,7 +7,8 @@
     position: absolute;
     background-color: #f2f2f2;
 }
-.login-card{
+
+.login-card {
     background-color: #fff;
     border-radius: 5px;
     max-width: 500px;
@@ -15,8 +16,11 @@
     position: relative;
     border: 1px solid #bfbfbf;
 }
+
+
 /*header*/
-.login-card-header{
+
+.login-card-header {
     height: 65px;
     border-bottom: 1px solid #bfbfbf;
     display: -webkit-flex;
@@ -26,11 +30,14 @@
     -webkit-justify-content: space-between;
     justify-content: space-between;
 }
-.login-card-header .login-card-title{
+
+.login-card-header .login-card-title {
     margin: 19px 20px;
 }
 
+
 /*body*/
+
 .login-card-body{
     min-height: 110px;
     margin: 10px 20px;
@@ -48,55 +55,62 @@
 .login-group input{
     font-size: 15px;
     border-radius: 3px;
-    height: 30px;
+
     padding: 5px;
     width: 260px;
     float: right;
     margin-top: 7px;
     border: 1px solid #007BFF;
 }
-/*help*/
-.login-card-help{
-    height: 30px;
-    padding-top: 15px;
 
+/*help*/
+
+.login-card-help {
+    height: 30px;
 }
-.login-card-help .group-link{
+
+.login-card-help .group-link {
     justify-content: flex-end;
     display: flex;
-    margin: 0px 20px;
-
+    margin: 10px 15px;
 }
-.login-card-help .group-link .link-help{
+
+.login-card-help .group-link .link-help {
     text-decoration: none;
     color: #007BFF;
     font-size: 14px;
 }
-.login-card-help .group-link .link-help:hover{
+
+.login-card-help .group-link .link-help:hover {
     text-decoration: underline;
 }
-.login-card-help .group-link .btn-forgetpass{
+
+.login-card-help .group-link .btn-forgetpass {
     cursor: pointer;
     border: none;
     background-color: white;
     color: #007BFF;
     font-size: 14px;
 }
-.login-card-help .group-link .btn-forgetpass:hover{
+
+.login-card-help .group-link .btn-forgetpass:hover {
     text-decoration: underline;
 }
 
 
 /*footer*/
-.login-card-footer{
+
+.login-card-footer {
     height: 65px;
     border-top: 1px solid #bfbfbf;
     justify-content: flex-end;
     display: flex;
 }
 
+
 /*button*/
-.btn-login{
+
+.btn-login {
     font-size: 15px;
     padding: 0px 10px;
     border-radius: 3px;
@@ -106,6 +120,7 @@
     color: #fff;
     border: 1px solid #007BFF;
 }
+
 .btn-login:hover {
     background-color: #1a8cff;
 }

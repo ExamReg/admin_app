@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import {login} from "../../api/authentication-api"
 import {notification} from "../../utils/noti";
 import {Link, Redirect} from "react-router-dom";
-import eRerender from "../../utils/eventsRerender";
 
 class Login extends React.Component{
 
@@ -43,11 +42,11 @@ class Login extends React.Component{
             {
                 notification("success","Login success.");
                 localStorage.setItem("token", response.data.token);
-                eRerender.emit("re-render")
-                // this.setState({
-                //     redirect: true,
-                //     redirectTo: "/dashboard"
-                // })
+                window.location.replace("/dashboard/course");
+                this.setState({
+                    redirect: true,
+                    redirectTo: "/dashboard"
+                })
             }else{
                 notification("error",response.message);
             }
@@ -86,8 +85,34 @@ class Login extends React.Component{
                                 </div>
                             </form>
                         </div>
+                        <div className="login-card-help">
+                            <div className="group-link">
+                                <Link to="/register" className="link-help">Đăng kí</Link>
+                                <button className="btn-forgetpass space" data-toggle="modal" data-target="#modalForgotPass">Quên mật khẩu? </button>
+                                <div id="modalForgotPass" className="modal fade" role="dialog">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h4 className="modal-title">Thay đổi mật khẩu </h4>
+                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="form-group">
+                                                    <labe>Email của bạn :</labe>
+                                                    <input type="text" className="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Hủy</button>
+                                                <button type="button" className="btn btn-primary">Gửi </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="login-card-footer">
-                            <Link to="/register" className="">Đăng kí</Link>
                             <button className="btn-login" onClick={this.handleLogin}>
                                 Đăng nhập
                             </button>
