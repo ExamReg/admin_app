@@ -38,7 +38,7 @@
     .header-right .dropdown-menu {
         width: 185px;
         left: 87px !important;
-        background-color: #f4f7fe;
+        background-color: #fff;
     }
         .header-right .dropdown .btn-user-main{
             background-color: #428bca;
@@ -53,11 +53,14 @@
             display: block;
         }
         .dropdown-menu .btn-logout:hover, .btn-user:hover {
-            background-color: #e8eefd;
+            background-color: #007bff;
+            color: #fff;
         }
             .dropdown-menu .btn-logout div, .btn-user div{
                 margin: 0px 15px;
                 padding: 5px 0px;
             }
-
+            .dropdown-menu .btn-logout div i, .btn-user div i{
+                margin-right:10px ;
+            }
 

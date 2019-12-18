@@ -14,7 +14,7 @@ export default class Course extends React.Component {
         this.state = {
             courses: [],
             semesters: [],
-            idSemester: ""
+            idSemester: "1"
         };
     }
 
@@ -65,13 +65,13 @@ export default class Course extends React.Component {
                     <div className="header-items">
                         <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "/>
                         <button type="button" className="btn btn-primary btn-size">
+                            <i className="fas fa-search"></i>
                             Tìm kiếm
                         </button>
                     </div>
                     <div className="header-items">
                         Học kì
                         <select className="select-item" onChange={this.selectSemester}>
-                            <option key="" value="">---</option>
                             {
                                 this.state.semesters.map((e, index) => {
                                     return (
@@ -82,8 +82,9 @@ export default class Course extends React.Component {
                         </select>
                     </div>
                     <div className="header-items">
-                        <button type="button" className="btn btn-primary btn-size">
-                            + Thêm mới khóa học
+                        <button type="button" className="btn btn-primary btn-size" data-toggle="modal" data-target="#modalAddNewCourse">
+                            <i className="fas fa-plus"></i>
+                            Thêm mới khóa học
                         </button>
                     </div>
                 </div>
@@ -109,6 +110,43 @@ export default class Course extends React.Component {
                         })}
                         </tbody>
                     </table>
+                </div>
+                <div id="modalAddNewCourse" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Thêm mới khóa học </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>Học kì:</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Tên khóa học :</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Mã khóa học :</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Tệp danh sách khóa học:</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Mã số lớp học:</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-dark btn-size" data-dismiss="modal">Hủy</button>
+                                <button type="button" className="btn btn-primary btn-size">Thêm mới</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         );
