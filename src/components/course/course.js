@@ -1,28 +1,48 @@
 import React from "react";
 
 import "./course.css";
-import {getCourse, getSemester} from "../../api/course-api";
+import {getCourse, getSemester, addNewCourse} from "../../api/course-api";
+import {notification} from "../../utils/noti";
 
 
 export default class Course extends React.Component {
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
         this.selectSemester = this.selectSemester.bind(this);
+        this.selectSemesterInAdd = this.selectSemesterInAdd.bind(this);
         this.handleGetSemester = this.handleGetSemester.bind(this);
         this.handleGetCourseByIdSemester = this.handleGetCourseByIdSemester.bind(this);
+        this.handleAddNewCourse = this.handleAddNewCourse.bind(this);
 
         this.state = {
             courses: [],
             semesters: [],
-            idSemester: "1"
+            idSemester: "1",
+
+            nameCourse:"",
+            idCourse:"",
+            fileCourse:"",
+            idClassCourse:"",
+            idSemesterSelect:""
         };
     }
 
+    handleChange(e)
+    {
+        let nam = e.target.name;
+        let val = e.target.value;
+        this.setState({[nam]:val})
+    }
     selectSemester(event) {
         const idSems = event.target[event.target.selectedIndex].value;
         this.setState({idSemester: idSems});
     }
-
+    selectSemesterInAdd(event)
+    {
+        const idSems = event.target[event.target.selectedIndex].value;
+        this.setState({idSemesterSelect: idSems});
+    }
     async handleGetSemester() {
         let res = await getSemester();
         if (res.success) {
@@ -45,7 +65,36 @@ export default class Course extends React.Component {
             console.log(res.message)
         }
     }
-
+    async handleAddNewCourse()
+    {
+        const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
+        if(nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect)
+        {
+            let data = {
+                semester:idSemesterSelect,
+                course_name:nameCourse,
+                id_course:idCourse,
+                file_import:fileCourse,
+                class_number:idClassCourse
+            }
+            let formdata = new FormData();
+            formdata.append("semester", idSemesterSelect);
+            formdata.append("course_name", nameCourse);
+            formdata.append("id_course", idCourse);
+            formdata.append("file_import", fileCourse);
+            formdata.append("class_number", idClassCourse);
+            const res = await addNewCourse(formdata);
+            if(res.success)
+            {
+                console.log("success");
+            }
+            else
+                console.log(res.message)
+        }
+        else {
+            notification("warning", "Xin điền đủ thông tin ")
+        }
+    }
     componentDidMount() {
         this.handleGetSemester();
         this.handleGetCourseByIdSemester();
@@ -119,24 +168,25 @@ export default class Course extends React.Component {
 
                                 <div className="form-group">
                                     <label>Tên khóa học :</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="text" className="form-control" name="nameCourse" onChange={this.handleChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Mã khóa học :</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="text" className="form-control" name="idCourse" onChange={this.handleChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Tệp danh sách khóa học:</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="file" className="form-control-file border" name="fileCourse" onChange={this.handleChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Mã số lớp học:</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="text" className="form-control" name="idClassCourse" onChange={this.handleChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Học kì:</label>
                                     <div className="dropdown">
-                                        <select className="select-item-form">
+                                        <select className="select-item-form" onChange={this.selectSemesterInAdd}>
+                                            <option key="" value="">---</option>
                                             {
                                                 this.state.semesters.map((e, index) => {
                                                     return (
@@ -152,7 +202,7 @@ export default class Course extends React.Component {
                                 <button type="button" className="btn btn-outline-dark btn-size"
                                         data-dismiss="modal">Hủy
                                 </button>
-                                <button type="button" className="btn btn-primary btn-size">Thêm mới</button>
+                                <button type="button" className="btn btn-primary btn-size" onClick={this.handleAddNewCourse}>Thêm mới</button>
                             </div>
                         </div>
 
