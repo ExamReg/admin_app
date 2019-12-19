@@ -116,10 +116,7 @@ export default class Course extends React.Component {
                                 <button type="button" className="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Học kì:</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
+
                                 <div className="form-group">
                                     <label>Tên khóa học :</label>
                                     <input type="text" className="form-control"/>
@@ -135,6 +132,20 @@ export default class Course extends React.Component {
                                 <div className="form-group">
                                     <label>Mã số lớp học:</label>
                                     <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Học kì:</label>
+                                    <div className="dropdown">
+                                        <select className="select-item-form">
+                                            {
+                                                this.state.semesters.map((e, index) => {
+                                                    return (
+                                                        <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                                    );
+                                                })
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
