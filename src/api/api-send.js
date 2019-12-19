@@ -2,10 +2,7 @@ import axios from "axios";
 import {logOut} from "../service/authen-service"
 import {notification} from "../utils/noti";
 
-const URL_BASE1 = process.env.REACT_APP_API_URL + "/api/a";
-const URL_BASE2 = process.env.REACT_APP_API_URL + "/api/g";
-
-
+const URL_BASE = process.env.REACT_APP_API_URL + "/api/a";
 function handleResult(res) {
     if (res.data.code === 23) {
         notification("error", "Phiên làm việc đã hết hạn. Xin vui lòng đăng nhập lại.");
@@ -17,7 +14,7 @@ function handleResult(res) {
 }
 
 export function sendGetRequestRoute1(route) {
-    let url = `${URL_BASE1}${route}`;
+    let url = `${URL_BASE}${route}`;
     let headers = {
         token: localStorage.getItem("token")
     };
@@ -25,7 +22,7 @@ export function sendGetRequestRoute1(route) {
 }
 
 export function sendGetRequestRoute2(route) {
-    let url = `${URL_BASE2}${route}`;
+    let url = `${URL_BASE}${route}`;
     let headers = {
         token: localStorage.getItem("token")
     };
@@ -34,12 +31,12 @@ export function sendGetRequestRoute2(route) {
 
 
 export function sendPostRequest(route, payload, headers) {
-    let url = `${URL_BASE1}${route}`;
+    let url = `${URL_BASE}${route}`;
     return axios.post(url, payload, {headers}).then(handleResult);
 }
 
 export function sendPutRequest(route, payload) {
-    let url = `${URL_BASE1}${route}`;
+    let url = `${URL_BASE}${route}`;
     let headers = {
         token: localStorage.getItem("token")
     };
@@ -47,7 +44,7 @@ export function sendPutRequest(route, payload) {
 }
 
 export function sendDeleteRequest(route) {
-    let url = `${URL_BASE1}${route}`;
+    let url = `${URL_BASE}${route}`;
     let headers = {
         token: localStorage.getItem("token")
     };
@@ -55,6 +52,6 @@ export function sendDeleteRequest(route) {
 }
 
 export function sendPostRequestWithoutToken(route, payload) {
-    let url = `${URL_BASE1}${route}`;
+    let url = `${URL_BASE}${route}`;
     return axios.post(url, payload).then(handleResult);
 }

@@ -60,29 +60,27 @@ export default class Course extends React.Component {
     render() {
         return (
             <div className="course">
-                <div className="title">Quản lý danh sách khóa học </div>
                 <div className="course-header">
-                    <div className="header-items">
-                        <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "/>
-                        <button type="button" className="btn btn-primary btn-size">
-                            <i className="fas fa-search"></i>
-                            Tìm kiếm
-                        </button>
+                    <div className="course-header-left">
+                        <div className="header-items">
+                            <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "/>
+                        </div>
+                        <div className="header-items">
+                            Học kì
+                            <select className="select-item" onChange={this.selectSemester}>
+                                {
+                                    this.state.semesters.map((e, index) => {
+                                        return (
+                                            <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                        );
+                                    })
+                                }
+                            </select>
+                        </div>
                     </div>
-                    <div className="header-items">
-                        Học kì
-                        <select className="select-item" onChange={this.selectSemester}>
-                            {
-                                this.state.semesters.map((e, index) => {
-                                    return (
-                                        <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
-                                    );
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="header-items">
-                        <button type="button" className="btn btn-primary btn-size" data-toggle="modal" data-target="#modalAddNewCourse">
+                    <div className="course-header-right">
+                        <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
+                                data-target="#modalAddNewCourse">
                             <i className="fas fa-plus"></i>
                             Thêm mới khóa học
                         </button>
@@ -99,7 +97,6 @@ export default class Course extends React.Component {
                         </thead>
                         <tbody>
                         {(this.state.courses || []).map((e, index) => {
-
                             return (
                                 <tr key={index}>
                                     <td>{++index}</td>
@@ -141,7 +138,9 @@ export default class Course extends React.Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-dark btn-size" data-dismiss="modal">Hủy</button>
+                                <button type="button" className="btn btn-outline-dark btn-size"
+                                        data-dismiss="modal">Hủy
+                                </button>
                                 <button type="button" className="btn btn-primary btn-size">Thêm mới</button>
                             </div>
                         </div>

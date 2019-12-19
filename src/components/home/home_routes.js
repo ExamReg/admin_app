@@ -1,10 +1,10 @@
-import Course from "../course/course";
 import Student from "../student/student"
+import TabCourse from "../tabCourse/tabCourse";
 
 export const HOME_ROUTES = [
     {
         path: "/dashboard/course",
-        component: Course
+        component: TabCourse
     },
     {
         path: "/dashboard/student",

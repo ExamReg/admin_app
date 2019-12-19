@@ -1,3 +1,4 @@
+/*
 
 .modal-header {
     height: 65px;
@@ -30,7 +31,7 @@
     color: #212529;
 }
 
-/*CONTENT*/
+!*CONTENT*!
 
 
 .modal-content {
@@ -39,7 +40,7 @@
 }
 
 
-/*modal group*/
+!*modal group*!
 de08bc2263f12a039651c5277564f7be3d6da
 .modal-group {
     height: 50px;
@@ -64,7 +65,7 @@ de08bc2263f12a039651c5277564f7be3d6da
     border: 1px solid #2692ff;
 }
 
-/*HELP MODAL*/
+!*HELP MODAL*!
 
 .modal-help {
     height: 30px;
@@ -98,7 +99,7 @@ de08bc2263f12a039651c5277564f7be3d6da
     text-decoration: underline;
 }
 
-/*FOOTER MODAL*/
+!*FOOTER MODAL*!
 
 .modal-footer {
     height: 65px;
@@ -118,7 +119,7 @@ de08bc2263f12a039651c5277564f7be3d6da
     cursor: pointer;
 }
 
-/*footer*/
+!*footer*!
 
 .login-card-footer {
     height: 65px;
@@ -127,7 +128,7 @@ de08bc2263f12a039651c5277564f7be3d6da
     display: flex;
 }
 
-/*button*/
+!*button*!
 .btn-login {
     font-size: 15px;
     padding: 0px 10px;
@@ -159,3 +160,4 @@ de08bc2263f12a039651c5277564f7be3d6da
 }
 
 
+*/

@@ -10,7 +10,7 @@ import {Redirect} from "react-router-dom";
 import {APP_ROUTES} from "./app-routes";
 import Redirector from "./utils/redirector";
 import {registerEvent} from "./service/authen-service";
-
+import "./App.css"
 class App extends Component {
 
     componentDidMount() {

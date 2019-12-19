@@ -1,0 +1,12 @@
+.container-tab{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+.container-tab .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.rwt__tablist:not([aria-orientation="vertical"]) .rwt__tab[aria-selected="true"]:after {
+    border-bottom: 3px solid #007bff !important;
+}
