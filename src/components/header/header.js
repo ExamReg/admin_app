@@ -51,7 +51,7 @@ class Header extends React.Component {
                             Chào mừng: {this.state.name} - <b>{this.state.username}</b>
                             <span className="caret"></span>
                         </button>
-                        <ul className="dropdown-menu">
+                        <ul className="dropdown-menu dropdown-menu-right">
                             <li className="btn-user btn-size" data-toggle="modal" data-target="#modalChangePassword">
                                 <div>
                                     <i className="fas fa-user"></i>

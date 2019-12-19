@@ -1,4 +1,4 @@
-import { sendGetRequestRoute1, sendGetRequestRoute2 } from './api-send';
+import { sendGetRequestRoute1, sendGetRequestRoute2 , sendPostRequest} from './api-send';
 
 export function getCourse(id_semester) {
     let route = `/courses?id_semester=${id_semester}`;
@@ -7,4 +7,12 @@ export function getCourse(id_semester) {
 export function getSemester() {
     let route = "/semesters";
     return sendGetRequestRoute2(route)
+}
+export function addNewCourse(data) {
+    let route = "/courses";
+    let headers = {
+        token: localStorage.getItem("token"),
+        'content-type': 'application/x-www-form-urlencoded'
+    };
+    return sendPostRequest(route, data, headers);
 }

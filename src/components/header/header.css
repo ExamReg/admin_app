@@ -36,9 +36,9 @@
     margin-right: 15px;
 }
     .header-right .dropdown-menu {
-        width: 185px;
+        /*width: 185px;
         left: 87px !important;
-        background-color: #fff;
+        background-color: #fff;*/
     }
         .header-right .dropdown .btn-user-main{
             background-color: #428bca;
