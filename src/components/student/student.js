@@ -127,7 +127,7 @@ export default class Student extends React.Component {
                                    onChange={this.handleChange} name="text"/>
                         </div>
                         <div className="student-input">
-                            <button className="btn btn-primary btn-size">
+                            <button className="btn btn-primary btn-size" data-toggle="modal" data-target="#modalAddNewStudent">
                                 <i className="fas fa-plus"/>
                                 Thêm mới học sinh
                             </button>
@@ -146,7 +146,8 @@ export default class Student extends React.Component {
                                 <th>MSSV</th>
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
-                                <th className="title-edit"></th>
+                                <th className="title-edit" colSpan="2"></th>
+                                
                             </tr>
                             </thead>
                             <tbody>
@@ -157,13 +158,49 @@ export default class Student extends React.Component {
                                     <td>{e.name}</td>
                                     <td>{e.birthday}</td>
                                     <td>
-                                        <button type="button" className="btn btn-secondary">Chỉnh sửa</button>
+                                        <button type="button" className="btn btn-secondary" data-toggle="modal" data-target="#modalAddNewStudent">Chỉnh sửa</button>
+                                        
+                                    </td>
+                                    <td>
+                                        <button type="button" className="btn btn-danger">Quên mật khẩu</button>
                                     </td>
                                 </tr>
                             })}
                             </tbody>
                         </table>
                     </div>
+                    <div id="modalAddNewStudent" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Thêm sinh viên </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>MSSV :</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Họ và tên :</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Ngày sinh :</label>
+                                    <input type="date" className="form-control"/>
+                                </div>
+                                
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-dark btn-size"
+                                        data-dismiss="modal">Hủy
+                                </button>
+                                <button type="button" className="btn btn-primary btn-size">Thêm mới</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                     <Modal title="Test" onClose={() => {
                         this.setState({show: false})
                     }} show={this.state.show} addNew={() => {
