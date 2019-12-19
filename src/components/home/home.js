@@ -2,17 +2,15 @@ import React from 'react';
 import Header from "../header/header";
 import MenuBar from "../menuBar/menuBar";
 import "./home.css"
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {HOME_ROUTES} from "./home_routes";
 
 
 class Home extends React.Component {
 
-
     render() {
         return (
-            this.props.location.pathname === '/dashboard' ? <Redirect to="/dashboard/course"/> :
-                <BrowserRouter>
+                <div>
                     <div className="header"><Header/></div>
                     <div className="content">
                         <div className="content-left"><MenuBar/></div>
@@ -21,14 +19,15 @@ class Home extends React.Component {
                                 {
                                     HOME_ROUTES.map(e => (
 
-                                            <Route key={e.path} path={e.path} exact={e.exact} component={e.component}/>
+                                            <Route key={e.path} path={e.path} component={e.component}/>
                                         )
                                     )
                                 }
+                                <Redirect to={"/dashboard/course"}/>
                             </Switch>
                         </div>
                     </div>
-                </BrowserRouter>
+                </div>
         )
     }
 }

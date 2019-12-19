@@ -1,0 +1,16 @@
+
+/*new per page*/
+.news-per-page {
+    margin:5px 0px;
+    display: inline-block;
+    float: right;
+    justify-content: flex-end;
+}
+
+.news-per-page select{
+    border: 1px solid #2692ff;
+    background-color: #ffffff;
+    width: 70px;
+    height: 30px;
+    border-radius: 3px;
+}

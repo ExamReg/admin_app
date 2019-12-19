@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {ToastContainer} from "react-toastify";
 import 'jquery'
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,24 +21,22 @@ class App extends Component {
 
     render() {
         return (
-            window.location.pathname === "/" ? <Redirect to="/login"/> :
             <div>
-                <Router>
-                    <Switch>
-                        {
-                            APP_ROUTES.map(route => (
-                                <Route
+                <Switch>
+                    {
+                        APP_ROUTES.map(route => (
+                            <Route
                                 key={route.path}
-                                    path={route.path}
-                                    component={
-                                        route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)
-                                    }
-                                />
-                            ))
-                        }
-                    </Switch>
-                    <Redirector />
-                </Router>
+                                path={route.path}
+                                component={
+                                    route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)
+                                }
+                            />
+                        ))
+                    }
+                    <Redirect to={"/dashboard"}/>
+                </Switch>
+                <Redirector/>
                 <ToastContainer/>
             </div>
         );

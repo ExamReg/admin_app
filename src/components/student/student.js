@@ -2,6 +2,8 @@ import React from 'react'
 import './student.css'
 import {getStudent} from "../../api/student-api";
 import Modal from "../modal/modal";
+import Pagination from "../pagination/pagination";
+import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 
 export default class Student extends React.Component {
     constructor(props) {
@@ -9,17 +11,38 @@ export default class Student extends React.Component {
         this.state = {
             students: [],
             text: "",
-            show: false
+            show: false,
+            page_size: 20,
+            page_number: 1,
+            page_count: 0,
+            next_page: false,
+            change_page_size: false
         };
         this.delayTime = null;
     }
 
     async componentDidMount() {
-        let result = await getStudent();
+        let result = await getStudent({
+            page_size: this.state.page_size,
+            page_number: this.state.page_number - 1
+        });
         if (result.success === true) {
             this.setState({
-                students: result.data.students
+                students: result.data.students,
+                page_count: Math.ceil(result.data.count / this.state.page_size)
             })
+        }
+    }
+
+    async componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.text !== this.state.text) {
+            this.handleTimeOut();
+        }
+        if(this.state.next_page){
+            this.reloadWhenNextPage()
+        }
+        if(this.state.change_page_size){
+            this.reloadWhenChangePageSize();
         }
     }
 
@@ -28,12 +51,6 @@ export default class Student extends React.Component {
             [e.target.name]: e.target.value
         });
     };
-
-    async componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.text !== this.state.text) {
-            this.handleTimeOut();
-        }
-    }
 
     handleTimeOut = () => {
         clearTimeout(this.delayTime);
@@ -52,21 +69,72 @@ export default class Student extends React.Component {
             show: true
         })
     };
+    changePageSize = (event) => {
+        this.setState({
+            page_size: event.target.value,
+            change_page_size: true,
+            page_number: 1
+        })
+    };
+    chosePage = (event) =>{
+        this.setState({
+            page_number: Number(event.target.id),
+            next_page: true
+        });
+    };
+    reloadWhenNextPage = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: this.state.page_number - 1,
+            text: this.state.text
+        };
+        const response = await getStudent(query);
+        if (response.success) {
+            this.setState({
+                students: response.data.students,
+                next_page: false,
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
 
+    reloadWhenChangePageSize = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: 0,
+            text: this.state.text
+        };
+        const response = await getStudent(query);
+        if (response.success) {
+            this.setState({
+                students: response.data.students,
+                change_page_size: false,
+                page_count: Math.ceil(response.data.count / this.state.page_size)
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
     render() {
         return (
             <div className="student">
                 <div className="title">Quản lý sinh viên</div>
                 <div className="student-header">
-                    <div className="student-input">
-                        <input type="text" className="input-find" placeholder="Nhập mã/tên số sinh viên"
-                               onChange={this.handleChange} name="text"/>
+                    <div className={"student-header-left"}>
+                        <div className="student-input">
+                            <input type="text" className="input-find" placeholder="Nhập mã/tên số sinh viên"
+                                   onChange={this.handleChange} name="text"/>
+                        </div>
+                        <div className="student-input">
+                            <button className="btn btn-primary btn-size">
+                                <i className="fas fa-plus"/>
+                                Thêm mới học sinh
+                            </button>
+                        </div>
                     </div>
-                    <div className="student-input">
-                        <button className="btn btn-primary btn-size">
-                            <i className="fas fa-plus"/>
-                            Thêm mới học sinh
-                        </button>
+                    <div className={"student-header-right"}>
+                        <Pagination changePageSize={this.changePageSize} page_size={this.state.page_size}/>
                     </div>
                 </div>
                 <div className="student-content">
@@ -78,7 +146,7 @@ export default class Student extends React.Component {
                                 <th>MSSV</th>
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
-                                <th className="title-edit">Sửa</th>
+                                <th className="title-edit"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,6 +156,9 @@ export default class Student extends React.Component {
                                     <td>{e.id_student}</td>
                                     <td>{e.name}</td>
                                     <td>{e.birthday}</td>
+                                    <td>
+                                        <button type="button" className="btn btn-secondary">Chỉnh sửa</button>
+                                    </td>
                                 </tr>
                             })}
                             </tbody>
@@ -98,6 +169,7 @@ export default class Student extends React.Component {
                     }} show={this.state.show} addNew={() => {
                         console.log("add new")
                     }}/>
+                    <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count} currentPage={this.state.page_number}/>
                 </div>
             </div>
         )

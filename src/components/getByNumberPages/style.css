@@ -1,0 +1,32 @@
+/*PAGE NUMBER*/
+#page-numbers {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+#page-numbers > li {
+    color: #2692ff;
+    user-select: none;
+    cursor: pointer;
+    margin: 0 3px;
+    padding: 0 5px;
+    border: 1px solid #2692ff;
+    text-align: center;
+    border-radius: 2px;
+}
+
+#page-numbers > li:not(.active):hover {
+    background:#cce6ff;
+}
+
+#page-numbers > li.active {
+    border-color: #2692ff;
+    color: white;
+    background: #2692ff;
+    cursor: default;
+}
