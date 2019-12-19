@@ -55,10 +55,16 @@ export default class Student extends React.Component {
     handleTimeOut = () => {
         clearTimeout(this.delayTime);
         this.delayTime = setTimeout(async () => {
-            let result = await getStudent(this.state.text);
+            let result = await getStudent({
+                text: this.state.text,
+                page_size: this.state.page_size,
+                page_number: 0
+            });
             if (result.success === true) {
                 this.setState({
-                    students: result.data.students
+                    students: result.data.students,
+                    page_number: 1,
+                    page_count: Math.ceil(result.data.count / this.state.page_size)
                 })
             }
         }, 1000);
