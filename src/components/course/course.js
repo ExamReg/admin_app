@@ -3,7 +3,7 @@ import React from "react";
 import "./course.css";
 import {getCourse, getSemester, addNewCourse} from "../../api/course-api";
 import {notification} from "../../utils/noti";
-import Modal from "../modal/modal";
+import ModelCustom from "../modal/modal";
 
 
 export default class Course extends React.Component {
@@ -160,7 +160,7 @@ export default class Course extends React.Component {
                     <div className="course-header-right">
                         <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
                                 data-target="#modalAddNewCourse">
-                            <i className="fas fa-plus"></i>
+                            <i className="fas fa-plus"/>
                             Thêm mới khóa học
                         </button>
                     </div>
@@ -196,7 +196,7 @@ export default class Course extends React.Component {
                         }
                         </tbody>
                     </table>
-                    <Modal
+                    <ModelCustom
                         idModal="modalAddNewCourse"
                         title="Thêm mới khóa học "
                         brandButton="Thêm mới "
