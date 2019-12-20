@@ -152,7 +152,7 @@ export default class Student extends React.Component {
                                 <th>MSSV</th>
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
-                                <th className="title-edit" colSpan="2"></th>
+                                <th className="title-edit" colSpan="2"/>
                                 
                             </tr>
                             </thead>

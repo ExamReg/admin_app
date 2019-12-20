@@ -70,13 +70,13 @@ export default class Course extends React.Component {
         const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
         if(nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect)
         {
-            let data = {
-                semester:idSemesterSelect,
-                course_name:nameCourse,
-                id_course:idCourse,
-                file_import:fileCourse,
-                class_number:idClassCourse
-            }
+            // let data = {
+            //     semester:idSemesterSelect,
+            //     course_name:nameCourse,
+            //     id_course:idCourse,
+            //     file_import:fileCourse,
+            //     class_number:idClassCourse
+            // }
             let formdata = new FormData();
             formdata.append("semester", idSemesterSelect);
             formdata.append("course_name", nameCourse);
