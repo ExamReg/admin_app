@@ -3,6 +3,7 @@ import logo from "./icons/logo-uet.jpg";
 
 import "./header.css";
 import {getProfile} from "../../api/authentication-api";
+import Modal from "../modal/modal";
 
 class Header extends React.Component {
     constructor(props) {
@@ -67,37 +68,30 @@ class Header extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <div id="modalChangePassword" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Thay đổi mật khẩu </h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Mật khẩu cũ :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Mật khẩu mới :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Nhập lại mật khẩu :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-dark btn-size"
-                                        data-dismiss="modal">Hủy
-                                </button>
-                                <button type="button" className="btn btn-primary btn-size">Thay đổi</button>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
+                <Modal idModal="modalChangePassword"
+                       title="Thay đổi mật khẩu "
+                       brandButton="Chỉnh sửa "
+                       acceptButton={
+                           this.handleChangePassword
+                       }
+                       childrenContent={
+                           <div>
+                               <div className="form-group">
+                                   <label>Mật khẩu cũ :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                               <div className="form-group">
+                                   <label>Mật khẩu mới :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                               <div className="form-group">
+                                   <label>Nhập lại mật khẩu :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                           </div>
+                       }
+                />
             </div>
 
         );
