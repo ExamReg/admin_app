@@ -155,7 +155,6 @@ export default class Student extends React.Component {
         if(!this.state.fileStudents){
             notification("warning", "Vui lòng điền đầy đủ thông tin.")
         }else{
-            console.log(this.state.fileStudents);
             let form_data = new FormData();
             form_data.append("file_import", this.state.fileStudents);
             let result = await importStudent(form_data);
@@ -276,6 +275,9 @@ export default class Student extends React.Component {
                                </div>
                            }
                            />
+
+                </div>
+                <div className="student-bottom">
                     <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
                                       currentPage={this.state.page_number}/>
                 </div>

@@ -28,6 +28,7 @@
     align-items: center;
     margin:0px 0px 10px 0px;
 }
+
 .course-header .header-items .input-find{
     border-radius: 3px;
     border: 1px solid #007bff;
@@ -63,4 +64,17 @@
     font-size: 15px;
     padding: 0px 12px;
 
+}
+
+.table-course{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.table-course table thead tr th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
 }

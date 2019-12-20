@@ -4,18 +4,12 @@ import "./course.css";
 import {getCourse, getSemester, addNewCourse} from "../../api/course-api";
 import {notification} from "../../utils/noti";
 import ModelCustom from "../modal/modal";
-
+import Pagination from "../pagination/pagination";
+import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 
 export default class Course extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.selectSemester = this.selectSemester.bind(this);
-        this.selectSemesterInAdd = this.selectSemesterInAdd.bind(this);
-        this.handleGetSemester = this.handleGetSemester.bind(this);
-        this.handleGetCourseByIdSemester = this.handleGetCourseByIdSemester.bind(this);
-        this.handleAddNewCourse = this.handleAddNewCourse.bind(this);
-        this.getListCourseBySearchText = this.getListCourseBySearchText.bind(this);
 
         this.state = {
             courses: [],
@@ -31,29 +25,35 @@ export default class Course extends React.Component {
             checkChangeListCourse: false,
 
             textSearch: "",
-            checkSearch: false
+            checkSearch: false,
+
+            page_size: 20,
+            page_number: 1,
+            page_count: 1,
+            next_page: false,
+            change_page_size: false
 
         };
         this.delayTime = null;
     }
 
-    handleChange(e) {
+    handleChange = async (e) => {
         let nam = e.target.name;
         let val = e.target.value;
         this.setState({[nam]: val})
-    }
+    };
 
-    selectSemester(event) {
+    selectSemester = (event)  => {
         const idSems = event.target[event.target.selectedIndex].value;
         this.setState({idSemester: idSems, textSearch: ""});
-    }
+    };
 
-    selectSemesterInAdd(event) {
+    selectSemesterInAdd = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
         this.setState({idSemesterSelect: idSems});
-    }
+    };
 
-    async handleGetSemester() {
+    handleGetSemester = async () => {
         let res = await getSemester();
         if (res.success) {
             this.setState({
@@ -62,21 +62,9 @@ export default class Course extends React.Component {
         } else {
             console.log(res.message)
         }
-    }
-
-    handleGetCourseByIdSemester = async ()=>{
-        const {idSemester} = this.state;
-        const res = await getCourse(idSemester, "");
-        if (res.success) {
-            this.setState({
-                courses: res.data.courses
-            });
-        } else {
-            console.log(res.message)
-        }
     };
 
-    async handleAddNewCourse() {
+    handleAddNewCourse = async () => {
         const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
         if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
             let form_data = new FormData();
@@ -89,50 +77,106 @@ export default class Course extends React.Component {
             if (res.success) {
                 notification("success", "Thêm mới khóa học thành công");
                 this.setState({checkChangeListCourse: true})
-            } else
-            {
+            } else {
                 console.log(res.message)
             }
         } else {
             notification("warning", "Xin điền đủ thông tin ")
         }
-    }
+    };
 
-    getListCourseBySearchText() {
-        const {textSearch, idSemester} = this.state;
+    handleGetCourse = () => {
+        const {textSearch, idSemester, page_size, page_number} = this.state;
         clearTimeout(this.delayTime);
         this.delayTime = setTimeout(async () => {
-            const res = await getCourse(idSemester, textSearch);
+            const res = await getCourse({
+                text: textSearch,
+                id_semester: idSemester,
+                page_number: page_number - 1,
+                page_size: page_size
+            });
             if (res.success) {
                 this.setState({
-                    courses: res.data.courses
+                    courses: res.data.courses,
+                    page_number: 1,
+                    page_count: Math.ceil(res.data.count / page_size)
                 });
-                console.log(this.state.courses)
             } else {
                 console.log(res.message)
             }
         }, 500);
 
-    }
+    };
 
     componentDidMount() {
         this.handleGetSemester();
-        this.handleGetCourseByIdSemester();
+        this.handleGetCourse();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.idSemester !== prevState.idSemester) {
-            this.handleGetCourseByIdSemester();
+        if (this.state.idSemester !== prevState.idSemester || this.state.textSearch !== prevState.textSearch) {
+            this.handleGetCourse();
+        }
+        if (this.state.next_page) {
+            this.reloadWhenNextPage()
         }
         if (this.state.checkChangeListCourse) {
-            this.handleGetCourseByIdSemester();
+            this.handleGetCourse();
             this.setState({checkChangeListCourse: false})
         }
-        if (this.state.textSearch !== prevState.textSearch) {
-            this.getListCourseBySearchText();
+        if (this.state.change_page_size) {
+            this.reloadWhenChangePageSize();
         }
     }
+    changePageSize = (event) => {
+        this.setState({
+            page_size: event.target.value,
+            change_page_size: true,
+            page_number: 1
+        })
+    };
+    chosePage = (event) => {
+        this.setState({
+            page_number: Number(event.target.id),
+            next_page: true
+        });
+    };
+    reloadWhenNextPage = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: this.state.page_number - 1,
+            text: this.state.textSearch,
+            id_semester: this.state.idSemester
+        };
+        const response = await getCourse(query);
+        if (response.success) {
+            this.setState({
+                courses: response.data.courses,
+                next_page: false,
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
 
+    reloadWhenChangePageSize = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: 0,
+            text: this.state.textSearch,
+            id_semester: this.state.idSemester
+        };
+        const response = await getCourse(query);
+        if (response.success) {
+            this.setState({
+                courses: response.data.courses,
+                change_page_size: false,
+                page_count: Math.ceil(response.data.count / this.state.page_size)
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
     render() {
         return (
             <div className="course">
@@ -158,32 +202,36 @@ export default class Course extends React.Component {
                                 }
                             </select>
                         </div>
+                        <div className="header-items">
+                            <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
+                                    data-target="#modalAddNewCourse">
+                                <i className="fas fa-plus"/>
+                                Thêm mới khóa học
+                            </button>
+                        </div>
                     </div>
                     <div className="course-header-right">
-                        <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
-                                data-target="#modalAddNewCourse">
-                            <i className="fas fa-plus"/>
-                            Thêm mới khóa học
-                        </button>
+                        <Pagination changePageSize={this.changePageSize} page_size={this.state.page_size}/>
                     </div>
                 </div>
                 <div className="course-content">
-                    <table className="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã số khóa học</th>
-                            <th>Tên khóa học</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.courses.length === 0
-                                ?
-                                <tr key={0}>
-                                    <td colSpan={3}><i>Không có kết quả tìm tiếm nào phù hợp</i></td>
-                                </tr>
-                                :
+                    <div className="table-course">
+                        <table className="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã số khóa học</th>
+                                <th>Tên khóa học</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                this.state.courses.length === 0
+                                    ?
+                                    <tr key={0}>
+                                        <td colSpan={3}><i>Không có kết quả tìm tiếm nào phù hợp</i></td>
+                                    </tr>
+                                    :
 
                                     this.state.courses.map((e, index) => {
                                         return (
@@ -195,9 +243,10 @@ export default class Course extends React.Component {
                                         );
                                     })
 
-                        }
-                        </tbody>
-                    </table>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
                     <ModelCustom
                         idModal="modalAddNewCourse"
                         title="Thêm mới khóa học "
@@ -244,6 +293,10 @@ export default class Course extends React.Component {
                             </div>
                         }
                     />
+                </div>
+                <div className="course-bottom">
+                    <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
+                                      currentPage={this.state.page_number}/>
                 </div>
             </div>
         );

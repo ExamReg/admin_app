@@ -11,7 +11,6 @@
     width: 20%;
     top: 0;
     left: 0;
-    min-height: 100%;
     background-color: #f4f7fe;
     display: inline-block;
 }
@@ -19,4 +18,5 @@
 .content-right {
     display: inline-block;
     width: 80%;
+    height: 100%;
 }

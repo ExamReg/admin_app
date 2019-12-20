@@ -25,7 +25,7 @@ export default class MenuBar extends React.Component {
         return (
             <div className="list-menu panel-group">
                 <ul>
-                    <li onClick={() => {this.setState({check: "", show: false}); console.log(this.state)}}>
+                    <li onClick={() => {this.setState({check: "", show: false}); }}>
                         <NavLink
                             activeStyle={{
                                 backgroundColor: 'white',
@@ -39,7 +39,7 @@ export default class MenuBar extends React.Component {
                             <span>Quản lý khóa học</span>
                         </NavLink>
                     </li>
-                    <li >
+                    <li onClick={() => {this.setState({check: "", show: false});}}>
                         <NavLink
                             activeStyle={{
                                 backgroundColor: 'white',

@@ -70,7 +70,7 @@ class Header extends React.Component {
                     </div>
                 </div>
 
-                <ModalCustom idModelCustom="modalChangePassword"
+                <ModalCustom idModal="modalChangePassword"
                        title="Thay đổi mật khẩu "
                        brandButton="Chỉnh sửa "
                        acceptButton={

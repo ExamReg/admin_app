@@ -36,7 +36,12 @@ class Semester extends React.Component {
         let val = e.target.value;
         this.setState({[nam]: val})
     }
+    handleAddNewSemester = () =>{
 
+    }
+    handleEditSemester = () =>{
+
+    }
     componentDidMount() {
         this.handleGetSemester();
     }
@@ -45,7 +50,7 @@ class Semester extends React.Component {
         return (
             <div className="container-semester">
                 <div className="title">
-                    Quản lý danh sách khóa học
+                    Quản lý học kỳ
                 </div>
                 <div className="header-semester">
                     <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
