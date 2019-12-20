@@ -134,7 +134,11 @@ export default class Course extends React.Component {
     render() {
         return (
             <div className="course">
+                <div className="title">
+                    Quản lý danh sách khóa học
+                </div>
                 <div className="course-header">
+
                     <div className="course-header-left">
                         <div className="header-items">
                             <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "

@@ -44,6 +44,9 @@ class Semester extends React.Component {
     render() {
         return (
             <div className="container-semester">
+                <div className="title">
+                    Quản lý danh sách khóa học
+                </div>
                 <div className="header-semester">
                     <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
                             data-target="#modalAddNewSemester">
@@ -54,6 +57,7 @@ class Semester extends React.Component {
                 <table className="table table-bordered">
                     <thead>
                     <tr>
+                        <th>STT</th>
                         <th>Tên học kỳ</th>
                         <th className="style-center">Sửa</th>
                     </tr>
@@ -63,6 +67,7 @@ class Semester extends React.Component {
                         (this.state.semesters || []).map((e, index) => {
                             return (
                                 <tr key={index}>
+                                    <td>{index + 1}</td>
                                     <td>{e.value}</td>
                                     <td className="style-center">
                                         <button className="btn btn-primary" style={{padding: "2px 5px"}}

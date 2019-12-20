@@ -1,10 +1,11 @@
 import Student from "../student/student"
-import TabCourse from "../tabCourse/tabCourse";
-import Setting from "../setting/setting"
+import Course from "../course/course";
+import Room from "../room/room";
+import Semester from "../semester/semester";
 export const HOME_ROUTES = [
     {
         path: "/dashboard/course",
-        component: TabCourse
+        component: Course
     },
     {
         path: "/dashboard/student",
@@ -12,7 +13,11 @@ export const HOME_ROUTES = [
     }
     ,
     {
-        path:"/dashboard/setting",
-        component:Setting
+        path:"/dashboard/setting/room",
+        component:Room
+    },
+    {
+        path:"/dashboard/setting/semester",
+        component:Semester
     }
 ];
