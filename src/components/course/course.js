@@ -90,7 +90,9 @@ export default class Course extends React.Component {
                 notification("success", "Thêm mới khóa học thành công");
                 this.setState({checkChangeListCourse: true})
             } else
+            {
                 console.log(res.message)
+            }
         } else {
             notification("warning", "Xin điền đủ thông tin ")
         }

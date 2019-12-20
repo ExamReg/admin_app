@@ -77,11 +77,12 @@ export default class Student extends React.Component {
             let result = await getStudent({
                 text: this.state.text,
                 page_size: this.state.page_size,
-                page_number: this.state.page_number - 1
+                page_number: 0
             });
             if (result.success === true) {
                 this.setState({
                     students: result.data.students,
+                    page_number: 1,
                     page_count: Math.ceil(result.data.count / this.state.page_size)
                 })
             }
@@ -200,8 +201,8 @@ export default class Student extends React.Component {
                                 <th>MSSV</th>
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
-                                <th className="style-center">Chỉnh sửa</th>
-
+                                <th className="title-edit" colSpan="2"/>
+                                {/*<th className="style-center">Chỉnh sửa</th>*/}
                             </tr>
                             </thead>
                             <tbody>
