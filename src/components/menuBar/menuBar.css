@@ -12,8 +12,8 @@
         display: flex;
         align-items: center;
     }
-        .list-menu .nav-link span{
-            margin-left: 10px;
+        .list-menu .nav-link i{
+            width: 30px;
         }
     .list-menu ul {
         padding: 0;

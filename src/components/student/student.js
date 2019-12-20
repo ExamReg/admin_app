@@ -15,7 +15,11 @@ export default class Student extends React.Component {
             page_number: 1,
             page_count: 0,
             next_page: false,
-            change_page_size: false
+            change_page_size: false,
+
+            idStuEdit:"",
+            nameStudEdit:"",
+            birthStuEdit:""
         };
         this.delayTime = null;
     }
@@ -50,7 +54,14 @@ export default class Student extends React.Component {
             [e.target.name]: e.target.value
         });
     };
-
+    selectStudentEdit = (name, id, birthday) =>
+    {
+        this.setState({
+            idStuEdit:id,
+            nameStuEdit:name,
+            birthStuEdit: birthday
+        })
+    }
     handleTimeOut = () => {
         clearTimeout(this.delayTime);
         this.delayTime = setTimeout(async () => {
@@ -170,6 +181,7 @@ export default class Student extends React.Component {
                                         <button className="btn btn-primary" style={{padding: "2px 5px"}}
                                                 data-toggle="modal"
                                                 data-target="#modalEditStudent"
+                                                onClick={() => this.selectStudentEdit(e.id_student, e.name, e.birthday)}
                                         >
                                             <i className="fas fa-edit"> </i>
                                         </button>
@@ -212,18 +224,17 @@ export default class Student extends React.Component {
                                <div>
                                    <div className="form-group">
                                        <label>MSSV :</label>
-                                       <input type="text" className="form-control"/>
+                                       <input type="text" className="form-control" name="idStuEdit" onChange={this.handleChange} value={this.state.idStuEdit}/>
                                    </div>
                                    <div className="form-group">
                                        <label>Họ và tên :</label>
-                                       <input type="text" className="form-control"/>
+                                       <input type="text" className="form-control" name="nameStuEdit" onChange={this.handleChange} value={this.state.nameStuEdit}/>
                                    </div>
                                    <div className="form-group">
                                        <label>Ngày sinh :</label>
-                                       <input type="date" className="form-control"/>
+                                       <input type="date" className="form-control" name="birthStudEdit" onChange={this.handleChange} value={this.state.birthStuEdit}/>
                                    </div>
                                    <div className="form-group">
-
                                        <button className="btn btn-success">Reset password</button>
                                    </div>
 

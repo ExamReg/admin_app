@@ -36,6 +36,19 @@ export default class MenuBar extends React.Component {
                             <span>Quản lý sinh viên</span>
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink
+                            activeStyle={{
+                                backgroundColor: 'white',
+                                color: "#077bff"
+                            }}
+                            className="nav-link"
+                            to="/dashboard/setting"
+                        >
+                            <i className="fas fa-cog"></i>
+                            <span>Cài đặt </span>
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
         );
