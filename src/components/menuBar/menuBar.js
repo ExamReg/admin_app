@@ -39,7 +39,7 @@ export default class MenuBar extends React.Component {
                             <span>Quản lý khóa học</span>
                         </NavLink>
                     </li>
-                    <li >
+                    <li onClick={() => {this.setState({check: "", show: false}); console.log(this.state)}}>
                         <NavLink
                             activeStyle={{
                                 backgroundColor: 'white',
