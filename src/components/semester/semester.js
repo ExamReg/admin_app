@@ -36,7 +36,12 @@ class Semester extends React.Component {
         let val = e.target.value;
         this.setState({[nam]: val})
     }
+    handleAddNewSemester = () =>{
 
+    }
+    handleEditSemester = () =>{
+
+    }
     componentDidMount() {
         this.handleGetSemester();
     }

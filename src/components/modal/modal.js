@@ -25,7 +25,7 @@ class ModelCustom extends React.Component {
                                 <button type="button" className="btn btn-outline-dark btn-size"
                                         data-dismiss="modal">Hủy
                                 </button>
-                                <button type="button" data-dismiss="modal" className="btn btn-primary btn-size"
+                                <button type="button" data-dismiss="modal" className="btn btn-primary btn-size btn-space"
                                         onClick={this.props.acceptButton}>
                                     {this.props.brandButton}
                                 </button>
