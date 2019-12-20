@@ -4,7 +4,7 @@ import logo from "./icons/logo-uet.jpg";
 import "./header.css";
 import {getProfile} from "../../api/authentication-api";
 import {logOut} from "../../service/authen-service";
-import Modal from "../modal/modal";
+import ModalCustom from "../modal/modal";
 
 class Header extends React.Component {
     constructor(props) {
@@ -36,7 +36,9 @@ class Header extends React.Component {
     componentDidMount() {
         this.handleGetProfile();
     }
+    handleChangePassword = () => {
 
+    };
     render() {
         return (
             <div className="header">
@@ -49,18 +51,18 @@ class Header extends React.Component {
                         <button className="btn dropdown-toggle btn-primary btn-size" type="button"
                                 data-toggle="dropdown">
                             Chào mừng: {this.state.name} - <b>{this.state.username}</b>
-                            <span className="caret"></span>
+                            <span className="caret"/>
                         </button>
                         <ul className="dropdown-menu dropdown-menu-right">
                             <li className="btn-user btn-size" data-toggle="modal" data-target="#modalChangePassword">
                                 <div>
-                                    <i className="fas fa-user"></i>
+                                    <i className="fas fa-user"/>
                                     Thay đổi mật khẩu
                                 </div>
                             </li>
                             <li className="btn-logout btn-size" onClick={this.logOut}>
                                 <div>
-                                    <i className="fas fa-sign-out-alt"></i>
+                                    <i className="fas fa-sign-out-alt"/>
                                     Đăng xuất
                                 </div>
                             </li>
@@ -68,7 +70,7 @@ class Header extends React.Component {
                     </div>
                 </div>
 
-                <Modal idModal="modalChangePassword"
+                <ModalCustom idModelCustom="modalChangePassword"
                        title="Thay đổi mật khẩu "
                        brandButton="Chỉnh sửa "
                        acceptButton={

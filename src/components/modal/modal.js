@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import "./modal.css"
 
-class Modal extends React.Component {
+class ModelCustom extends React.Component {
     render() {
         return (
-            <div id={this.props.idModal} className="modal fade" role="dialog">
+            <div id={this.props.idModal} className="modal fade" role="dialog" show={this.props.show}>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -15,13 +16,20 @@ class Modal extends React.Component {
                             {this.props.childrenContent}
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-outline-dark btn-size"
-                                    data-dismiss="modal">Hủy
-                            </button>
-                            <button type="button" className="btn btn-primary btn-size"
-                                    onClick={this.props.acceptButton}>
-                                {this.props.brandButton}
-                            </button>
+                            <div className="modal-footer-left">
+                                {!this.props.buttonLeft ? null :
+                                    <button className="btn btn-success" onClick={this.props.buttonLeft}>Reset
+                                        password</button>}
+                            </div>
+                            <div className="modal-footer-right">
+                                <button type="button" className="btn btn-outline-dark btn-size"
+                                        data-dismiss="modal">Hủy
+                                </button>
+                                <button type="button" data-dismiss="modal" className="btn btn-primary btn-size"
+                                        onClick={this.props.acceptButton}>
+                                    {this.props.brandButton}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -32,13 +40,12 @@ class Modal extends React.Component {
     }
 }
 
-Modal.propTypes = {
+ModelCustom.propTypes = {
     idModal:PropTypes.string,
     title: PropTypes.string,
     brandButton: PropTypes.string,
     acceptButton: PropTypes.func.isRequired,
-    childrenContent: PropTypes.node,
-
+    childrenContent: PropTypes.node
 };
 
-export default Modal;
+export default ModelCustom;

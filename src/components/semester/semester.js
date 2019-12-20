@@ -1,7 +1,7 @@
 import React from "react"
 import "./semester.css"
 import {getSemester} from "../../api/course-api";
-import Modal from "../modal/modal";
+import ModelCustom from "../modal/modal";
 
 class Semester extends React.Component {
     constructor(props) {
@@ -80,7 +80,7 @@ class Semester extends React.Component {
                     </tbody>
                 </table>
 
-                <Modal idModal="modalAddNewSemester"
+                <ModelCustom idModal="modalAddNewSemester"
                        title="Thêm mới học kỳ "
                        brandButton="Thêm mới"
                        acceptButton={this.handleAddNewSemester}
@@ -93,7 +93,7 @@ class Semester extends React.Component {
                            </div>
                        }
                 />
-                <Modal idModal="modalEditSemester"
+                <ModelCustom idModal="modalEditSemester"
                        title="Chỉnh sửa học kỳ "
                        brandButton="Chỉnh sửa "
                        acceptButton={
