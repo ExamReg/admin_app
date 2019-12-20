@@ -3,11 +3,11 @@ import logo from "./icons/logo-uet.jpg";
 
 import "./header.css";
 import {getProfile} from "../../api/authentication-api";
+import {logOut} from "../../service/authen-service";
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
-        this.logOut = this.logOut.bind(this);
         this.handleGetProfile = this.handleGetProfile.bind(this);
 
         this.state = {
@@ -28,9 +28,8 @@ class Header extends React.Component {
         }
     }
 
-    logOut() {
-        localStorage.removeItem("token");
-        window.location.replace("/login");
+    logOut = () => {
+        logOut();
     };
 
     componentDidMount() {
