@@ -1,0 +1,13 @@
+.modal-footer{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.modal-footer-left{
+    display: flex;
+}
+
+.modal-footer-right{
+    display: flex;
+}

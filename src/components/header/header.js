@@ -3,11 +3,12 @@ import logo from "./icons/logo-uet.jpg";
 
 import "./header.css";
 import {getProfile} from "../../api/authentication-api";
+import {logOut} from "../../service/authen-service";
+import ModalCustom from "../modal/modal";
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
-        this.logOut = this.logOut.bind(this);
         this.handleGetProfile = this.handleGetProfile.bind(this);
 
         this.state = {
@@ -28,15 +29,16 @@ class Header extends React.Component {
         }
     }
 
-    logOut() {
-        localStorage.removeItem("token");
-        window.location.replace("/login");
+    logOut = () => {
+        logOut();
     };
 
     componentDidMount() {
         this.handleGetProfile();
     }
+    handleChangePassword = () => {
 
+    };
     render() {
         return (
             <div className="header">
@@ -49,55 +51,48 @@ class Header extends React.Component {
                         <button className="btn dropdown-toggle btn-primary btn-size" type="button"
                                 data-toggle="dropdown">
                             Chào mừng: {this.state.name} - <b>{this.state.username}</b>
-                            <span className="caret"></span>
+                            <span className="caret"/>
                         </button>
                         <ul className="dropdown-menu dropdown-menu-right">
                             <li className="btn-user btn-size" data-toggle="modal" data-target="#modalChangePassword">
                                 <div>
-                                    <i className="fas fa-user"></i>
+                                    <i className="fas fa-user"/>
                                     Thay đổi mật khẩu
                                 </div>
                             </li>
                             <li className="btn-logout btn-size" onClick={this.logOut}>
                                 <div>
-                                    <i className="fas fa-sign-out-alt"></i>
+                                    <i className="fas fa-sign-out-alt"/>
                                     Đăng xuất
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div id="modalChangePassword" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Thay đổi mật khẩu </h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Mật khẩu cũ :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Mật khẩu mới :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Nhập lại mật khẩu :</label>
-                                    <input type="password" className="form-control"/>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-dark btn-size"
-                                        data-dismiss="modal">Hủy
-                                </button>
-                                <button type="button" className="btn btn-primary btn-size">Thay đổi</button>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
+                <ModalCustom idModelCustom="modalChangePassword"
+                       title="Thay đổi mật khẩu "
+                       brandButton="Chỉnh sửa "
+                       acceptButton={
+                           this.handleChangePassword
+                       }
+                       childrenContent={
+                           <div>
+                               <div className="form-group">
+                                   <label>Mật khẩu cũ :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                               <div className="form-group">
+                                   <label>Mật khẩu mới :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                               <div className="form-group">
+                                   <label>Nhập lại mật khẩu :</label>
+                                   <input type="password" className="form-control"/>
+                               </div>
+                           </div>
+                       }
+                />
             </div>
 
         );

@@ -55,3 +55,4 @@ export function sendPostRequestWithoutToken(route, payload) {
     let url = `${URL_BASE}${route}`;
     return axios.post(url, payload).then(handleResult);
 }
+

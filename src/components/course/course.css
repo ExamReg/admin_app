@@ -1,14 +1,13 @@
 /*COURSE CSS */
 .course{
-    margin: 15px 0px;
+    margin: 15px 15px;
     font-size: 14px;
 }
-/*
 .course .title{
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
-}*/
+}
 /*HEADER*/
 
 .course-header{
@@ -27,7 +26,7 @@
 .course-header .header-items {
     display: flex;
     align-items: center;
-    margin:0px 20px 10px 0px;
+    margin:0px 0px 10px 0px;
 }
 .course-header .header-items .input-find{
     border-radius: 3px;

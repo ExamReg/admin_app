@@ -11,9 +11,23 @@
         color: black;
         display: flex;
         align-items: center;
+        border:none;
+
     }
-        .list-menu .nav-link span{
-            margin-left: 10px;
+        .list-menu .nav-link i{
+            width: 30px;
+        }
+        .list-menu .nav-link.set-tab{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-menu .nav-link.child-tab {
+            background-color: #e8eefd;
+        }
+        .list-menu .nav-link.child-tab i{
+            width: 30px;
+            padding-left: 10px;
         }
     .list-menu ul {
         padding: 0;

@@ -1,9 +1,10 @@
 import React from 'react'
 import './student.css'
-import {getStudent} from "../../api/student-api";
-import Modal from "../modal/modal";
+import {getStudent, importStudent, resetPasswordOfStudent, updateStudent} from "../../api/student-api";
 import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
+import ModelCustom from "../modal/modal";
+import {notification} from "../../utils/noti";
 
 export default class Student extends React.Component {
     constructor(props) {
@@ -11,12 +12,16 @@ export default class Student extends React.Component {
         this.state = {
             students: [],
             text: "",
-            show: false,
             page_size: 20,
             page_number: 1,
             page_count: 0,
             next_page: false,
-            change_page_size: false
+            change_page_size: false,
+            fileStudents: "",
+            oldIdStu: "",
+            idStuEdit:"",
+            nameStudEdit:"",
+            birthStuEdit:""
         };
         this.delayTime = null;
     }
@@ -36,23 +41,37 @@ export default class Student extends React.Component {
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.text !== this.state.text) {
-            this.handleTimeOut();
+            this.handleTimeOut(500);
         }
-        if(this.state.next_page){
+        if (this.state.next_page) {
             this.reloadWhenNextPage()
         }
-        if(this.state.change_page_size){
+        if (this.state.change_page_size) {
             this.reloadWhenChangePageSize();
         }
     }
 
     handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
+        if(e.target.name === "fileStudents"){
+            this.setState({
+                [e.target.name]: e.target.files[0]
+            });
+        }else{
+            this.setState({
+                [e.target.name]: e.target.value
+            });
+        }
     };
-
-    handleTimeOut = () => {
+    selectStudentEdit = (name, id, birthday) =>
+    {
+        this.setState({
+            oldIdStu: id,
+            idStuEdit:id,
+            nameStudEdit:name,
+            birthStuEdit: birthday
+        })
+    };
+    handleTimeOut = (timeDelay) => {
         clearTimeout(this.delayTime);
         this.delayTime = setTimeout(async () => {
             let result = await getStudent({
@@ -67,14 +86,9 @@ export default class Student extends React.Component {
                     page_count: Math.ceil(result.data.count / this.state.page_size)
                 })
             }
-        }, 1000);
+        }, timeDelay);
     };
 
-    openModal = () => {
-        this.setState({
-            show: true
-        })
-    };
     changePageSize = (event) => {
         this.setState({
             page_size: event.target.value,
@@ -82,7 +96,7 @@ export default class Student extends React.Component {
             page_number: 1
         })
     };
-    chosePage = (event) =>{
+    chosePage = (event) => {
         this.setState({
             page_number: Number(event.target.id),
             next_page: true
@@ -122,6 +136,40 @@ export default class Student extends React.Component {
             console.log(response.message);
         }
     };
+    editStudent = async () => {
+        if(!this.state.idStuEdit || !this.state.nameStudEdit || !this.state.birthStuEdit){
+            notification("warning", "Vui lòng điền đầy đủ thông tin.")
+        }else{
+            let payload = {
+                id_student: this.state.idStuEdit,
+                name: this.state.nameStudEdit,
+                birthday: this.state.birthStuEdit
+            };
+            let result = await updateStudent(this.state.oldIdStu, payload);
+            result.success === true ? notification("success", "Cập nhật thông tin sinh viên thành công.")
+                : notification("error", result.message);
+            this.handleTimeOut(10);
+        }
+    };
+    addNewStudent = async () => {
+        if(!this.state.fileStudents){
+            notification("warning", "Vui lòng điền đầy đủ thông tin.")
+        }else{
+            console.log(this.state.fileStudents);
+            let form_data = new FormData();
+            form_data.append("file_import", this.state.fileStudents);
+            let result = await importStudent(form_data);
+            result.success === true ? notification("success", "Import success") : notification("error", result.message);
+            this.setState({
+                fileStudents: null
+            });
+            this.handleTimeOut(100);
+        }
+    };
+    resetPassword = async () => {
+        let result = await resetPasswordOfStudent(this.state.idStuEdit);
+        result.success === true ? notification("success", "Reset mật khẩu thành công. ") : notification("error", result.message);
+    };
     render() {
         return (
             <div className="student">
@@ -133,7 +181,8 @@ export default class Student extends React.Component {
                                    onChange={this.handleChange} name="text"/>
                         </div>
                         <div className="student-input">
-                            <button className="btn btn-primary btn-size" data-toggle="modal" data-target="#modalAddNewStudent">
+                            <button className="btn btn-primary btn-size" data-toggle="modal"
+                                    data-target="#modalAddNewStudent">
                                 <i className="fas fa-plus"/>
                                 Thêm mới học sinh
                             </button>
@@ -153,66 +202,82 @@ export default class Student extends React.Component {
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
                                 <th className="title-edit" colSpan="2"/>
-                                
+                                {/*<th className="style-center">Chỉnh sửa</th>*/}
                             </tr>
                             </thead>
                             <tbody>
-                            {(this.state.students || []).map((e, index) => {
+
+                            {
+                                this.state.students.length === 0
+                                    ?
+                                    <tr key={0}>
+                                        <td colSpan={4}><i>Không có kết quả tìm tiếm nào phù hợp</i></td>
+                                    </tr>
+                                    :
+                                (this.state.students || []).map((e, index) => {
                                 return <tr key={e.id_student}>
                                     <td>{++index}</td>
                                     <td>{e.id_student}</td>
                                     <td>{e.name}</td>
                                     <td>{e.birthday}</td>
-                                    <td>
-                                        <button type="button" className="btn btn-secondary" data-toggle="modal" data-target="#modalAddNewStudent">Chỉnh sửa</button>
-                                        
-                                    </td>
-                                    <td>
-                                        <button type="button" className="btn btn-danger">Quên mật khẩu</button>
+                                    <td className="style-center">
+                                        <button className="btn btn-primary" style={{padding: "2px 5px"}}
+                                                data-toggle="modal"
+                                                data-target="#modalEditStudent"
+                                                onClick={() => this.selectStudentEdit(e.name, e.id_student, e.birthday)}
+                                        >
+                                            <i className="fas fa-edit"> </i>
+                                        </button>
+
                                     </td>
                                 </tr>
                             })}
                             </tbody>
                         </table>
                     </div>
-                    <div id="modalAddNewStudent" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Thêm sinh viên </h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>MSSV :</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Họ và tên :</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Ngày sinh :</label>
-                                    <input type="date" className="form-control"/>
-                                </div>
-                                
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-dark btn-size"
-                                        data-dismiss="modal">Hủy
-                                </button>
-                                <button type="button" className="btn btn-primary btn-size">Thêm mới</button>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-                    <Modal title="Test" onClose={() => {
-                        this.setState({show: false})
-                    }} show={this.state.show} addNew={() => {
-                        console.log("add new")
-                    }}/>
-                    <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count} currentPage={this.state.page_number}/>
+                    <ModelCustom
+                        idModal="modalAddNewStudent"
+                        title="Thêm mới học sinh "
+                        acceptButton={this.addNewStudent}
+                        brandButton="Thêm mới "
+                        childrenContent={
+                            <div>
+                                <div className="form-group">
+                                    <label>Danh sách sinh viên:</label>
+                                    <input type="file" className="form-control-file border" name="fileStudents"
+                                           onChange={this.handleChange}/>
+                                           <br/>
+                                    <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
+                                </div>
+                            </div>
+                        }
+                    />
+                    <ModelCustom
+                           idModal= "modalEditStudent"
+                           title="Chỉnh sửa thông tin học sinh "
+                           brandButton="Chỉnh sửa"
+                           acceptButton={this.editStudent}
+                           buttonLeft={this.resetPassword}
+                           childrenContent={
+                               <div>
+                                   <div className="form-group">
+                                       <label>MSSV :</label>
+                                       <input type="text" className="form-control" name="idStuEdit" onChange={this.handleChange} value={this.state.idStuEdit}/>
+                                   </div>
+                                   <div className="form-group">
+                                       <label>Họ và tên :</label>
+                                       <input type="text" className="form-control" name="nameStudEdit" onChange={this.handleChange} value={this.state.nameStudEdit}/>
+                                   </div>
+                                   <div className="form-group">
+                                       <label>Ngày sinh :</label>
+                                       <input type="text" className="form-control" name="birthStuEdit" onChange={this.handleChange} value={this.state.birthStuEdit}/>
+                                   </div>
+                               </div>
+                           }
+                           />
+                    <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
+                                      currentPage={this.state.page_number}/>
                 </div>
             </div>
         )

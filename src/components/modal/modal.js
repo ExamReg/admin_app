@@ -1,59 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import "./style.css"
+import "./modal.css"
 
-class Modal extends React.Component {
+class ModelCustom extends React.Component {
     render() {
-        if(!this.props.show) {
-            return null;
-        }
-
         return (
-            <div className="backdrop">
-                <div className="modal">
-
-
-                    <div className="modal-header">
-                        <h2 className="modal-title">{this.props.title}</h2>
-                        <button className="btn-close" onClick={this.props.onClose}>
-                            x
-                        </button>
-                    </div>
-
-
+            <div id={this.props.idModal} className="modal fade" role="dialog" show={this.props.show}>
+                <div className="modal-dialog">
                     <div className="modal-content">
-                        {this.props.childrenContent}
-                    </div>
-
-
-                    <div className="modal-help">
-                        {this.props.childrenHelp}
-                    </div>
-
-                    <div className="modal-footer">
-                        <div className="footer-group">
-                            <button className="btn-modal cancel" onClick={this.props.onClose}>
-                                Hủy bỏ
-                            </button>
-                            <button className="btn-modal confirm" onClick={this.props.addNew}>
-                                {this.props.brandButton}
-                            </button>
+                        <div className="modal-header">
+                            <h4 className="modal-title">{this.props.title}</h4>
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div className="modal-body">
+                            {this.props.childrenContent}
+                        </div>
+                        <div className="modal-footer">
+                            <div className="modal-footer-left">
+                                {!this.props.buttonLeft ? null :
+                                    <button className="btn btn-success" onClick={this.props.buttonLeft}>Reset
+                                        password</button>}
+                            </div>
+                            <div className="modal-footer-right">
+                                <button type="button" className="btn btn-outline-dark btn-size"
+                                        data-dismiss="modal">Hủy
+                                </button>
+                                <button type="button" data-dismiss="modal" className="btn btn-primary btn-size"
+                                        onClick={this.props.acceptButton}>
+                                    {this.props.brandButton}
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+
         );
     }
 }
 
-Modal.propTypes = {
+ModelCustom.propTypes = {
+    idModal:PropTypes.string,
     title: PropTypes.string,
     brandButton: PropTypes.string,
-    onClose: PropTypes.func.isRequired,
-    addNew:PropTypes.func.isRequired,
-    show: PropTypes.bool,
-    childrenContent: PropTypes.node,
-    childrenHelp: PropTypes.node
+    acceptButton: PropTypes.func.isRequired,
+    childrenContent: PropTypes.node
 };
 
-export default Modal;
+export default ModelCustom;
