@@ -40,4 +40,22 @@
     margin: 10px 0px;
 }
 
+.student .tbl-student{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.student .tbl-student table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}
+
+.table-bordered th, .table-bordered td {
+     border: none;
+}
+
+
 
