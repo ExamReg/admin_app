@@ -53,6 +53,13 @@
     background-color: white;
 }
 
-
-
+.table-bordered {
+     border: none;
+}
+.table th, .table td {
+    border: none;
+}
+.table thead th {
+    border-bottom: none;
+}
 

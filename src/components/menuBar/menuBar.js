@@ -13,7 +13,7 @@ export default class MenuBar extends React.Component {
     }
 
     componentDidMount() {
-        if(window.location.pathname === "/dashboard/course" || window.location.pathname === "/dashboard/student"){
+        if(window.location.pathname === "/dashboard/courses" || window.location.pathname === "/dashboard/student"){
             this.setState({
                 show: false,
                 check: ""
@@ -60,7 +60,7 @@ export default class MenuBar extends React.Component {
                             to="/dashboard/setting"
 
                             data-toggle="collapse" data-target="#demo"
-                            onClick={() => {let showState = this.state.show; let stateCheck = this.state.check === "" ? "show" : ""; this.setState({show: !showState, check: stateCheck});console.log(this.state);}}
+                            onClick={() => {let showState = this.state.show; let stateCheck = this.state.check === "" ? "show" : ""; this.setState({show: !showState, check: stateCheck});}}
                         >
                             <div>
                                 <i className="fas fa-cog"></i>

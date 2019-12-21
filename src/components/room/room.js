@@ -51,7 +51,10 @@ class Room extends  React.Component{
                 this.setState({
                     nameRoom:"",
                     numberSeat:"",
-                    changeRooms:true
+                    changeRooms:true,
+
+                    nameRoomEdit:"",
+                    numberSeatEdit:"",
                 })
                 notification("success", "Tạo mới khóa học thành công ")
             } else

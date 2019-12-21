@@ -1,13 +1,14 @@
 import React from "react";
 
-import "./course.css";
+import "./listCourse.css";
 import {getCourse, getSemester, addNewCourse} from "../../api/course-api";
 import {notification} from "../../utils/noti";
 import ModelCustom from "../modal/modal";
 import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
+import {redirect_to} from "../../utils/redirector";
 
-export default class Course extends React.Component {
+export default class ListCourse extends React.Component {
     constructor(props) {
         super(props);
 
@@ -50,6 +51,7 @@ export default class Course extends React.Component {
 
     selectSemesterInAdd = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
+        console.log(idSems)
         this.setState({idSemesterSelect: idSems});
     };
 
@@ -68,17 +70,25 @@ export default class Course extends React.Component {
         const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
         if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
             let form_data = new FormData();
-            form_data.append("semester", idSemesterSelect);
+            form_data.append("id_semester", idSemesterSelect);
             form_data.append("course_name", nameCourse);
             form_data.append("id_course", idCourse);
             form_data.append("file_import", fileCourse);
             form_data.append("class_number", idClassCourse);
             const res = await addNewCourse(form_data);
+            console.log(form_data)
             if (res.success) {
                 notification("success", "Thêm mới khóa học thành công");
-                this.setState({checkChangeListCourse: true})
+                this.setState({
+                    checkChangeListCourse: true,
+                    nameCourse: "",
+                    idCourse: "",
+                    fileCourse: "",
+                    idClassCourse: "",
+                    idSemesterSelect: ""
+                })
             } else {
-                console.log(res.message)
+                notification("error", res.message);
             }
         } else {
             notification("warning", "Xin điền đủ thông tin ")
@@ -177,15 +187,19 @@ export default class Course extends React.Component {
             console.log(response.message);
         }
     };
+
+    settingCourse = (id_course) => {
+        redirect_to(`/dashboard/courses/setting?id_course=${id_course}`)
+    };
     render() {
         return (
-            <div className="course">
+            <div className="list-course">
                 <div className="title">
                     Quản lý danh sách khóa học
                 </div>
-                <div className="course-header">
+                <div className="list-course-header">
 
-                    <div className="course-header-left">
+                    <div className="list-course-header-left">
                         <div className="header-items">
                             <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "
                                    name="textSearch" onChange={this.handleChange} value={this.state.textSearch}/>
@@ -196,32 +210,33 @@ export default class Course extends React.Component {
                                 {
                                     this.state.semesters.map((e, index) => {
                                         return (
-                                            <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                            <option key={e.id_semester} value={e.id_semester} name={e.value}>{e.value}</option>
                                         );
                                     })
                                 }
                             </select>
                         </div>
                         <div className="header-items">
-                            <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
+                            <button type="button" className="btn btn-primary btn-size" data-toggle="modal"
                                     data-target="#modalAddNewCourse">
                                 <i className="fas fa-plus"/>
                                 Thêm mới khóa học
                             </button>
                         </div>
                     </div>
-                    <div className="course-header-right">
+                    <div className="list-course-header-right">
                         <Pagination changePageSize={this.changePageSize} page_size={this.state.page_size}/>
                     </div>
                 </div>
-                <div className="course-content">
-                    <div className="table-course">
+                <div className="list-course-content">
+                    <div className="table-list-course">
                         <table className="table table-bordered">
                             <thead>
                             <tr>
                                 <th>STT</th>
                                 <th>Mã số khóa học</th>
                                 <th>Tên khóa học</th>
+                                {/*<th>Action</th>*/}
                             </tr>
                             </thead>
                             <tbody>
@@ -239,6 +254,7 @@ export default class Course extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
+                                                <td><button  type="button" className="btn btn-primary" onClick={() => {this.settingCourse(e.id_course)}}>Setting</button></td>
                                             </tr>
                                         );
                                     })
@@ -294,7 +310,7 @@ export default class Course extends React.Component {
                         }
                     />
                 </div>
-                <div className="course-bottom">
+                <div className="list-course-bottom">
                     <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
                                       currentPage={this.state.page_number}/>
                 </div>
