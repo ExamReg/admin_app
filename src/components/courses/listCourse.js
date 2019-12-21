@@ -8,6 +8,7 @@ import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 import {redirect_to} from "../../utils/redirector";
 
+
 export default class ListCourse extends React.Component {
     constructor(props) {
         super(props);
@@ -39,9 +40,15 @@ export default class ListCourse extends React.Component {
     }
 
     handleChange = async (e) => {
-        let nam = e.target.name;
-        let val = e.target.value;
-        this.setState({[nam]: val})
+        if(e.target.name === "fileCourse"){
+            this.setState({
+                [e.target.name]: e.target.files[0]
+            });
+        }else{
+            this.setState({
+                [e.target.name]: e.target.value
+            });
+        }
     };
 
     selectSemester = (event)  => {
@@ -76,7 +83,7 @@ export default class ListCourse extends React.Component {
             form_data.append("file_import", fileCourse);
             form_data.append("class_number", idClassCourse);
             const res = await addNewCourse(form_data);
-            console.log(form_data)
+            console.log(form_data);
             if (res.success) {
                 notification("success", "Thêm mới khóa học thành công");
                 this.setState({
@@ -236,7 +243,7 @@ export default class ListCourse extends React.Component {
                                 <th>STT</th>
                                 <th>Mã số khóa học</th>
                                 <th>Tên khóa học</th>
-                                {/*<th>Action</th>*/}
+                                <th>Chi tiết </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -254,7 +261,7 @@ export default class ListCourse extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
-                                                <td><button  type="button" className="btn btn-primary" onClick={() => {this.settingCourse(e.id_course)}}>Setting</button></td>
+                                                <td><button  type="button" className="btn btn-success" onClick={() => {this.settingCourse(e.id_cs)}}><i className="fas fa-cog btn-space-right"></i>Cài đặt </button></td>
                                             </tr>
                                         );
                                     })
@@ -284,6 +291,7 @@ export default class ListCourse extends React.Component {
                                     <label>Tệp danh sách khóa học:</label>
                                     <input type="file" className="form-control-file border" name="fileCourse"
                                            onChange={this.handleChange}/>
+                                    <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
                                 </div>
                                 <div className="form-group">
                                     <label>Mã số lớp học:</label>

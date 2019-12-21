@@ -32,7 +32,7 @@ export default class MenuBar extends React.Component {
                                 color: "#077bff"
                             }}
                             className="nav-link"
-                            to="/dashboard/course"
+                            to="/dashboard/courses"
                             data-parent="#panelparent"
                         >
                             <i className="fas fa-home"></i>
