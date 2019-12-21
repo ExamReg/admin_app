@@ -1,7 +1,10 @@
 import { sendGetRequestRoute1, sendPostRequest, sendPutRequest } from "./api-send";
 
-export function getListRoom() {
-    let route = "/rooms";
+export function getListRoom(maximum_seating) {
+    let route = `/rooms`;
+    if(maximum_seating){
+        route += `?maximum_seating=${maximum_seating}`
+    }
     return sendGetRequestRoute1(route);
 }
 export function addNewRoom(data) {

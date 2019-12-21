@@ -10,7 +10,7 @@ import {notification} from "../../utils/noti";
 import {getListRoom} from "../../api/room-api";
 
 
-class Exam extends React.Component{
+class Exam extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,25 +18,25 @@ class Exam extends React.Component{
             endDate: "",
             data: null,
 
-            semesters:[],
-            idSemester:"1",
-            textSearch:"",
+            semesters: [],
+            idSemester: "",
+            textSearch: "",
+            exams: [],
+            checkChangeExams: false,
+            dateAdd: "",
 
-            exams:[],
-            checkChangeExams:false,
-
-            dateAdd:"",
-            totalStudentAdd:"",
-            timeStartAdd:"",
-            timeEndAdd:"",
-            idCourseAdd:"",
-            idRoomAdd:"",
-
-            courses:[],
-            rooms:[]
+            totalStudentAdd: "",
+            timeStartAdd: "",
+            timeEndAdd: "",
+            idCourseAdd: "",
+            idRoomAdd: "",
+            idSemesterAdd: "",
+            courses: [],
+            rooms: []
 
         }
     }
+
     handleChange = e => {
         if (e.target.name === "fileStudents") {
             this.setState({
@@ -49,10 +49,12 @@ class Exam extends React.Component{
         }
     };
     handleChangeDate = (date, column_state) => {
-        const valueOfInput = moment(date).format("YYYY/MM/DD");
-        this.setState({[column_state]: valueOfInput})
+        const valueOfInput = moment(date).valueOf();
+        this.setState({
+            [column_state]: valueOfInput
+        });
     };
-    selectSemester = (event)  => {
+    selectSemester = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
         this.setState({idSemester: idSems, textSearch: ""});
     };
@@ -60,75 +62,70 @@ class Exam extends React.Component{
         const idcs = event.target[event.target.selectedIndex].value;
         this.setState({idCourseAdd: idcs});
     };
-    selectRoomInAdd = (event) =>{
+    selectRoomInAdd = (event) => {
         const idroom = event.target[event.target.selectedIndex].value;
         this.setState({idRoomAdd: idroom});
-    }
+    };
     handleGetSemester = async () => {
         let res = await getSemester();
         if (res.success) {
+            let result = await getCourse({id_semester: res.data.semesters[0].id_semester, page_size: 10000});
             this.setState({
-                semesters: res.data.semesters
+                semesters: res.data.semesters,
+                idSemester: res.data.semesters[0].id_semester,
+                courses: result.data.courses
             });
         } else {
             console.log(res.message)
         }
     };
-    handleGetCourse = async () =>{
+    handleGetCourse = async () => {
         let query = {
             page_size: 10000,
             page_number: 0,
-            id_semester: this.state.idSemester
+            id_semester: this.state.idSemesterAdd
         };
         const res = await getCourse(query);
 
-        if(res.success)
-        {
-            this.setState({courses:res.data.courses})
-        }
-        else {
+        if (res.success) {
+            this.setState({courses: res.data.courses})
+        } else {
             notification("error", res.message)
         }
-    }
-    handleGetRooms = async () =>{
-        const res = await getListRoom();
-        if(res.success)
-        {
+    };
+    handleGetRooms = async () => {
+        const res = await getListRoom(this.state.totalStudentAdd);
+        if (res.success) {
             this.setState({rooms: res.data.rooms})
         }
-    }
-    handleGetExams = async () =>{
+    };
+    handleGetExams = async () => {
         const {idSemester} = this.state;
-        const res = await getExams(idSemester, "")
-        if(res.success)
-        {
+        const res = await getExams(idSemester, "");
+        if (res.success) {
             this.setState({exams: res.data.exams})
-        }
-        else
+        } else
             notification("error", res.message);
     };
-    handleGetExamByTextSeach = async () =>{
+    handleGetExamByTextSeach = async () => {
         const {idSemester, textSearch} = this.state;
         const res = await getExams(idSemester, textSearch);
-        if(res.success)
-        {
+        if (res.success) {
             this.setState({exams: res.data.exams})
-        }
-        else
+        } else
             notification("error", res.message);
     };
-    addNewExam = async () =>{
+    addNewExam = async () => {
         const {idCourseAdd, dateAdd, timeStartAdd, timeEndAdd, idRoomAdd, totalStudentAdd} = this.state;
-        if(idCourseAdd && dateAdd && timeStartAdd && timeEndAdd && totalStudentAdd && idRoomAdd)
-        {
-            let data= {
-                id_cs:idCourseAdd,
+        if (idCourseAdd && dateAdd && timeStartAdd && timeEndAdd && totalStudentAdd && idRoomAdd) {
+            let data = {
+                id_cs: idCourseAdd,
                 time_start: timeStartAdd,
                 time_end: timeEndAdd,
                 date: dateAdd,
                 id_room: idRoomAdd,
                 maximum_seating: totalStudentAdd
-            }
+            };
             console.log(data)
             /*const res = await addNewExam(data)*/
 
@@ -141,32 +138,47 @@ class Exam extends React.Component{
             else {
                 notification("error", res.message);
             }*/
-        }
-        else {
+        } else {
             notification("warning", "Xin điền đủ thông tin ");
         }
-    }
+    };
+
     componentDidMount() {
         this.handleGetSemester();
         this.handleGetExams();
-        this.handleGetCourse();
+        // this.handleGetCourse();
         this.handleGetRooms();
     }
+
+    changeCourseSemesterWhenAdd = async (e) => {
+        const idSemesterAdd = e.target[e.target.selectedIndex].value;
+        this.setState({idSemesterAdd: idSemesterAdd});
+    };
+
+    changeRoomsWhenAdd = async (e) => {
+        const maximum_seating = e.target.value;
+        this.setState({totalStudentAdd: maximum_seating});
+    };
+
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.textSearch !== prevState.textSearch)
-        {
-            this.handleGetExamByTextSeach();
-        }
-        if(this.state.idSemester !== prevState.idSemester)
-        {
+        // if(this.state.textSearch !== prevState.textSearch)
+        // {
+        //     this.handleGetExamByTextSeach();
+        // }
+        if (this.state.idSemester !== prevState.idSemester && this.state.semesters.length !== prevState.semesters.length) {
             this.handleGetExams();
-            this.handleGetCourse();
         }
-        if(this.state.checkChangeExams)
-        {
-            this.handleGetExams();
-            this.setState({checkChangeExams:false})
+        if (this.state.idSemesterAdd !== prevState.idSemesterAdd) {
+            this.handleGetCourse()
         }
+        if(this.state.totalStudentAdd !== prevState.totalStudentAdd){
+            this.handleGetRooms()
+        }
+        // if(this.state.checkChangeExams)
+        // {
+        //     this.handleGetExams();
+        //     this.setState({checkChangeExams:false})
+        // }
     }
 
     render() {
@@ -180,16 +192,21 @@ class Exam extends React.Component{
                         <div className="header-items">
                             <label>Tìm kiếm </label>
                             <input className="input-find" type="text" placeholder="Nhập tên mã/môn thi "
-                            name="textSearch" onChange={this.handleChange} value={this.state.textSearch}
+                                   name="textSearch" onChange={this.handleChange} value={this.state.textSearch}
                             />
                         </div>
                         <div className="header-items">
                             <label>Học kỳ </label>
-                            <select className="select-item" onChange={this.selectSemester}>
+                            <select className="select-item"
+                                    onChange={this.selectSemester} name=""
+                            >
                                 {
                                     this.state.semesters.map((e, index) => {
                                         return (
-                                            <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                            <option key={e.id_semester}
+                                                    selected={e.id_semester === this.state.idSemester ? "selected" : ""}
+                                                    value={e.id_semester}>{e.value}
+                                            </option>
                                         );
                                     })
                                 }
@@ -197,18 +214,31 @@ class Exam extends React.Component{
                         </div>
                         <div className="header-items">
                             <label>Từ: &nbsp;</label>
-                            <DatePickerCustom startDate={this.state.startDate} handleChangeDate={this.handleChangeDate} name={"startDate"}/>
+                            <DatePickerCustom
+                                startDate={this.state.startDate}
+                                handleChangeDate={this.handleChangeDate}
+                                name={"startDate"}
+                                dateFormat="Y/M/d hh:mm"
+                                timeFormat="HH:mm"
+                            />
                         </div>
                         <div className="header-items">
                             <label>Đến: &nbsp;</label>
-                            <DatePickerCustom endDate={this.state.endDate} handleChangeDate={this.handleChangeDate} name={"endDate"}/>
+                            <DatePickerCustom
+                                endDate={this.state.endDate}
+                                handleChangeDate={this.handleChangeDate}
+                                name={"endDate"}
+                                dateFormat="Y/M/d hh:mm"
+                                timeFormat="HH:mm"
+                            />
+
                         </div>
                     </div>
                     <div className="exam-header-right">
                         <div className="header-items btn-flex-right">
                             <button className="btn btn-primary btn-size " data-toggle="modal"
                                     data-target="#modalAddNewExam">
-                                <i className="fas fa-plus"></i>
+                                <i className="fas fa-plus"/>
                                 Thêm mới ca thi
                             </button>
                         </div>
@@ -219,23 +249,23 @@ class Exam extends React.Component{
                     <div className="tbl-exam">
                         <table className="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên môn thi </th>
-                                    <th>Mã môn thi </th>
-                                    <th>Ngày thi </th>
-                                    <th>Giờ thi </th>
-                                    <th>Phòng thi </th>
-                                    <th>Tổng SV </th>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên môn thi</th>
+                                <th>Mã môn thi</th>
+                                <th>Ngày thi</th>
+                                <th>Giờ thi</th>
+                                <th>Phòng thi</th>
+                                <th>Tổng SV</th>
 
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody>
                             {
-                                (this.state.exams || []).map((e, index) =>{
+                                (this.state.exams || []).map((e, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td>{index+ 1}</td>
+                                            <td>{index + 1}</td>
                                             <td>{e.course_name}</td>
                                             <td>{e.id_course}</td>
                                             <td>{e.date}</td>
@@ -262,6 +292,27 @@ class Exam extends React.Component{
                              childrenContent={
                                  <div>
                                      <div className="form-group">
+                                         <label>Kỳ học:</label>
+                                         <div className="dropdown">
+                                             <select className="select-item-form"
+                                                     onChange={this.changeCourseSemesterWhenAdd}>
+                                                 <option key="" value="">---</option>
+                                                 {
+                                                     this.state.semesters.map((e, index) => {
+                                                         return (
+                                                             <option
+                                                                 key={e.id_semester}
+                                                                 value={e.id_semester}
+                                                                 // selected={e.id_semester === this.state.idSemester ? "selected" : ""}
+                                                             >{e.value}
+                                                             </option>
+                                                         );
+                                                     })
+                                                 }
+                                             </select>
+                                         </div>
+                                     </div>
+                                     <div className="form-group">
                                          <label>Môn học:</label>
                                          <div className="dropdown">
                                              <select className="select-item-form" onChange={this.selectCourseInAdd}>
@@ -278,18 +329,34 @@ class Exam extends React.Component{
                                          </div>
                                      </div>
                                      <div className="form-group">
-                                         <label>Ngày thi:</label>
-                                         <input type="text" className="form-control" name="dateAdd" onChange={this.handleChange}/>
+                                         <label>Thời gian bắt đầu:</label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 timeStartAdd={this.state.timeStartAdd}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"timeStartAdd"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
                                      </div>
                                      <div className="form-group">
-                                         <label>Bắt đầu:</label>
-                                         <input type="time" className="form-control" name="timeStartAdd" onChange={this.handleChange}/>
+                                         <label>Thời gian kết thúc:</label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 timeEndAdd={this.state.timeEndAdd}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"timeEndAdd"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
                                      </div>
                                      <div className="form-group">
-                                         <label>Kết thúc:</label>
-                                         <input type="time" className="form-control" name="timeEndAdd" onChange={this.handleChange}/>
+                                         <label>Tổng SV:</label>
+                                         <input type="text" className="form-control" name="totalStudentAdd"
+                                                onChange={this.changeRoomsWhenAdd}/>
                                      </div>
-
                                      <div className="form-group">
                                          <label>Phòng thi: </label>
                                          <div className="dropdown">
@@ -306,13 +373,9 @@ class Exam extends React.Component{
                                              </select>
                                          </div>
                                      </div>
-                                     <div className="form-group">
-                                         <label>Tổng SV:</label>
-                                         <input type="text" className="form-control" name="totalStudentAdd" onChange={this.handleChange}/>
-                                     </div>
                                  </div>
                              }
-                             />
+                />
             </div>
         );
     }

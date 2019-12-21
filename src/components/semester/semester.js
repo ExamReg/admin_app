@@ -26,7 +26,8 @@ class Semester extends React.Component {
         let res = await getSemester();
         if (res.success) {
             this.setState({
-                semesters: res.data.semesters
+                semesters: res.data.semesters,
+                checkSemestersWhenAdd: false
             });
         } else {
             console.log(res.message)
@@ -89,7 +90,6 @@ class Semester extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.checkSemestersWhenAdd) {
             this.handleGetSemester();
-            this.setState({checkSemestersWhenAdd: false})
         }
     }
 
@@ -102,7 +102,7 @@ class Semester extends React.Component {
                 <div className="header-semester">
                     <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
                             data-target="#modalAddNewSemester">
-                        <i className="fas fa-plus"></i>
+                        <i className="fas fa-plus"/>
                         Thêm mới học kì
                     </button>
                 </div>
@@ -113,6 +113,8 @@ class Semester extends React.Component {
                             <tr>
                                 <th>STT</th>
                                 <th>Tên học kỳ</th>
+                                <th>Bắt đầu đăng ký lúc</th>
+                                <th>Kết thúc đăng ký lúc</th>
                                 <th className="style-center">Sửa</th>
                             </tr>
                             </thead>
@@ -123,6 +125,8 @@ class Semester extends React.Component {
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{e.value}</td>
+                                            <td>{e.register_from ? e.register_from : "Chưa có"}</td>
+                                            <td>{e.register_to ? e.register_to : "Chưa có"}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
                                                         data-toggle="modal"
@@ -130,7 +134,6 @@ class Semester extends React.Component {
                                                         onClick={() => this.selectSemester(e.id_semester, e.value)}>
                                                     Chỉnh sửa
                                                 </button>
-
                                             </td>
                                         </tr>
                                     );

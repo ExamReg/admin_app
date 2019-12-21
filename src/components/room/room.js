@@ -3,88 +3,87 @@ import {getListRoom, addNewRoom, editRoom} from "../../api/room-api";
 import Modal from "../modal/modal";
 import {notification} from "../../utils/noti";
 import "./room.css"
-class Room extends  React.Component{
-    constructor(props)
-    {
+
+class Room extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
-            rooms:[],
+            rooms: [],
 
-            nameRoom:"",
-            numberSeat:"",
+            nameRoom: "",
+            numberSeat: "",
 
-            nameRoomEdit:"",
-            numberSeatEdit:"",
+            nameRoomEdit: "",
+            numberSeatEdit: "",
             id_room_change: "",
-            changeRooms:false
+            changeRooms: false
         }
     }
+
     handleChange = (e) => {
         let nam = e.target.name;
         let val = e.target.value;
         this.setState({[nam]: val})
-    }
-    getRooms = async () =>{
+    };
+    getRooms = async () => {
         const res = await getListRoom();
-        if(res.success)
-        {
+        if (res.success) {
             this.setState({rooms: res.data.rooms})
         }
-    }
-    clickEditRoom = (num, seat, key) =>{
+    };
+    clickEditRoom = (num, seat, key) => {
         this.setState({
             nameRoomEdit: num,
             numberSeatEdit: seat,
             id_room_change: key
         })
-    }
-    addNewRoom = async () =>{
+    };
+    addNewRoom = async () => {
         let {nameRoom, numberSeat} = this.state;
-        if(nameRoom && numberSeat) {
+        if (nameRoom && numberSeat) {
             let data = {
                 location: nameRoom,
                 maximum_seating: numberSeat
-            }
+            };
 
             const res = await addNewRoom(data);
             if (res.success) {
                 this.setState({
-                    nameRoom:"",
-                    numberSeat:"",
-                    changeRooms:true,
+                    nameRoom: "",
+                    numberSeat: "",
+                    changeRooms: true,
 
-                    nameRoomEdit:"",
-                    numberSeatEdit:"",
-                })
+                    nameRoomEdit: "",
+                    numberSeatEdit: "",
+                });
                 notification("success", "Tạo mới khóa học thành công ")
             } else
                 notification("error", res.message)
-        }
-        else {
+        } else {
             notification("warning", "Xin điền đủ thông tin ")
         }
-    }
-    editRoom = async () =>{
+    };
+    editRoom = async () => {
         let {nameRoomEdit, numberSeatEdit, id_room_change} = this.state;
-        console.log(this.state)
+        console.log(this.state);
         let payload = {
-            location:nameRoomEdit,
-            maximum_seating:numberSeatEdit
-        }
-        let result = await editRoom(id_room_change,payload);
+            location: nameRoomEdit,
+            maximum_seating: numberSeatEdit
+        };
+        let result = await editRoom(id_room_change, payload);
         result.success === true ? notification("success", "Cập nhật thành công.") : notification("error", result.message);
         this.componentDidMount();
-    }
-    
+    };
+
     componentDidMount() {
         this.getRooms();
     }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.changeRooms)
-        {
+        if (this.state.changeRooms) {
             this.getRooms();
             this.setState({
-                changeRooms:false
+                changeRooms: false
             })
         }
     }
@@ -104,37 +103,37 @@ class Room extends  React.Component{
                 </div>
                 <div className="body-room">
                     <div className="tbl-room">
-                <table className="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên phòng học </th>
-                        <th>Chỗ ngồi </th>
-                        <th className="style-center">Sửa</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        (this.state.rooms || []).map((e, index) =>{
-                            return(
-                            <tr key={e.id_room}>
-                                <td>{index+1}</td>
-                                <td>{e.location}</td>
-                                <td>{e.maximum_seating}</td>
-                                <td className="style-center">
-                                    <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                        data-toggle="modal" data-target="#modalEditRoom"
-                                        onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
-                                    >
-                                        Chỉnh sửa
-                                    </button>
+                        <table className="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên phòng học</th>
+                                <th>Chỗ ngồi</th>
+                                <th className="style-center">Sửa</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                (this.state.rooms || []).map((e, index) => {
+                                    return (
+                                        <tr key={e.id_room}>
+                                            <td>{index + 1}</td>
+                                            <td>{e.location}</td>
+                                            <td>{e.maximum_seating}</td>
+                                            <td className="style-center">
+                                                <button className="btn btn-info" style={{padding: "2px 5px"}}
+                                                        data-toggle="modal" data-target="#modalEditRoom"
+                                                        onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
+                                                >
+                                                    Chỉnh sửa
+                                                </button>
 
-                                </td>
-                            </tr>)
-                        })
-                    }
-                    </tbody>
-                </table>
+                                            </td>
+                                        </tr>)
+                                })
+                            }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <Modal acceptButton={this.addNewRoom}
@@ -145,18 +144,20 @@ class Room extends  React.Component{
                            <div>
                                <div className="form-group">
                                    <label>Tên phòng học: </label>
-                                   <input type="text" className="form-control" name="nameRoom" onChange={this.handleChange} value={this.state.nameRoom}/>
+                                   <input type="text" className="form-control" name="nameRoom"
+                                          onChange={this.handleChange} value={this.state.nameRoom}/>
 
                                </div>
                                <div className="form-group">
                                    <label>Số chỗ ngồi: </label>
-                                   <input type="text" className="form-control" name="numberSeat" onChange={this.handleChange} value={this.state.numberSeat}/>
+                                   <input type="text" className="form-control" name="numberSeat"
+                                          onChange={this.handleChange} value={this.state.numberSeat}/>
 
                                </div>
                            </div>
 
                        }
-                       />
+                />
                 <Modal acceptButton={this.editRoom}
                        idModal="modalEditRoom"
                        title="Chỉnh sửa thông tin phòng học "
@@ -165,19 +166,22 @@ class Room extends  React.Component{
                            <div>
                                <div className="form-group">
                                    <label>Tên phòng học: </label>
-                                   <input type="text" className="form-control" name="nameRoomEdit" onChange={this.handleChange} value={this.state.nameRoomEdit}/>
+                                   <input type="text" className="form-control" name="nameRoomEdit"
+                                          onChange={this.handleChange} value={this.state.nameRoomEdit}/>
 
                                </div>
                                <div className="form-group">
                                    <label>Số chỗ ngồi: </label>
-                                   <input type="text" className="form-control" name="numberSeatEdit" onChange={this.handleChange} value={this.state.numberSeatEdit}/>
+                                   <input type="text" className="form-control" name="numberSeatEdit"
+                                          onChange={this.handleChange} value={this.state.numberSeatEdit}/>
 
                                </div>
                            </div>
                        }
-                       />
+                />
             </div>
         );
     }
 }
-export  default Room;
+
+export default Room;
