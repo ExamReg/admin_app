@@ -13,7 +13,7 @@ export default class MenuBar extends React.Component {
     }
 
     componentDidMount() {
-        if(window.location.pathname === "/dashboard/course" || window.location.pathname === "/dashboard/student"){
+        if(window.location.pathname === "/dashboard/courses" || window.location.pathname === "/dashboard/student"){
             this.setState({
                 show: false,
                 check: ""
