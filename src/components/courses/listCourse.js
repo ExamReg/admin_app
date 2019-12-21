@@ -16,7 +16,7 @@ export default class ListCourse extends React.Component {
         this.state = {
             courses: [],
             semesters: [],
-            idSemester: "1",
+            idSemester: "",
 
             nameCourse: "",
             idCourse: "",
@@ -63,14 +63,7 @@ export default class ListCourse extends React.Component {
     };
 
     handleGetSemester = async () => {
-        let res = await getSemester();
-        if (res.success) {
-            this.setState({
-                semesters: res.data.semesters
-            });
-        } else {
-            console.log(res.message)
-        }
+
     };
 
     handleAddNewCourse = async () => {
@@ -125,13 +118,33 @@ export default class ListCourse extends React.Component {
 
     };
 
-    componentDidMount() {
-        this.handleGetSemester();
-        this.handleGetCourse();
+    async componentDidMount() {
+        console.log("1");
+        let result = await getSemester();
+        if (result.success) {
+            const res = await getCourse({
+                id_semester: result.data.semesters[0].id_semester,
+                page_number: this.state.page_number - 1,
+                page_size: this.state.page_size
+            });
+            if (res.success) {
+                this.setState({
+                    courses: res.data.courses,
+                    page_number: 1,
+                    page_count: Math.ceil(res.data.count / this.state.page_size),
+                    semesters: result.data.semesters,
+                    idSemester: result.data.semesters[0].id_semester
+                });
+            } else {
+                console.log(res.message)
+            }
+        } else {
+            console.log(result.message)
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.idSemester !== prevState.idSemester || this.state.textSearch !== prevState.textSearch) {
+        if ((this.state.idSemester !== prevState.idSemester && this.state.semesters.length === prevState.semesters.length) || this.state.textSearch !== prevState.textSearch) {
             this.handleGetCourse();
         }
         if (this.state.next_page) {
@@ -199,6 +212,7 @@ export default class ListCourse extends React.Component {
         redirect_to(`/dashboard/courses/setting?id_cs=${id_cs}&course_name=${course_name}`)
     };
     render() {
+        console.log("oki");
         return (
             <div className="list-course">
                 <div className="title">
