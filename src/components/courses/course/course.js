@@ -9,6 +9,7 @@ export default class Course extends React.Component{
     }
 
     render() {
+        console.log(this.props.location)
         return(
             <h1>Course</h1>
         )

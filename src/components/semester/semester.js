@@ -38,10 +38,10 @@ class Semester extends React.Component {
     }
     handleAddNewSemester = () =>{
 
-    }
+    };
     handleEditSemester = () =>{
 
-    }
+    };
     componentDidMount() {
         this.handleGetSemester();
     }
@@ -113,7 +113,7 @@ class Semester extends React.Component {
                            <div>
                                <div className="form-group">
                                    <label>Tên học kì: </label>
-                                   <input type="text" className="form-control" name="nameCourse"
+                                   <input type="text" className="form-control" name="currentSemester"
                                           value={this.state.currentSemester} onChange={this.handleChange}/>
                                </div>
                            </div>
