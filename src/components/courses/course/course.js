@@ -3,22 +3,36 @@ import {NavLink} from "react-router-dom";
 import "./course.css";
 import queryString from "query-string";
 import ModelCustom from "../../modal/modal";
+import {getCourseInfo,getStudentInCourse} from "../../../api/course-api";
 
 export default class Course extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            id_course:"",
-
-            fileStudentEnoughCondition:""
+            id_cs:"",
+            course: {
+                course_name: ""
+            },
+            fileStudentEnoughCondition:"",
+            students: []
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         let a = this.props.location.search;
         let parsed = queryString.parse(a);
-        this.setState({id_course: parsed.id_course})
-
+        const res = await getCourseInfo(parsed.id_cs);
+        console.log(res);
+        if(res.success){
+            const result = await getStudentInCourse(parsed.id_cs);
+            console.log(result);
+            this.setState({
+                id_cs: parsed.id_cs,
+                course: res.data.course,
+                students: result.data.students
+            })
+        }
     }
+    
     handleChange = (e) => {
         if(e.target.name === "fileStudents"){
             this.setState({
@@ -37,12 +51,13 @@ export default class Course extends React.Component{
 
     }
     render() {
-        console.log(this.props.location)
+        // console.log(this.props.location)
         return(
             <div className="container-course">
                 <div className="title">
                     <NavLink to="/dashboard/setting">Quản lý danh sách khóa học </NavLink>
-                    <span>/Tên khóa học </span>
+        <span>/ {this.state.course.course_name}</span>
+        <span className="semester-of-course">{this.state.course.semester}</span>
                 </div>
                 <div className="list-course-header">
 
@@ -66,23 +81,25 @@ export default class Course extends React.Component{
                                 <th>STT</th>
                                 <th>MSSV</th>
                                 <th>Họ và tên </th>
-                                <th>Ngày sinh </th>
                                 <th>Trạng thái </th>
                                 <th>Hoạt động </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>17020875</td>
-                                <td>Phùng Thị Tuyết Mai </td>
-                                <td>23/04/1999</td>
-                                <td>activate</td>
-                                <td style={{display:"inline-block"}}>
-                                    <button className="btn btn-secondary btn-sm btn-space-right">Kích hoạt</button>
-                                    <button className="btn btn-outline-secondary btn-sm">Chỉnh sửa </button>
-                                </td>
-                            </tr>
+                                {(this.state.students || []).map((e, index) => {
+                                    return <tr key={index}>
+                                            <td>{++index}</td>
+                                            <td>{e.id_student}</td>
+                                            <td>{e.name}</td>
+                                            <td>
+                                                {e.is_eligible === 1 ? <span className="badge badge-success">Đủ điều kiện</span> : <span className="badge badge-danger">Không đủ điều kiện</span>}
+                                            </td>
+                                            <td style={{display:"inline-block"}}>
+                                                <button className="btn btn-secondary btn-sm btn-space-right">Kích hoạt</button>
+                                                <button className="btn btn-outline-secondary btn-sm">Chỉnh sửa </button>
+                                            </td>
+                                    </tr>
+                                })}
                         </tbody>
                     </table>
                 </div>
