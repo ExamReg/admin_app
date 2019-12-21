@@ -15,7 +15,7 @@ export function addNewCourse(data) {
     let route = "/courses";
     let headers = {
         token: localStorage.getItem("token"),
-        'content-type': 'application/x-www-form-urlencoded'
+        'content-type': 'multipart/form-data'
     };
     return sendPostRequest(route, data, headers);
 }
