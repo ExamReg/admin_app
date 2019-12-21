@@ -195,8 +195,8 @@ export default class ListCourse extends React.Component {
         }
     };
 
-    settingCourse = (id_course) => {
-        redirect_to(`/dashboard/courses/setting?id_course=${id_course}`)
+    settingCourse = (id_cs, course_name) => {
+        redirect_to(`/dashboard/courses/setting?id_cs=${id_cs}&course_name=${course_name}`)
     };
     render() {
         return (
@@ -261,7 +261,7 @@ export default class ListCourse extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
-                                                <td><button  type="button" className="btn btn-success" onClick={() => {this.settingCourse(e.id_cs)}}><i className="fas fa-cog btn-space-right"></i>Cài đặt </button></td>
+                                                <td><button  type="button" className="btn btn-success" onClick={() => {this.settingCourse(e.id_cs, e.course_name)}}><i className="fas fa-cog btn-space-right"></i>Cài đặt </button></td>
                                             </tr>
                                         );
                                     })
