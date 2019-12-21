@@ -1,13 +1,14 @@
 import React from "react";
 
-import "./course.css";
+import "./listCourse.css";
 import {getCourse, getSemester, addNewCourse} from "../../api/course-api";
 import {notification} from "../../utils/noti";
 import ModelCustom from "../modal/modal";
 import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
+import {redirect_to} from "../../utils/redirector";
 
-export default class Course extends React.Component {
+export default class ListCourse extends React.Component {
     constructor(props) {
         super(props);
 
@@ -177,15 +178,19 @@ export default class Course extends React.Component {
             console.log(response.message);
         }
     };
+
+    settingCourse = (id_course) => {
+        redirect_to(`/dashboard/courses/setting?id_course=${id_course}`)
+    };
     render() {
         return (
-            <div className="course">
+            <div className="list-course">
                 <div className="title">
                     Quản lý danh sách khóa học
                 </div>
-                <div className="course-header">
+                <div className="list-course-header">
 
-                    <div className="course-header-left">
+                    <div className="list-course-header-left">
                         <div className="header-items">
                             <input className="input-find" type="text" placeholder="Nhập mã/tên khóa học "
                                    name="textSearch" onChange={this.handleChange} value={this.state.textSearch}/>
@@ -210,18 +215,19 @@ export default class Course extends React.Component {
                             </button>
                         </div>
                     </div>
-                    <div className="course-header-right">
+                    <div className="list-course-header-right">
                         <Pagination changePageSize={this.changePageSize} page_size={this.state.page_size}/>
                     </div>
                 </div>
-                <div className="course-content">
-                    <div className="table-course">
+                <div className="list-course-content">
+                    <div className="table-list-course">
                         <table className="table table-bordered">
                             <thead>
                             <tr>
                                 <th>STT</th>
                                 <th>Mã số khóa học</th>
                                 <th>Tên khóa học</th>
+                                {/*<th>Action</th>*/}
                             </tr>
                             </thead>
                             <tbody>
@@ -239,6 +245,7 @@ export default class Course extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
+                                                <td><button  type="button" className="btn btn-primary" onClick={() => {this.settingCourse(e.id_course)}}>Setting</button></td>
                                             </tr>
                                         );
                                     })
@@ -294,7 +301,7 @@ export default class Course extends React.Component {
                         }
                     />
                 </div>
-                <div className="course-bottom">
+                <div className="list-course-bottom">
                     <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
                                       currentPage={this.state.page_number}/>
                 </div>

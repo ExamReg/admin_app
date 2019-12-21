@@ -1,35 +1,35 @@
 /*COURSE CSS */
-.course{
+.list-course{
     margin: 15px 15px;
     font-size: 14px;
 }
-.course .title{
+.list-course .title{
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 /*HEADER*/
 
-.course-header{
+.list-course-header{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.course-header .course-header-left{
+.list-course-header .list-course-header-left{
     display: flex;
     align-items: center;
 }
-.course-header .course-header-right{
+.list-course-header .list-course-header-right{
     display: flex;
     align-items: center;
 }
-.course-header .header-items {
+.list-course-header .header-items {
     display: flex;
     align-items: center;
     margin:0px 0px 10px 0px;
 }
 
-.course-header .header-items .input-find{
+.list-course-header .header-items .input-find{
     border-radius: 3px;
     border: 1px solid #007bff;
     padding:6px 5px;
@@ -37,7 +37,7 @@
     width: 250px;
 
 }
-.course-header .header-items .select-item{
+.list-course-header .header-items .select-item{
     margin-left: 10px;
     width: 300px;
     background-color: #f2f2f2;
@@ -45,7 +45,7 @@
     border-radius: 3px;
 }
 /*CONTENT*/
-.course-content{
+.list-course-content{
     margin: 10px 0px;
 }
 .btn-size{
@@ -66,13 +66,13 @@
 
 }
 
-.table-course{
+.table-list-course{
     max-height: calc(100vh - 16rem);
     overflow: auto;
     position: relative;
 }
 
-.table-course table thead tr th{
+.table-list-course table thead tr th{
     position: sticky;
     top: 0;
     z-index: 10;

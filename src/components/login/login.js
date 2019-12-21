@@ -41,7 +41,7 @@ class Login extends React.Component {
             if (response.success) {
                 notification("success", "Login success.");
                 localStorage.setItem("token", response.data.token);
-                window.location.replace("/dashboard/course");
+                window.location.replace("/dashboard/courses");
                 this.setState({
                     redirect: true,
                     redirectTo: "/dashboard"

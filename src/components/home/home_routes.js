@@ -1,23 +1,33 @@
 import Student from "../student/student"
-import Course from "../course/course";
+import ListCourse from "../courses/listCourse";
 import Room from "../room/room";
 import Semester from "../semester/semester";
+import Course from "../courses/course/course";
 export const HOME_ROUTES = [
     {
-        path: "/dashboard/course",
-        component: Course
+        path: "/dashboard/courses",
+        component: ListCourse,
+        exact: true
     },
     {
         path: "/dashboard/student",
-        component: Student
+        component: Student,
+        exact: false
     }
     ,
     {
         path:"/dashboard/setting/room",
-        component:Room
+        component:Room,
+        exact: false
     },
     {
         path:"/dashboard/setting/semester",
-        component:Semester
+        component:Semester,
+        exact: false
+    },
+    {
+        path:"/dashboard/courses/setting",
+        component:Course,
+        exact: false
     }
 ];
