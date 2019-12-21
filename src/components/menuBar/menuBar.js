@@ -23,7 +23,7 @@ export default class MenuBar extends React.Component {
 
     render() {
         return (
-            <div className="list-menu panel-group">
+            <div className="list-menu">
                 <ul>
                     <li onClick={() => {this.setState({check: "", show: false}); }}>
                         <NavLink
@@ -53,6 +53,19 @@ export default class MenuBar extends React.Component {
                             <span>Quản lý sinh viên</span>
                         </NavLink>
                     </li>
+                    <li onClick={() => {this.setState({check: "", show: false});}}>
+                        <NavLink
+                            activeStyle={{
+                                backgroundColor: 'white',
+                                color: "#077bff"
+                            }}
+                            className="nav-link"
+                            to="/dashboard/exam"
+                        >
+                            <i className="fas fa-graduation-cap"></i>
+                            <span>Quản lý ca thi</span>
+                        </NavLink>
+                    </li>
                     <li>
                         <NavLink
                             className={"nav-link set-tab"}
@@ -80,7 +93,7 @@ export default class MenuBar extends React.Component {
                                             border: "none"
                                         }}
                                         className="panel-collapse collapse list-group-item nav-link child-tab">
-                                        <i className="fas fa-caret-right"></i>
+                                        <i className="fas fa-user-cog"></i>
                                         Quản lý học kỳ
                                     </NavLink>
                                 </li>
@@ -93,7 +106,7 @@ export default class MenuBar extends React.Component {
                                             border: "none"
                                         }}
                                         className="panel-collapse collapse list-group-item nav-link child-tab">
-                                        <i className="fas fa-caret-right"></i>
+                                        <i className="fas fa-user-cog"></i>
                                         Quản lý phòng học
                                     </NavLink>
                                 </li>
