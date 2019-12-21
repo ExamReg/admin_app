@@ -1,4 +1,4 @@
-import {sendPostRequestWithoutToken, sendGetRequestRoute1} from "./api-send";
+import { sendPostRequestWithoutToken, sendGetRequestRoute1, sendPutRequest } from "./api-send";
 
 export function login(data) {
     let route = "/login";
@@ -13,4 +13,8 @@ export function registerUser(data) {
 export function getProfile() {
     let route = "/profile";
     return sendGetRequestRoute1(route);
+}
+export function changePassword(payload) {
+    let route = "/passwords";
+    return sendPutRequest(route, payload);
 }

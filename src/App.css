@@ -25,6 +25,9 @@
 .style-center{
     text-align: center;
 }
+.btn-space-right{
+    margin-right: 5px;
+}
 .btn-space{
     margin-left: 10px;
 }

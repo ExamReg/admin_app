@@ -2,9 +2,10 @@ import React from "react";
 import logo from "./icons/logo-uet.jpg";
 
 import "./header.css";
-import {getProfile} from "../../api/authentication-api";
+import {getProfile,changePassword} from "../../api/authentication-api";
 import {logOut} from "../../service/authen-service";
 import ModalCustom from "../modal/modal";
+import { notification } from "../../utils/noti";
 
 class Header extends React.Component {
     constructor(props) {
@@ -13,7 +14,10 @@ class Header extends React.Component {
 
         this.state = {
             name: "",
-            username: ""
+            username: "",
+            old_password:"",
+            new_password: "",
+            confirm_password: ""
         };
     }
 
@@ -36,8 +40,27 @@ class Header extends React.Component {
     componentDidMount() {
         this.handleGetProfile();
     }
-    handleChangePassword = () => {
 
+    handleChange = async (e) => {
+        let newPassword = e.target.name;
+        let val = e.target.value;
+        this.setState({[newPassword]: val});
+    }
+
+    handleChangePassword = async () => {
+        let {old_password, new_password, confirm_password} = this.state;
+        if(new_password !== confirm_password){
+            notification("warning", "Mật khẩu mới và nhập lại không giống nhau !");
+        }else{
+            let payload = {
+                old_password : old_password,
+                new_password : new_password
+            }
+            let result = await changePassword(payload);
+            result.success === true ? notification("success","Cập nhật thành công")
+                : notification("error",result.message);
+        }
+        
     };
     render() {
         return (
@@ -80,15 +103,15 @@ class Header extends React.Component {
                            <div>
                                <div className="form-group">
                                    <label>Mật khẩu cũ :</label>
-                                   <input type="password" className="form-control"/>
+                                   <input type="password" className="form-control" name="old_password" onChange={this.handleChange}/>
                                </div>
                                <div className="form-group">
                                    <label>Mật khẩu mới :</label>
-                                   <input type="password" className="form-control"/>
+                                   <input type="password" className="form-control" name="new_password" onChange={this.handleChange} />
                                </div>
                                <div className="form-group">
                                    <label>Nhập lại mật khẩu :</label>
-                                   <input type="password" className="form-control"/>
+                                   <input type="password" className="form-control" name="confirm_password" onChange={this.handleChange}/>
                                </div>
                            </div>
                        }

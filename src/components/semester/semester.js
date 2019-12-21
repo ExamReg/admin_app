@@ -1,7 +1,9 @@
 import React from "react"
 import "./semester.css"
 import {getSemester} from "../../api/course-api";
+import {createNewSemester, editSemester} from "../../api/semester";
 import ModelCustom from "../modal/modal";
+import {notification} from "../../utils/noti";
 
 class Semester extends React.Component {
     constructor(props) {
@@ -9,7 +11,11 @@ class Semester extends React.Component {
         this.state = {
             semesters: [],
 
-            currentSemester: ""
+            idSemester:"",
+            semesterEdit:"",
+
+            semesterAdd:"",
+            checkSemestersWhenAdd:false
         };
         this.handleGetSemester = this.handleGetSemester.bind(this);
         this.selectSemester = this.selectSemester.bind(this);
@@ -27,8 +33,8 @@ class Semester extends React.Component {
         }
     }
 
-    selectSemester(semester) {
-        this.setState({currentSemester: semester})
+    selectSemester(id_semester, name_semester) {
+        this.setState({idSemester: id_semester, semesterEdit: name_semester})
     }
 
     handleChange(e) {
@@ -36,14 +42,64 @@ class Semester extends React.Component {
         let val = e.target.value;
         this.setState({[nam]: val})
     }
-    handleAddNewSemester = () =>{
+    handleAddNewSemester = async () =>{
+        const {semesterAdd} = this.state;
+        let data={
+            value: semesterAdd
+        }
+        if(semesterAdd)
+        {
+            const res = await createNewSemester(data)
+            if(res.success)
+            {
+                notification("success", "Tạo mới học kỳ thành công ")
+                this.setState({
+                    semesterAdd: "",
+                    checkSemestersWhenAdd:true
+                })
+            }
+            else
+            {
+                notification("error", res.message)
+            }
+        }
+        else
+        {
+            notification("warning", "Xin điền đủ thông tin ")
+        }
+    }
+    handleEditSemester = async () =>{
+        const {idSemester, semesterEdit} = this.state;
+        let data={
+            value:semesterEdit
+        }
+        if(semesterEdit)
+        {
+            const res = await editSemester(idSemester, data);
 
-    };
-    handleEditSemester = () =>{
+            if(res.success)
+            {
+                notification("success", "Chỉnh sửa tên học kỳ thành công ");
+                this.setState({semesterEdit:"",checkSemestersWhenAdd:true});
+            }
+            else{
+                notification("error", res.message)
+            }
+        }
+        else {
+            notification("warning", "Xin hãy điền đầy đủ thông tin ")
+        }
+    }
 
-    };
     componentDidMount() {
         this.handleGetSemester();
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.state.checkSemestersWhenAdd)
+        {
+            this.handleGetSemester();
+            this.setState({checkSemestersWhenAdd:false})
+        }
     }
 
     render() {
@@ -78,7 +134,7 @@ class Semester extends React.Component {
                                         <button className="btn btn-primary" style={{padding: "2px 5px"}}
                                                 data-toggle="modal"
                                                 data-target="#modalEditSemester"
-                                                onClick={() => this.selectSemester(e.value)}>
+                                                onClick={() => this.selectSemester(e.id_semester, e.value)}>
                                             <i className="fas fa-edit"> </i>
                                         </button>
 
@@ -98,7 +154,7 @@ class Semester extends React.Component {
                            <div>
                                <div className="form-group">
                                    <label>Tên học kì: </label>
-                                   <input type="text" className="form-control"/>
+                                   <input type="text" className="form-control" name="semesterAdd" value={this.state.semesterAdd} onChange={this.handleChange}/>
                                </div>
                            </div>
                        }
@@ -113,8 +169,8 @@ class Semester extends React.Component {
                            <div>
                                <div className="form-group">
                                    <label>Tên học kì: </label>
-                                   <input type="text" className="form-control" name="currentSemester"
-                                          value={this.state.currentSemester} onChange={this.handleChange}/>
+                                   <input type="text" className="form-control" name="semesterEdit"
+                                          value={this.state.semesterEdit} onChange={this.handleChange}/>
                                </div>
                            </div>
                        }
