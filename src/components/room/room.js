@@ -1,5 +1,5 @@
 import React from "react";
-import {getListRoom, addNewRoom} from "../../api/room-api";
+import {getListRoom, addNewRoom, editRoom} from "../../api/room-api";
 import Modal from "../modal/modal";
 import {notification} from "../../utils/noti";
 
@@ -15,7 +15,7 @@ class Room extends  React.Component{
 
             nameRoomEdit:"",
             numberSeatEdit:"",
-
+            id_room_change: "",
             changeRooms:false
         }
     }
@@ -31,15 +31,15 @@ class Room extends  React.Component{
             this.setState({rooms: res.data.rooms})
         }
     }
-    clickEditRoom = (num, seat) =>{
+    clickEditRoom = (num, seat, key) =>{
         this.setState({
             nameRoomEdit: num,
-            numberSeatEdit: seat
+            numberSeatEdit: seat,
+            id_room_change: key
         })
     }
     addNewRoom = async () =>{
         let {nameRoom, numberSeat} = this.state;
-        console.log(nameRoom)
         if(nameRoom && numberSeat) {
             let data = {
                 location: nameRoom,
@@ -64,9 +64,18 @@ class Room extends  React.Component{
             notification("warning", "Xin điền đủ thông tin ")
         }
     }
-    editRoom = () =>{
-
+    editRoom = async () =>{
+        let {nameRoomEdit, numberSeatEdit, id_room_change} = this.state;
+        console.log(this.state)
+        let payload = {
+            location:nameRoomEdit,
+            maximum_seating:numberSeatEdit
+        }
+        let result = await editRoom(id_room_change,payload);
+        result.success === true ? notification("success", "Cập nhật thành công.") : notification("error", result.message);
+        this.componentDidMount();
     }
+    
     componentDidMount() {
         this.getRooms();
     }
@@ -106,14 +115,14 @@ class Room extends  React.Component{
                     {
                         (this.state.rooms || []).map((e, index) =>{
                             return(
-                            <tr key={index}>
+                            <tr key={e.id_room}>
                                 <td>{index+1}</td>
                                 <td>{e.location}</td>
                                 <td>{e.maximum_seating}</td>
                                 <td className="style-center">
                                     <button className="btn btn-primary" style={{padding: "2px 5px"}}
                                         data-toggle="modal" data-target="#modalEditRoom"
-                                        onClick={() => this.clickEditRoom(e.location, e.maximum_seating)}
+                                        onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
                                     >
                                         <i className="fas fa-edit"> </i>
                                     </button>
@@ -148,6 +157,7 @@ class Room extends  React.Component{
                        idModal="modalEditRoom"
                        title="Chỉnh sửa thông tin phòng học "
                        brandButton="Chỉnh sửa "
+                       acceptButton={this.editRoom}
                        childrenContent={
                            <div>
                                <div className="form-group">
