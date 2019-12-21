@@ -41,7 +41,7 @@ export default class Course extends React.Component{
             <div className="container-course">
                 <div className="title">
                     <NavLink to="/dashboard/setting">Quản lý danh sách khóa học </NavLink>
-                    <span>/Tên khóa học </span>
+                    <span>/ Tên khóa học </span>
                 </div>
                 <div className="list-course-header">
 

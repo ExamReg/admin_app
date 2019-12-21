@@ -1,0 +1,52 @@
+.container-exam{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+
+.container-exam .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color:#333333;
+}
+/*HEADER*/
+
+.exam-header{
+    display: flex;
+    align-items: center;
+}
+.exam-header .exam-header-left{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 10px;
+    align-items: center;
+    width: 80%;
+
+}
+.exam-header .exam-header-right{
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 5px;
+    width: 20%;
+    align-items:flex-end;
+}
+.exam-header .header-items {
+    align-items: center;
+    margin:0px 0px 10px 0px;
+}
+
+.exam-header .header-items .input-find{
+    border-radius: 3px;
+    border: 1px solid #2692ff;
+    padding:6px 5px;
+    width: 250px;
+    height: 35px;
+
+}
+.exam-header .header-items .select-item{
+    margin-left: 10px;
+    width: 250px;
+    background-color: #fff;
+    border-color: #2692ff;
+    border-radius: 3px;
+    height: 35px;
+}

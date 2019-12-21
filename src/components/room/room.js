@@ -120,11 +120,11 @@ class Room extends  React.Component{
                                 <td>{e.location}</td>
                                 <td>{e.maximum_seating}</td>
                                 <td className="style-center">
-                                    <button className="btn btn-primary" style={{padding: "2px 5px"}}
+                                    <button className="btn btn-info" style={{padding: "2px 5px"}}
                                         data-toggle="modal" data-target="#modalEditRoom"
                                         onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
                                     >
-                                        <i className="fas fa-edit"> </i>
+                                        Chỉnh sửa
                                     </button>
 
                                 </td>

@@ -223,15 +223,16 @@ export default class ListCourse extends React.Component {
                                 }
                             </select>
                         </div>
-                        <div className="header-items">
+
+                    </div>
+                    <div className="list-course-header-right">
+                        <div className="header-items btn-flex-right">
                             <button type="button" className="btn btn-primary btn-size" data-toggle="modal"
                                     data-target="#modalAddNewCourse">
                                 <i className="fas fa-plus"/>
                                 Thêm mới khóa học
                             </button>
                         </div>
-                    </div>
-                    <div className="list-course-header-right">
                         <Pagination changePageSize={this.changePageSize} page_size={this.state.page_size}/>
                     </div>
                 </div>
@@ -243,7 +244,7 @@ export default class ListCourse extends React.Component {
                                 <th>STT</th>
                                 <th>Mã số khóa học</th>
                                 <th>Tên khóa học</th>
-                                <th>Chi tiết </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -261,7 +262,9 @@ export default class ListCourse extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
-                                                <td><button  type="button" className="btn btn-success" onClick={() => {this.settingCourse(e.id_cs)}}><i className="fas fa-cog btn-space-right"></i>Cài đặt </button></td>
+                                                <td><button  type="button" className="btn btn-success btn-sm " onClick={() => {this.settingCourse(e.id_cs)}}>
+                                                    Cài đặt
+                                                </button></td>
                                             </tr>
                                         );
                                     })

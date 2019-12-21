@@ -130,11 +130,11 @@ class Semester extends React.Component {
                                     <td>{index + 1}</td>
                                     <td>{e.value}</td>
                                     <td className="style-center">
-                                        <button className="btn btn-primary" style={{padding: "2px 5px"}}
+                                        <button className="btn btn-info" style={{padding: "2px 5px"}}
                                                 data-toggle="modal"
                                                 data-target="#modalEditSemester"
                                                 onClick={() => this.selectSemester(e.id_semester, e.value)}>
-                                            <i className="fas fa-edit"> </i>
+                                            Chỉnh sửa
                                         </button>
 
                                     </td>

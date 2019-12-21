@@ -201,7 +201,7 @@ export default class Student extends React.Component {
                                 <th>Họ và Tên</th>
                                 <th>Ngày sinh</th>
                                 <th className="title-edit" colSpan="2"/>
-                                {/*<th className="style-center">Chỉnh sửa</th>*/}
+
                             </tr>
                             </thead>
                             <tbody>
@@ -220,12 +220,12 @@ export default class Student extends React.Component {
                                     <td>{e.name}</td>
                                     <td>{e.birthday}</td>
                                     <td className="style-center">
-                                        <button className="btn btn-primary" style={{padding: "2px 5px"}}
+                                        <button className="btn btn-info" style={{padding: "2px 5px"}}
                                                 data-toggle="modal"
                                                 data-target="#modalEditStudent"
                                                 onClick={() => this.selectStudentEdit(e.name, e.id_student, e.birthday)}
                                         >
-                                            <i className="fas fa-edit"> </i>
+                                            Chỉnh sửa
                                         </button>
 
                                     </td>

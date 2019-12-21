@@ -16,17 +16,18 @@
     justify-content: space-between;
 }
 .list-course-header .list-course-header-left{
-    display: flex;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2,1fr);
     align-items: center;
 }
 .list-course-header .list-course-header-right{
-    display: flex;
     align-items: center;
 }
 .list-course-header .header-items {
     display: flex;
     align-items: center;
-    margin:0px 20px 10px 0px;
+    margin:0px 0px 10px 0px;
 }
 
 .list-course-header .header-items .input-find{
@@ -34,12 +35,13 @@
     border: 1px solid #007bff;
     padding:6px 5px;
     width: 250px;
-
+    height: 35px;
 }
 .list-course-header .header-items .select-item{
     margin-left: 10px;
-    width: 300px;
-    background-color: #f2f2f2;
+    width: 250px;
+    height: 35px;
+    background-color: #fff;
     border-color: #007bff;
     border-radius: 3px;
 }
@@ -64,6 +66,7 @@
     padding: 0px 12px;
 
 }
+/*
 
 .table-list-course{
     max-height: calc(100vh - 16rem);
@@ -72,6 +75,18 @@
 }
 
 .table-list-course table thead tr th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}*/
+.table{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.table thead tr th{
     position: sticky;
     top: 0;
     z-index: 10;

@@ -31,3 +31,7 @@
 .btn-space{
     margin-left: 10px;
 }
+.btn-flex-right{
+    display: flex;
+    justify-content: flex-end;
+}

@@ -3,6 +3,7 @@ import ListCourse from "../courses/listCourse";
 import Room from "../room/room";
 import Semester from "../semester/semester";
 import Course from "../courses/course/course";
+import Exam from "../exam/exam";
 export const HOME_ROUTES = [
     {
         path: "/dashboard/courses",
@@ -18,6 +19,11 @@ export const HOME_ROUTES = [
     {
         path:"/dashboard/setting/room",
         component:Room,
+        exact: false
+    },
+    {
+        path:"/dashboard/exam",
+        component:Exam,
         exact: false
     },
     {

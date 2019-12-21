@@ -23,11 +23,11 @@
             align-items: center;
         }
         .list-menu .nav-link.child-tab {
-            background-color: #e8eefd;
+            background-color: #f4f7fe;
         }
         .list-menu .nav-link.child-tab i{
-            width: 30px;
-            padding-left: 10px;
+            width: 40px;
+            padding-left: 5px;
         }
     .list-menu ul {
         padding: 0;
