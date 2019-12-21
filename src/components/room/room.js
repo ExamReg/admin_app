@@ -157,7 +157,6 @@ class Room extends  React.Component{
                        idModal="modalEditRoom"
                        title="Chỉnh sửa thông tin phòng học "
                        brandButton="Chỉnh sửa "
-                       acceptButton={this.editRoom}
                        childrenContent={
                            <div>
                                <div className="form-group">
