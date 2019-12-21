@@ -50,6 +50,7 @@ export default class Course extends React.Component {
 
     selectSemesterInAdd = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
+        console.log(idSems)
         this.setState({idSemesterSelect: idSems});
     };
 
@@ -68,17 +69,25 @@ export default class Course extends React.Component {
         const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
         if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
             let form_data = new FormData();
-            form_data.append("semester", idSemesterSelect);
+            form_data.append("id_semester", idSemesterSelect);
             form_data.append("course_name", nameCourse);
             form_data.append("id_course", idCourse);
             form_data.append("file_import", fileCourse);
             form_data.append("class_number", idClassCourse);
             const res = await addNewCourse(form_data);
+            console.log(form_data)
             if (res.success) {
                 notification("success", "Thêm mới khóa học thành công");
-                this.setState({checkChangeListCourse: true})
+                this.setState({
+                    checkChangeListCourse: true,
+                    nameCourse: "",
+                    idCourse: "",
+                    fileCourse: "",
+                    idClassCourse: "",
+                    idSemesterSelect: ""
+                })
             } else {
-                console.log(res.message)
+                notification("error", res.message);
             }
         } else {
             notification("warning", "Xin điền đủ thông tin ")
@@ -196,14 +205,14 @@ export default class Course extends React.Component {
                                 {
                                     this.state.semesters.map((e, index) => {
                                         return (
-                                            <option key={e.id_semester} value={e.id_semester}>{e.value}</option>
+                                            <option key={e.id_semester} value={e.id_semester} name={e.value}>{e.value}</option>
                                         );
                                     })
                                 }
                             </select>
                         </div>
                         <div className="header-items">
-                            <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
+                            <button type="button" className="btn btn-primary btn-size" data-toggle="modal"
                                     data-target="#modalAddNewCourse">
                                 <i className="fas fa-plus"/>
                                 Thêm mới khóa học

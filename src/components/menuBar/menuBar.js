@@ -60,7 +60,7 @@ export default class MenuBar extends React.Component {
                             to="/dashboard/setting"
 
                             data-toggle="collapse" data-target="#demo"
-                            onClick={() => {let showState = this.state.show; let stateCheck = this.state.check === "" ? "show" : ""; this.setState({show: !showState, check: stateCheck});console.log(this.state);}}
+                            onClick={() => {let showState = this.state.show; let stateCheck = this.state.check === "" ? "show" : ""; this.setState({show: !showState, check: stateCheck});}}
                         >
                             <div>
                                 <i className="fas fa-cog"></i>
