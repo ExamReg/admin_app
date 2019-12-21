@@ -10,3 +10,20 @@
 .container-semester .header-semester{
     margin: 10px 0px;
 }
+
+.container-semester .body-semester {
+    margin: 10px 0px;
+}
+
+.container-semester .tbl-semester{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.container-semester .tbl-semester table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}

@@ -5,14 +5,14 @@ import moment from "moment";
 import {getSemester} from "../../api/course-api";
 import Pagination from "../pagination/pagination";
 import ModelCustom from "../modal/modal";
-const one_day = 24 * 60 * 60 * 1000;
+
 
 class Exam extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            startDate: moment(Date.now() - 30 * one_day).format("YYYY/MM/DD"),
-            endDate: moment(Date.now()).format("YYYY/MM/DD"),
+            startDate: "",
+            endDate: "",
             data: null,
 
             semesters:[],
@@ -55,21 +55,20 @@ class Exam extends React.Component{
                 <div className="exam-header">
                     <div className="exam-header-left">
                         <div className="header-items">
-                            <input className="input-find" type="text" placeholder="Tìm kiếm môn thi "/>
+                            <label>Tìm kiếm </label>
+                            <input className="input-find" type="text" placeholder="Nhập tên mã/môn thi "/>
                         </div>
                         <div className="header-items">
-                            <div className="header-items">
-                                Học kì:
-                                <select className="select-item" onChange={this.selectSemester}>
-                                    {
-                                        this.state.semesters.map((e, index) => {
-                                            return (
-                                                <option key={e.id_semester} value={e.id_semester} name={e.value}>{e.value}</option>
-                                            );
-                                        })
-                                    }
-                                </select>
-                            </div>
+                            <label>Học kỳ </label>
+                            <select className="select-item" onChange={this.selectSemester}>
+                                {
+                                    this.state.semesters.map((e, index) => {
+                                        return (
+                                            <option key={e.id_semester} value={e.id_semester} name={e.value}>{e.value}</option>
+                                        );
+                                    })
+                                }
+                            </select>
                         </div>
                         <div className="header-items">
                             <label>Từ: &nbsp;</label>
@@ -88,27 +87,29 @@ class Exam extends React.Component{
                                 Thêm mới ca thi
                             </button>
                         </div>
-                        <Pagination />
+                        <Pagination/>
                     </div>
                 </div>
                 <div className="exam-body">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên môn thi </th>
-                                <th>Mã môn thi </th>
-                                <th>Ngày thi </th>
-                                <th>Giờ thi </th>
-                                <th>Phòng thi </th>
-                                <th>Tổng SV </th>
-                                <th>Chỉnh sửa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+                    <div className="tbl-exam">
+                        <table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên môn thi </th>
+                                    <th>Mã môn thi </th>
+                                    <th>Ngày thi </th>
+                                    <th>Giờ thi </th>
+                                    <th>Phòng thi </th>
+                                    <th>Tổng SV </th>
+                                    <th>Chỉnh sửa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <ModelCustom acceptButton={this.addNewExam}
                              idModal="modalAddNewExam"

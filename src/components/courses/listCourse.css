@@ -66,7 +66,6 @@
     padding: 0px 12px;
 
 }
-/*
 
 .table-list-course{
     max-height: calc(100vh - 16rem);
@@ -79,7 +78,7 @@
     top: 0;
     z-index: 10;
     background-color: white;
-}*/
+}
 .table{
     max-height: calc(100vh - 16rem);
     overflow: auto;

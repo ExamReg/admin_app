@@ -33,7 +33,9 @@
     align-items: center;
     margin:0px 0px 10px 0px;
 }
-
+.exam-header .header-items label{
+    width: 80px;
+}
 .exam-header .header-items .input-find{
     border-radius: 3px;
     border: 1px solid #2692ff;
@@ -43,10 +45,27 @@
 
 }
 .exam-header .header-items .select-item{
-    margin-left: 10px;
+
     width: 250px;
     background-color: #fff;
     border-color: #2692ff;
     border-radius: 3px;
     height: 35px;
+}
+/*CONTENT*/
+.container-exam .exam-body {
+    margin: 10px 0px;
+}
+
+.container-exam .tbl-exam{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.container-exam .tbl-exam table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
 }

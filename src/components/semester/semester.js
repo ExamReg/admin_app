@@ -11,11 +11,11 @@ class Semester extends React.Component {
         this.state = {
             semesters: [],
 
-            idSemester:"",
-            semesterEdit:"",
+            idSemester: "",
+            semesterEdit: "",
 
-            semesterAdd:"",
-            checkSemestersWhenAdd:false
+            semesterAdd: "",
+            checkSemestersWhenAdd: false
         };
         this.handleGetSemester = this.handleGetSemester.bind(this);
         this.selectSemester = this.selectSemester.bind(this);
@@ -42,63 +42,54 @@ class Semester extends React.Component {
         let val = e.target.value;
         this.setState({[nam]: val})
     }
-    handleAddNewSemester = async () =>{
+
+    handleAddNewSemester = async () => {
         const {semesterAdd} = this.state;
-        let data={
+        let data = {
             value: semesterAdd
-        }
-        if(semesterAdd)
-        {
-            const res = await createNewSemester(data)
-            if(res.success)
-            {
-                notification("success", "Tạo mới học kỳ thành công ")
+        };
+        if (semesterAdd) {
+            const res = await createNewSemester(data);
+            if (res.success) {
+                notification("success", "Tạo mới học kỳ thành công ");
                 this.setState({
                     semesterAdd: "",
-                    checkSemestersWhenAdd:true
+                    checkSemestersWhenAdd: true
                 })
-            }
-            else
-            {
+            } else {
                 notification("error", res.message)
             }
-        }
-        else
-        {
+        } else {
             notification("warning", "Xin điền đủ thông tin ")
         }
-    }
-    handleEditSemester = async () =>{
+    };
+    handleEditSemester = async () => {
         const {idSemester, semesterEdit} = this.state;
-        let data={
-            value:semesterEdit
-        }
-        if(semesterEdit)
-        {
+        let data = {
+            value: semesterEdit
+        };
+        if (semesterEdit) {
             const res = await editSemester(idSemester, data);
 
-            if(res.success)
-            {
+            if (res.success) {
                 notification("success", "Chỉnh sửa tên học kỳ thành công ");
-                this.setState({semesterEdit:"",checkSemestersWhenAdd:true});
-            }
-            else{
+                this.setState({semesterEdit: "", checkSemestersWhenAdd: true});
+            } else {
                 notification("error", res.message)
             }
-        }
-        else {
+        } else {
             notification("warning", "Xin hãy điền đầy đủ thông tin ")
         }
-    }
+    };
 
     componentDidMount() {
         this.handleGetSemester();
     }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.checkSemestersWhenAdd)
-        {
+        if (this.state.checkSemestersWhenAdd) {
             this.handleGetSemester();
-            this.setState({checkSemestersWhenAdd:false})
+            this.setState({checkSemestersWhenAdd: false})
         }
     }
 
@@ -115,65 +106,70 @@ class Semester extends React.Component {
                         Thêm mới học kì
                     </button>
                 </div>
-                <table className="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên học kỳ</th>
-                        <th className="style-center">Sửa</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        (this.state.semesters || []).map((e, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{e.value}</td>
-                                    <td className="style-center">
-                                        <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                                data-toggle="modal"
-                                                data-target="#modalEditSemester"
-                                                onClick={() => this.selectSemester(e.id_semester, e.value)}>
-                                            Chỉnh sửa
-                                        </button>
+                <div className="body-semester">
+                    <div className="tbl-semester">
+                        <table className="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên học kỳ</th>
+                                <th className="style-center">Sửa</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                (this.state.semesters || []).map((e, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{e.value}</td>
+                                            <td className="style-center">
+                                                <button className="btn btn-info" style={{padding: "2px 5px"}}
+                                                        data-toggle="modal"
+                                                        data-target="#modalEditSemester"
+                                                        onClick={() => this.selectSemester(e.id_semester, e.value)}>
+                                                    Chỉnh sửa
+                                                </button>
 
-                                    </td>
-                                </tr>
-                            );
-                        })
-                    }
-                    </tbody>
-                </table>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <ModelCustom idModal="modalAddNewSemester"
-                       title="Thêm mới học kỳ "
-                       brandButton="Thêm mới"
-                       acceptButton={this.handleAddNewSemester}
-                       childrenContent={
-                           <div>
-                               <div className="form-group">
-                                   <label>Tên học kì: </label>
-                                   <input type="text" className="form-control" name="semesterAdd" value={this.state.semesterAdd} onChange={this.handleChange}/>
-                               </div>
-                           </div>
-                       }
+                             title="Thêm mới học kỳ "
+                             brandButton="Thêm mới"
+                             acceptButton={this.handleAddNewSemester}
+                             childrenContent={
+                                 <div>
+                                     <div className="form-group">
+                                         <label>Tên học kì: </label>
+                                         <input type="text" className="form-control" name="semesterAdd"
+                                                value={this.state.semesterAdd} onChange={this.handleChange}/>
+                                     </div>
+                                 </div>
+                             }
                 />
                 <ModelCustom idModal="modalEditSemester"
-                       title="Chỉnh sửa học kỳ "
-                       brandButton="Chỉnh sửa "
-                       acceptButton={
-                           this.handleEditSemester
-                       }
-                       childrenContent={
-                           <div>
-                               <div className="form-group">
-                                   <label>Tên học kì: </label>
-                                   <input type="text" className="form-control" name="semesterEdit"
-                                          value={this.state.semesterEdit} onChange={this.handleChange}/>
-                               </div>
-                           </div>
-                       }
+                             title="Chỉnh sửa học kỳ "
+                             brandButton="Chỉnh sửa "
+                             acceptButton={
+                                 this.handleEditSemester
+                             }
+                             childrenContent={
+                                 <div>
+                                     <div className="form-group">
+                                         <label>Tên học kì: </label>
+                                         <input type="text" className="form-control" name="semesterEdit"
+                                                value={this.state.semesterEdit} onChange={this.handleChange}/>
+                                     </div>
+                                 </div>
+                             }
                 />
             </div>)
     }

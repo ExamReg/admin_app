@@ -2,7 +2,7 @@ import React from "react";
 import {getListRoom, addNewRoom, editRoom} from "../../api/room-api";
 import Modal from "../modal/modal";
 import {notification} from "../../utils/noti";
-
+import "./room.css"
 class Room extends  React.Component{
     constructor(props)
     {
@@ -91,17 +91,19 @@ class Room extends  React.Component{
 
     render() {
         return (
-            <div className="container-semester">
+            <div className="container-room">
                 <div className="title">
                     Quản lý phòng học
                 </div>
-                <div className="header-semester">
+                <div className="header-room">
                     <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
                             data-target="#modalAddNewRoom">
                         <i className="fas fa-plus"></i>
                         Thêm mới phòng học
                     </button>
                 </div>
+                <div className="body-room">
+                    <div className="tbl-room">
                 <table className="table table-bordered">
                     <thead>
                     <tr>
@@ -133,6 +135,8 @@ class Room extends  React.Component{
                     }
                     </tbody>
                 </table>
+                    </div>
+                </div>
                 <Modal acceptButton={this.addNewRoom}
                        idModal="modalAddNewRoom"
                        title="Thêm mới phòng học "

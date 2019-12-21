@@ -13,3 +13,56 @@
 .semester-of-course {
     float: right;
 }
+/*HEADER*/
+
+.course-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.course-header .course-header-left{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2,1fr);
+    align-items: center;
+}
+.course-header .course-header-right{
+    align-items: center;
+}
+.course-header .header-items {
+    display: flex;
+    align-items: center;
+    margin:0px 0px 10px 0px;
+}
+
+.course-header .header-items .input-find{
+    border-radius: 3px;
+    border: 1px solid #007bff;
+    padding:6px 5px;
+    width: 250px;
+    height: 35px;
+}
+.course-header .header-items .select-item{
+    margin-left: 10px;
+    width: 250px;
+    height: 35px;
+    background-color: #fff;
+    border-color: #007bff;
+    border-radius: 3px;
+}
+/*BODY*/
+.container-course .course-body{
+    margin: 10px 0px;
+}
+.course-body .tbl-course{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.course-body .tbl-course table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}
