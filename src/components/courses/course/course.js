@@ -37,6 +37,7 @@ export default class Course extends React.Component{
 
     }
     render() {
+        console.log(this.props.location)
         return(
             <div className="container-course">
                 <div className="title">

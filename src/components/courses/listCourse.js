@@ -195,8 +195,8 @@ export default class ListCourse extends React.Component {
         }
     };
 
-    settingCourse = (id_course) => {
-        redirect_to(`/dashboard/courses/setting?id_course=${id_course}`)
+    settingCourse = (id_cs, course_name) => {
+        redirect_to(`/dashboard/courses/setting?id_cs=${id_cs}&course_name=${course_name}`)
     };
     render() {
         return (

@@ -90,6 +90,7 @@ class Semester extends React.Component {
             notification("warning", "Xin hãy điền đầy đủ thông tin ")
         }
     }
+
     componentDidMount() {
         this.handleGetSemester();
     }
