@@ -13,7 +13,9 @@ class ModelCustom extends React.Component {
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div className="modal-body">
+
                             {this.props.childrenContent}
+
                         </div>
                         <div className="modal-footer">
                             <div className="modal-footer-left">
