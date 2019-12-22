@@ -5,7 +5,7 @@ import "./modal.css"
 class ModelCustom extends React.Component {
     render() {
         return (
-            <div id={this.props.idModal} className="modal fade" role="dialog" show={this.props.show}>
+            <div id={this.props.idModal} className={"modal fade" + this.props.show} role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
