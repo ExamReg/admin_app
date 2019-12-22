@@ -129,7 +129,7 @@ export default class ListCourse extends React.Component {
     async componentDidMount() {
         console.log("1");
         let result = await getSemester();
-        if (result.success) {
+        if (result.success && result.data.semesters.length > 0) {
             const res = await getCourse({
                 id_semester: result.data.semesters[0].id_semester,
                 page_number: this.state.page_number - 1,

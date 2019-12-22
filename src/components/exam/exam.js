@@ -78,7 +78,7 @@ class Exam extends React.Component {
     };
     handleGetSemester = async () => {
         let res = await getSemester();
-        if (res.success) {
+        if (res.success && res.data.semesters.length > 0) {
             let result = await getCourse({id_semester: res.data.semesters[0].id_semester, page_size: 10000});
             this.setState({
                 semesters: res.data.semesters,
@@ -142,13 +142,14 @@ class Exam extends React.Component {
             {
                 notification("success", "Tạo mới ca thi thành công");
                 this.setState({checkChangeExams:true})
-
             }
             else {
                 notification("error", res.message);
+
             }
         } else {
             notification("warning", "Xin điền đủ thông tin ");
+            this.deleteData();
         }
     };
 
