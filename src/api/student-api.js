@@ -1,4 +1,4 @@
-import {sendGetRequestRoute1, sendPostRequest, sendPutRequest} from "./api-send";
+import {sendDeleteRequest, sendGetRequestRoute1, sendPostRequest, sendPutRequest} from "./api-send";
 
 
 
@@ -26,4 +26,14 @@ export function importStudent(payload) {
         token: localStorage.getItem("token"),
         'content-type': 'multipart/form-data'
     });
+}
+
+export function changeStatusStudentInCourse(params, payload) {
+    let route = `/courses/${params.id_cs}/students/${params.id_student}/status`;
+    return sendPutRequest(route, payload);
+}
+
+export function removeStudentFromCourse(params) {
+    let route = `/courses/${params.id_cs}/students/${params.id_student}`;
+    return sendDeleteRequest(route)
 }

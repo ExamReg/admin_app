@@ -5,6 +5,7 @@ import qs from "query-string";
 import ModelCustom from "../../modal/modal";
 import {getCourseInfo, getStudentInCourse, postStudentNotEnoughCondition} from "../../../api/course-api";
 import {notification} from "../../../utils/noti";
+import {changeStatusStudentInCourse, removeStudentFromCourse} from "../../../api/student-api";
 
 export default class Course extends React.Component {
     constructor(props) {
@@ -14,10 +15,13 @@ export default class Course extends React.Component {
             course: {
                 course_name: ""
             },
+            textSearch: "",
             fileStudentEnoughCondition: "",
             students: [],
-            reload: false
+            reload: false,
+            keyInput: Math.random().toString(36)
         };
+        this.delayTime = null;
     }
 
     async componentDidMount() {
@@ -25,7 +29,7 @@ export default class Course extends React.Component {
         let parsed = qs.parse(a);
         const res = await getCourseInfo(parsed.id_cs);
         if (res.success) {
-            const result = await getStudentInCourse(parsed.id_cs);
+            const result = await getStudentInCourse(parsed.id_cs, {});
             this.setState({
                 id_cs: parsed.id_cs,
                 course: res.data.course,
@@ -35,7 +39,12 @@ export default class Course extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-
+        if(this.state.reload){
+            this.reloadPage()
+        }
+        if(this.state.textSearch !== prevState.textSearch){
+            this.handleTimeOut(300);
+        }
     }
 
     handleChange = e => {
@@ -49,8 +58,16 @@ export default class Course extends React.Component {
             });
         }
     };
-    handleEditInfoStudent = () => {
-        console.log(this.state);
+    changeStatus = async (id_student, is_eligible) => {
+        let result = await changeStatusStudentInCourse({
+            id_student,
+            id_cs: this.state.id_cs
+        }, {is_eligible: !is_eligible})
+        if(result.success){
+            this.setState({
+                reload: true
+            })
+        }
     };
     handleImportFile = async () => {
         if (!this.state.fileStudentEnoughCondition) {
@@ -69,10 +86,39 @@ export default class Course extends React.Component {
     };
 
     reloadPage = async () => {
-        const result = await getStudentInCourse(this.state.id_cs);
+        const result = await getStudentInCourse(this.state.id_cs, {text: this.state.textSearch});
         this.setState({
-            students: result.data.students
+            students: result.data.students,
+            reload: false
         });
+    };
+
+    handleTimeOut = (timeDelay) => {
+        clearTimeout(this.delayTime);
+        this.delayTime = setTimeout(async () => {
+            this.setState({
+                reload: true
+            })
+        }, timeDelay);
+    };
+
+    deleteData = () =>{
+        this.setState({
+            fileStudentEnoughCondition: null,
+            keyInput: Math.random().toString(36)
+        });
+    };
+
+    removeStudentFromCourse = async (id_student) => {
+        let result = await removeStudentFromCourse({id_student, id_cs: this.state.id_cs});
+        if(result.success){
+            notification("success", "Xoá sinh viên ra khỏi môn học thành công.")
+            this.setState({
+                reload: true
+            })
+        }else{
+            notification("error", result.message)
+        }
     };
 
     render() {
@@ -93,6 +139,9 @@ export default class Course extends React.Component {
                                 className="input-find"
                                 type="text"
                                 placeholder="Nhập mã/tên sinh viên "
+                                value={this.state.textSearch}
+                                onChange={this.handleChange}
+                                name="textSearch"
                             />
                         </div>
                         <div className="header-items">
@@ -139,10 +188,10 @@ export default class Course extends React.Component {
                                             )}
                                         </td>
                                         <td style={{display: "inline-block"}}>
-                                            <button className="btn btn-secondary btn-sm btn-space-right">
-                                                Kích hoạt
+                                            <button className="btn btn-secondary btn-sm btn-space-right" onClick={() => {this.changeStatus(e.id_student, e.is_eligible)}}>
+                                                Đổi trạng thái
                                             </button>
-                                            <button className="btn btn-danger btn-sm btn-space-right">
+                                            <button className="btn btn-danger btn-sm btn-space-right" onClick={() => {this.removeStudentFromCourse(e.id_student)}}>
                                                 <i className="fas fa-trash-alt"/>
                                             </button>
                                         </td>
@@ -158,6 +207,8 @@ export default class Course extends React.Component {
                     idModal="modalImportFile"
                     title="Nhập file danh sách sinh viên đủ điều kiện dự thi"
                     brandButton="Thêm "
+                    cancelButton={this.deleteData}
+
                     childrenContent={
                         <div className="form-group">
                             <label>Danh sách sinh viên:</label>
@@ -166,6 +217,7 @@ export default class Course extends React.Component {
                                 className="form-control-file border"
                                 name="fileStudentEnoughCondition"
                                 onChange={this.handleChange}
+                                key={this.state.keyInput}
                             />
                             <br/>
                             <i style={{color: "red"}}>

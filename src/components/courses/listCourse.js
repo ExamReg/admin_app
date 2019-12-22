@@ -33,8 +33,8 @@ export default class ListCourse extends React.Component {
             page_number: 1,
             page_count: 1,
             next_page: false,
-            change_page_size: false
-
+            change_page_size: false,
+            keyInput: Math.random().toString(36)
         };
         this.delayTime = null;
     }
@@ -62,14 +62,16 @@ export default class ListCourse extends React.Component {
         this.setState({idSemesterSelect: idSems});
     };
     deleteData = () =>{
+        console.log("oki");
         this.setState({
             nameCourse: "",
             idCourse: "",
             fileCourse: "",
             idClassCourse: "",
-            idSemesterSelect: ""
-        })
-    }
+            idSemesterSelect: "",
+            keyInput: Math.random().toString(36)
+        });
+    };
     handleGetSemester = async () => {
 
     };
@@ -336,7 +338,7 @@ export default class ListCourse extends React.Component {
                             </div>
                             <div className="form-group">
                                 <label>Tệp danh sách khóa học:</label>
-                                <input type="file" className="form-control-file border" name="fileCourse"
+                                <input type="file" className="form-control-file border" name="fileCourse" key={this.state.keyInput}
                                        onChange={this.handleChange}/>
                                 <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
                             </div>

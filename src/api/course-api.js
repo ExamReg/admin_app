@@ -23,8 +23,11 @@ export function getCourseInfo(id_cs) {
     let route = `/courses/${id_cs}`;
     return sendGetRequestRoute2(route);
 }
-export function getStudentInCourse(id_cs) {
+export function getStudentInCourse(id_cs, query) {
     let route = `/courses/${id_cs}/students`;
+    if(query.text){
+        route += `?text=${query.text}`
+    }
     return sendGetRequestRoute1(route);
 }
 

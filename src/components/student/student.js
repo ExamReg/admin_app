@@ -21,7 +21,8 @@ export default class Student extends React.Component {
             oldIdStu: "",
             idStuEdit:"",
             nameStudEdit:"",
-            birthStuEdit:""
+            birthStuEdit:"",
+            keyInput: Math.random().toString(36)
         };
         this.delayTime = null;
     }
@@ -169,6 +170,14 @@ export default class Student extends React.Component {
         let result = await resetPasswordOfStudent(this.state.idStuEdit);
         result.success === true ? notification("success", "Reset mật khẩu thành công. ") : notification("error", result.message);
     };
+
+    deleteData = () =>{
+        this.setState({
+            fileStudents: null,
+            keyInput: Math.random().toString(36)
+        });
+    };
+
     render() {
         return (
             <div className="student">
@@ -240,11 +249,12 @@ export default class Student extends React.Component {
                         title="Thêm mới học sinh "
                         acceptButton={this.addNewStudent}
                         brandButton="Thêm mới "
+                        cancelButton={this.deleteData}
                         childrenContent={
                             <div>
                                 <div className="form-group">
                                     <label>Danh sách sinh viên:</label>
-                                    <input type="file" className="form-control-file border" name="fileStudents"
+                                    <input type="file" className="form-control-file border" name="fileStudents" key={this.state.keyInput}
                                            onChange={this.handleChange}/>
                                            <br/>
                                     <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>

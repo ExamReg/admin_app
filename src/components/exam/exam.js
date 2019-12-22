@@ -53,7 +53,7 @@ class Exam extends React.Component {
             idRoomAdd: "",
             idSemesterAdd: ""
         })
-    }
+    };
     handleChange = e => {
         if (e.target.name === "fileStudents") {
             this.setState({
@@ -64,7 +64,6 @@ class Exam extends React.Component {
                 [e.target.name]: e.target.value
             });
         }
-        console.log("hello")
     };
 
     handleChangeDate = (date, column_state) => {
@@ -74,8 +73,13 @@ class Exam extends React.Component {
         });
     };
     selectSemester = (event) => {
-        const idSems = event.target[event.target.selectedIndex].value;
-        this.setState({idSemester: idSems, textSearch: ""});
+        const idSemester = event.target.value;
+        let index = this.state.semesters.findIndex(e => parseInt(e.id_semester) === parseInt(idSemester));
+        this.setState({
+            idSemester: idSemester,
+            textSearch: "",
+            nameSemesterEdit: this.state.semesters[index].value
+        });
     };
     selectCourseInAdd = (event) => {
         const idcs = event.target[event.target.selectedIndex].value;
@@ -93,11 +97,11 @@ class Exam extends React.Component {
         let res = await getSemester();
         if (res.success && res.data.semesters.length > 0) {
             let result = await getExams(res.data.semesters[0].id_semester, "");
-
             this.setState({
                 semesters: res.data.semesters,
                 idSemester: res.data.semesters[0].id_semester,
-                exams: result.data.exams
+                exams: result.data.exams,
+                nameSemesterEdit: res.data.semesters[0].value
             });
         } else {
             console.log(res.message)
@@ -206,7 +210,7 @@ class Exam extends React.Component {
                 time_end: timeEndEdit,
                 maximum_seating: totalStudentEdit,
                 id_room: idRoomEdit
-            }
+            };
 
             const res = await editExam(data, idSlot);
             if(res.success)
@@ -269,8 +273,7 @@ class Exam extends React.Component {
                                 {
                                     this.state.semesters.map((e, index) => {
                                         return (
-                                            <option key={e.id_semester}
-                                                    defaultValue={e.id_semester === this.state.idSemester ? "selected" : ""}
+                                            <option key={index++}
                                                     value={e.id_semester}
                                             >
                                                 {e.value}
@@ -342,7 +345,7 @@ class Exam extends React.Component {
                                             <td>{e.maximum_seating}</td>
                                             <td>
                                                 <button className="btn btn-info btn-sm" data-toggle="modal" data-target="#modalEditExam"
-                                                        onClick={() => this.clickBtnEdit(e.id_slot,e.course_name,parseInt(e.time_start),parseInt(e.time_end),e.location, e.maximum_seating)}
+                                                        onClick={() => this.clickBtnEdit(e.id_slot, e.course_name,parseInt(e.time_start),parseInt(e.time_end),e.location, e.maximum_seating)}
                                                 >
                                                     Chỉnh sửa
                                                 </button>
@@ -459,13 +462,13 @@ class Exam extends React.Component {
                                      <div className="form-group">
                                          <label>Kỳ học:</label>
                                          <input type="text" className="form-control" name="nameSemesterEdit"
-                                                defaultValue={this.state.nameSemesterEdit}
+                                                defaultValue={this.state.nameSemesterEdit} readOnly
                                          />
                                      </div>
                                      <div className="form-group">
                                          <label>Môn học:</label>
                                          <input type="text" className="form-control" name="nameCourseEdit"
-                                                defaultValue={this.state.nameCourseEdit}
+                                                defaultValue={this.state.nameCourseEdit} readOnly
                                          />
                                      </div>
                                      <div className="form-group">
