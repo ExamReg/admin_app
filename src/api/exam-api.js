@@ -1,4 +1,4 @@
-import {sendGetRequestRoute1, sendPostRequest} from "./api-send";
+import {sendGetRequestRoute1, sendPostRequest, sendPutRequest} from "./api-send";
 
 export function getExams(id_semester, textSearch) {
     let route = `/exams?id_semester=${id_semester}&text=${textSearch}`;
@@ -8,6 +8,10 @@ export function addNewExam(data) {
     let route = "/exams";
     let headers = {
         token: localStorage.getItem("token")
-    }
+    };
     return sendPostRequest(route, data, headers);
+}
+export function editExam(data, idSlot) {
+    let route = `/exams/${idSlot}`;
+    return sendPutRequest(route, data);
 }

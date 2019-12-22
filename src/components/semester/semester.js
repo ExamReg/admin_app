@@ -150,8 +150,8 @@ class Semester extends React.Component {
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{e.value}</td>
-                                            <td>{e.register_from ? moment(parseInt(e.register_from)).utcOffset(420).format("YYYY/MM/DD hh:mm") : "Chưa có"}</td>
-                                            <td>{e.register_to ? moment(parseInt(e.register_to)).utcOffset(420).format("YYYY/MM/DD hh:mm") : "Chưa có"}</td>
+                                            <td>{e.register_from ? moment(parseInt(e.register_from)).utcOffset(420).format("YYYY/MM/DD HH:mm") : "Chưa có"}</td>
+                                            <td>{e.register_to ? moment(parseInt(e.register_to)).utcOffset(420).format("YYYY/MM/DD HH:mm") : "Chưa có"}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
                                                         data-toggle="modal"
@@ -187,7 +187,7 @@ class Semester extends React.Component {
                                                  startRegisterAdd={parseInt(this.state.startRegisterAdd)}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"startRegisterAdd"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                              />
                                          </div>
@@ -199,7 +199,7 @@ class Semester extends React.Component {
                                                  endRegisterAdd={parseInt(this.state.endRegisterAdd)}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"endRegisterAdd"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                              />
                                          </div>
