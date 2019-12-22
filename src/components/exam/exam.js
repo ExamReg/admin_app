@@ -3,7 +3,7 @@ import "./exam.css"
 import DatePickerCustom from "../datepicker/datepicker"
 import moment from "moment";
 import {getSemester, getCourse} from "../../api/course-api";
-import {addNewExam, getExams} from "../../api/exam-api";
+import {addNewExam, getExams, editExam} from "../../api/exam-api";
 import Pagination from "../pagination/pagination";
 import ModelCustom from "../modal/modal";
 import {notification} from "../../utils/noti";
@@ -31,7 +31,16 @@ class Exam extends React.Component {
             idRoomAdd: "",
             idSemesterAdd: "",
             courses: [],
-            rooms: []
+            rooms: [],
+
+            totalStudentEdit: "",
+            timeStartEdit: "",
+            timeEndEdit: "",
+            nameCourseEdit: "",
+            idRoomEdit: "",
+            nameSemesterEdit:"",
+
+            idSlot:""
 
         }
     }
@@ -57,6 +66,7 @@ class Exam extends React.Component {
         }
         console.log("hello")
     };
+
     handleChangeDate = (date, column_state) => {
         const valueOfInput = moment(date).valueOf();
         this.setState({
@@ -65,7 +75,6 @@ class Exam extends React.Component {
     };
     selectSemester = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
-        console.log(idSems);
         this.setState({idSemester: idSems, textSearch: ""});
     };
     selectCourseInAdd = (event) => {
@@ -76,14 +85,19 @@ class Exam extends React.Component {
         const idroom = event.target[event.target.selectedIndex].value;
         this.setState({idRoomAdd: idroom});
     };
+    selectRoomInEdit = (event) =>{
+        const idroom = event.target[event.target.selectedIndex].value;
+        this.setState({idRoomEdit: idroom});
+    }
     handleGetSemester = async () => {
         let res = await getSemester();
         if (res.success && res.data.semesters.length > 0) {
-            let result = await getCourse({id_semester: res.data.semesters[0].id_semester, page_size: 10000});
+            let result = await getExams(res.data.semesters[0].id_semester, "");
+
             this.setState({
                 semesters: res.data.semesters,
                 idSemester: res.data.semesters[0].id_semester,
-                courses: result.data.courses
+                exams: result.data.exams
             });
         } else {
             console.log(res.message)
@@ -135,7 +149,6 @@ class Exam extends React.Component {
                 id_room: idRoomAdd,
                 maximum_seating: totalStudentAdd
             };
-            console.log(data)
             const res = await addNewExam(data)
 
             if(res.success)
@@ -153,13 +166,6 @@ class Exam extends React.Component {
         }
     };
 
-    componentDidMount() {
-        this.handleGetSemester();
-        this.handleGetExams();
-        // this.handleGetCourse();
-        this.handleGetRooms();
-    }
-
     changeCourseSemesterWhenAdd = async (e) => {
         const idSemesterAdd = e.target[e.target.selectedIndex].value;
         this.setState({idSemesterAdd: idSemesterAdd});
@@ -169,13 +175,63 @@ class Exam extends React.Component {
         const maximum_seating = e.target.value;
         this.setState({totalStudentAdd: maximum_seating});
     };
+    clickBtnEdit = (idslot ,cs_name, times, timee, room, maxn) =>{
+        let arr = this.state.rooms;
+        let idroom;
+        for( let i = 0 ; i < arr.length; i++)
+        {
+            if(arr[i].location === room)
+            {
+                idroom = arr[i].id_room;
+                break;
+            }
+        }
+        this.setState({
+            idSlot: idslot,
+            totalStudentEdit: maxn,
+            timeStartEdit: times,
+            timeEndEdit: timee,
+            nameCourseEdit: cs_name,
+            idRoomEdit: idroom,
+           /* nameSemesterEdit: a*/
+        })
 
+    };
+    editExam = async () =>{
+        const {idSlot, timeStartEdit, timeEndEdit, idRoomEdit, totalStudentEdit} = this.state;
+        if(timeStartEdit && timeEndEdit && idRoomEdit && totalStudentEdit)
+        {
+            let data = {
+                time_start: timeStartEdit,
+                time_end: timeEndEdit,
+                maximum_seating: totalStudentEdit,
+                id_room: idRoomEdit
+            }
+
+            const res = await editExam(data, idSlot);
+            if(res.success)
+            {
+                notification("success", "Chỉnh sửa thông tin ca thi thành công ");
+                this.setState({checkChangeExams:true})
+            }
+            else {
+                notification("error", res.message)
+            }
+        }
+        else notification("warning", "Xin điền đủ thông tin ")
+    }
+
+    componentDidMount() {
+        this.handleGetSemester();
+        /*this.handleGetCourse();*/
+        this.handleGetRooms();
+    }
     componentDidUpdate(prevProps, prevState, snapshot) {
         // if(this.state.textSearch !== prevState.textSearch)
         // {
         //     this.handleGetExamByTextSeach();
         // }
-        if (this.state.idSemester !== prevState.idSemester && this.state.semesters.length !== prevState.semesters.length) {
+        if (this.state.idSemester !== prevState.idSemester && this.state.semesters.length === prevState.semesters.length) {
             this.handleGetExams();
         }
         if (this.state.idSemesterAdd !== prevState.idSemesterAdd) {
@@ -230,7 +286,7 @@ class Exam extends React.Component {
                                 startDate={this.state.startDate}
                                 handleChangeDate={this.handleChangeDate}
                                 name={"startDate"}
-                                dateFormat="Y/M/d hh:mm"
+                                dateFormat="Y/M/d HH:mm"
                                 timeFormat="HH:mm"
                             />
                         </div>
@@ -240,7 +296,7 @@ class Exam extends React.Component {
                                 endDate={this.state.endDate}
                                 handleChangeDate={this.handleChangeDate}
                                 name={"endDate"}
-                                dateFormat="Y/M/d hh:mm"
+                                dateFormat="Y/M/d HH:mm"
                                 timeFormat="HH:mm"
                             />
 
@@ -280,12 +336,14 @@ class Exam extends React.Component {
                                             <td>{index + 1}</td>
                                             <td>{e.course_name}</td>
                                             <td>{e.id_course}</td>
-                                            <td>{moment(parseInt(e.time_start)).utcOffset(420).format("YYYY/MM/DD hh:mm")}</td>
-                                            <td>{moment(parseInt(e.time_end)).utcOffset(420).format("YYYY/MM/DD hh:mm")}</td>
+                                            <td>{moment(parseInt(e.time_start)).utcOffset(420).format("YYYY/MM/DD HH:mm")}</td>
+                                            <td>{moment(parseInt(e.time_end)).utcOffset(420).format("YYYY/MM/DD HH:mm")}</td>
                                             <td>{e.location}</td>
                                             <td>{e.maximum_seating}</td>
                                             <td>
-                                                <button className="btn btn-info btn-sm">
+                                                <button className="btn btn-info btn-sm" data-toggle="modal" data-target="#modalEditExam"
+                                                        onClick={() => this.clickBtnEdit(e.id_slot,e.course_name,parseInt(e.time_start),parseInt(e.time_end),e.location, e.maximum_seating)}
+                                                >
                                                     Chỉnh sửa
                                                 </button>
                                             </td>
@@ -349,7 +407,7 @@ class Exam extends React.Component {
                                                  timeStartAdd={this.state.timeStartAdd}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"timeStartAdd"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                                  value = {this.state.timeStartAdd}
                                              />
@@ -362,7 +420,7 @@ class Exam extends React.Component {
                                                  timeEndAdd={this.state.timeEndAdd}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"timeEndAdd"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                                  value = {this.state.timeEndAdd}
                                              />
@@ -378,6 +436,71 @@ class Exam extends React.Component {
                                          <div className="dropdown">
                                              <select className="select-item-form" onChange={this.selectRoomInAdd} value={this.state.idRoomAdd}>
                                                  <option key="" value="">---</option>
+                                                 {
+                                                     this.state.rooms.map((e, index) => {
+                                                         return (
+                                                             <option key={e.id_room}
+                                                                     value={e.id_room}>{e.location}</option>
+                                                         );
+                                                     })
+                                                 }
+                                             </select>
+                                         </div>
+                                     </div>
+                                 </div>
+                             }
+                />
+                <ModelCustom acceptButton={this.editExam}
+                             idModal="modalEditExam"
+                             title="Chỉnh sửa ca thi "
+                             brandButton="Chỉnh sửa "
+                             childrenContent={
+                                 <div>
+                                     <div className="form-group">
+                                         <label>Kỳ học:</label>
+                                         <input type="text" className="form-control" name="nameSemesterEdit"
+                                                defaultValue={this.state.nameSemesterEdit}
+                                         />
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Môn học:</label>
+                                         <input type="text" className="form-control" name="nameCourseEdit"
+                                                defaultValue={this.state.nameCourseEdit}
+                                         />
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Thời gian bắt đầu:</label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 timeStartEdit={this.state.timeStartEdit}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"timeStartEdit"}
+                                                 dateFormat="Y/M/d HH:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Thời gian kết thúc:</label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 timeEndEdit={this.state.timeEndEdit}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"timeEndEdit"}
+                                                 dateFormat="Y/M/d HH:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Tổng SV:</label>
+                                         <input type="text" className="form-control" name="totalStudentEdit"
+                                                value={this.state.totalStudentEdit} onChange={this.handleChange}/>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Phòng thi: </label>
+                                         <div className="dropdown">
+                                             <select className="select-item-form" name="idRoomEdit" defaultValue={this.state.idRoomEdit} onChange={this.selectRoomInEdit}>
                                                  {
                                                      this.state.rooms.map((e, index) => {
                                                          return (

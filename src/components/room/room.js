@@ -19,6 +19,18 @@ class Room extends React.Component {
             changeRooms: false
         }
     }
+    deleteDataInEdit = () =>{
+        this.setState({
+            nameRoomEdit: "",
+            numberSeatEdit: ""
+        })
+    }
+    deleteDataInAdd = () =>{
+        this.setState({
+            nameRoom: "",
+            numberSeat: ""
+        })
+    }
 
     handleChange = (e) => {
         let nam = e.target.name;
@@ -51,28 +63,41 @@ class Room extends React.Component {
                 this.setState({
                     nameRoom: "",
                     numberSeat: "",
-                    changeRooms: true,
-
-                    nameRoomEdit: "",
-                    numberSeatEdit: "",
+                    changeRooms: true
                 });
                 notification("success", "Tạo mới khóa học thành công ")
             } else
                 notification("error", res.message)
+                this.deleteDataInAdd();
         } else {
             notification("warning", "Xin điền đủ thông tin ")
+            this.deleteDataInAdd();
         }
     };
     editRoom = async () => {
         let {nameRoomEdit, numberSeatEdit, id_room_change} = this.state;
-        console.log(this.state);
-        let payload = {
-            location: nameRoomEdit,
-            maximum_seating: numberSeatEdit
-        };
-        let result = await editRoom(id_room_change, payload);
-        result.success === true ? notification("success", "Cập nhật thành công.") : notification("error", result.message);
-        this.componentDidMount();
+        if(nameRoomEdit && numberSeatEdit) {
+            console.log(this.state);
+            let payload = {
+                location: nameRoomEdit,
+                maximum_seating: numberSeatEdit
+            };
+            let result = await editRoom(id_room_change, payload);
+            if(result.success)
+            {
+                this.setState({changeRooms:true});
+                this.deleteDataInEdit();
+                notification("success", "Chỉnh sửa thông tin lớp học thành công")
+            }
+            else {
+                notification("error", result.message);
+                this.deleteDataInEdit();
+            }
+        }
+        else {
+            notification("warning", "Xin điền đủ thông tin ")
+            this.deleteDataInEdit();
+        }
     };
 
     componentDidMount() {
@@ -140,6 +165,7 @@ class Room extends React.Component {
                        idModal="modalAddNewRoom"
                        title="Thêm mới phòng học "
                        brandButton="Thêm mới "
+                       cancelButton={this.deleteDataInAdd}
                        childrenContent={
                            <div>
                                <div className="form-group">
@@ -162,6 +188,7 @@ class Room extends React.Component {
                        idModal="modalEditRoom"
                        title="Chỉnh sửa thông tin phòng học "
                        brandButton="Chỉnh sửa "
+                       cancelButton={this.deleteDataInEdit}
                        childrenContent={
                            <div>
                                <div className="form-group">

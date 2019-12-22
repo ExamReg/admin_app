@@ -295,59 +295,60 @@ export default class ListCourse extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    <ModelCustom
-                        idModal="modalAddNewCourse"
-                        title="Thêm mới khóa học "
-                        brandButton="Thêm mới "
-                        acceptButton={this.handleAddNewCourse}
-                        cancelButton={this.deleteData}
-                        childrenContent={
-                            <div>
-                                <div className="form-group">
-                                    <label>Tên khóa học :</label>
-                                    <input type="text" className="form-control" name="nameCourse"
-                                           onChange={this.handleChange} value={this.state.nameCourse}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Mã khóa học :</label>
-                                    <input type="text" className="form-control" name="idCourse"
-                                           onChange={this.handleChange} value={this.state.idCourse}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Tệp danh sách khóa học:</label>
-                                    <input type="file" className="form-control-file border" name="fileCourse"
-                                           onChange={this.handleChange}/>
-                                    <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
-                                </div>
-                                <div className="form-group">
-                                    <label>Mã số lớp học:</label>
-                                    <input type="text" className="form-control" name="idClassCourse"
-                                           onChange={this.handleChange} value={this.state.idClassCourse}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Học kì:</label>
-                                    <div className="dropdown">
-                                        <select className="select-item-form" onChange={this.selectSemesterInAdd} value={this.state.idSemesterSelect}>
-                                            <option key="" value="">---</option>
-                                            {
-                                                this.state.semesters.map((e, index) => {
-                                                    return (
-                                                        <option key={e.id_semester}
-                                                                value={e.id_semester}>{e.value}</option>
-                                                    );
-                                                })
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    />
                 </div>
                 <div className="list-course-bottom">
                     <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
                                       currentPage={this.state.page_number}/>
                 </div>
+                <ModelCustom
+                    idModal="modalAddNewCourse"
+                    title="Thêm mới khóa học "
+                    brandButton="Thêm mới "
+                    acceptButton={this.handleAddNewCourse}
+                    cancelButton={this.deleteData}
+                    childrenContent={
+                        <div>
+                            <div className="form-group">
+                                <label>Học kì:</label>
+                                <div className="dropdown">
+                                    <select className="select-item-form" onChange={this.selectSemesterInAdd} value={this.state.idSemesterSelect}>
+                                        <option key="" value="">---</option>
+                                        {
+                                            this.state.semesters.map((e, index) => {
+                                                return (
+                                                    <option key={e.id_semester}
+                                                            value={e.id_semester}>{e.value}</option>
+                                                );
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label>Tên khóa học :</label>
+                                <input type="text" className="form-control" name="nameCourse"
+                                       onChange={this.handleChange} value={this.state.nameCourse}/>
+                            </div>
+                            <div className="form-group">
+                                <label>Mã khóa học :</label>
+                                <input type="text" className="form-control" name="idCourse"
+                                       onChange={this.handleChange} value={this.state.idCourse}/>
+                            </div>
+                            <div className="form-group">
+                                <label>Tệp danh sách khóa học:</label>
+                                <input type="file" className="form-control-file border" name="fileCourse"
+                                       onChange={this.handleChange}/>
+                                <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
+                            </div>
+                            <div className="form-group">
+                                <label>Mã số lớp học:</label>
+                                <input type="text" className="form-control" name="idClassCourse"
+                                       onChange={this.handleChange} value={this.state.idClassCourse}/>
+                            </div>
+
+                        </div>
+                    }
+                />
             </div>
         );
     }

@@ -47,7 +47,7 @@ ModelCustom.propTypes = {
     title: PropTypes.string,
     brandButton: PropTypes.string,
     acceptButton: PropTypes.func.isRequired,
-    cancelButton: PropTypes.func.isRequired,
+    cancelButton: PropTypes.func,
     childrenContent: PropTypes.node
 };
 
