@@ -4,6 +4,8 @@ import {getSemester} from "../../api/course-api";
 import {createNewSemester, editSemester} from "../../api/semester";
 import ModelCustom from "../modal/modal";
 import {notification} from "../../utils/noti";
+import DatePickerCustom from "../datepicker/datepicker";
+import moment from "moment";
 
 class Semester extends React.Component {
     constructor(props) {
@@ -13,8 +15,12 @@ class Semester extends React.Component {
 
             idSemester: "",
             semesterEdit: "",
+            startRegisterEdit: "",
+            endRegisterEdit: "",
 
             semesterAdd: "",
+            startRegisterAdd: "",
+            endRegisterAdd: "",
             checkSemestersWhenAdd: false
         };
         this.handleGetSemester = this.handleGetSemester.bind(this);
@@ -34,9 +40,15 @@ class Semester extends React.Component {
         }
     }
 
-    selectSemester(id_semester, name_semester) {
-        this.setState({idSemester: id_semester, semesterEdit: name_semester})
-    }
+    selectSemester = (e) => {
+        console.log(e);
+        this.setState({
+            idSemester: e.id_semester,
+            semesterEdit: e.value,
+            startRegisterEdit: e.register_from,
+            endRegisterEdit: e.register_to
+        })
+    };
 
     handleChange(e) {
         let nam = e.target.name;
@@ -45,9 +57,11 @@ class Semester extends React.Component {
     }
 
     handleAddNewSemester = async () => {
-        const {semesterAdd} = this.state;
+        const {semesterAdd, startRegisterAdd, endRegisterAdd} = this.state;
         let data = {
-            value: semesterAdd
+            value: semesterAdd,
+            register_from: startRegisterAdd,
+            register_to: endRegisterAdd
         };
         if (semesterAdd) {
             const res = await createNewSemester(data);
@@ -55,7 +69,9 @@ class Semester extends React.Component {
                 notification("success", "Tạo mới học kỳ thành công ");
                 this.setState({
                     semesterAdd: "",
-                    checkSemestersWhenAdd: true
+                    checkSemestersWhenAdd: true,
+                    startRegisterAdd: "",
+                    endRegisterAdd: ""
                 })
             } else {
                 notification("error", res.message)
@@ -65,16 +81,20 @@ class Semester extends React.Component {
         }
     };
     handleEditSemester = async () => {
-        const {idSemester, semesterEdit} = this.state;
+        const {idSemester, semesterEdit, startRegisterEdit, endRegisterEdit} = this.state;
         let data = {
-            value: semesterEdit
+            value: semesterEdit,
+            register_from: startRegisterEdit,
+            register_to: endRegisterEdit
         };
         if (semesterEdit) {
             const res = await editSemester(idSemester, data);
 
             if (res.success) {
                 notification("success", "Chỉnh sửa tên học kỳ thành công ");
-                this.setState({semesterEdit: "", checkSemestersWhenAdd: true});
+                this.setState({
+                    checkSemestersWhenAdd: true
+                });
             } else {
                 notification("error", res.message)
             }
@@ -82,7 +102,12 @@ class Semester extends React.Component {
             notification("warning", "Xin hãy điền đầy đủ thông tin ")
         }
     };
-
+    handleChangeDate = (date, column_state) => {
+        const valueOfInput = moment(date).valueOf();
+        this.setState({
+            [column_state]: valueOfInput
+        });
+    };
     componentDidMount() {
         this.handleGetSemester();
     }
@@ -125,13 +150,13 @@ class Semester extends React.Component {
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{e.value}</td>
-                                            <td>{e.register_from ? e.register_from : "Chưa có"}</td>
-                                            <td>{e.register_to ? e.register_to : "Chưa có"}</td>
+                                            <td>{e.register_from ? moment(parseInt(e.register_from)).utcOffset(420).format("YYYY/MM/DD hh:mm") : "Chưa có"}</td>
+                                            <td>{e.register_to ? moment(parseInt(e.register_to)).utcOffset(420).format("YYYY/MM/DD hh:mm") : "Chưa có"}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
                                                         data-toggle="modal"
                                                         data-target="#modalEditSemester"
-                                                        onClick={() => this.selectSemester(e.id_semester, e.value)}>
+                                                        onClick={() => this.selectSemester(e)}>
                                                     Chỉnh sửa
                                                 </button>
                                             </td>
@@ -155,6 +180,30 @@ class Semester extends React.Component {
                                          <input type="text" className="form-control" name="semesterAdd"
                                                 value={this.state.semesterAdd} onChange={this.handleChange}/>
                                      </div>
+                                     <div className="form-group">
+                                         <label>Thời gian bắt đầu đăng kí: </label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 startRegisterAdd={parseInt(this.state.startRegisterAdd)}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"startRegisterAdd"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Thời gian kết thúc đăng kí: </label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 endRegisterAdd={parseInt(this.state.endRegisterAdd)}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"endRegisterAdd"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
+                                     </div>
                                  </div>
                              }
                 />
@@ -170,6 +219,30 @@ class Semester extends React.Component {
                                          <label>Tên học kì: </label>
                                          <input type="text" className="form-control" name="semesterEdit"
                                                 value={this.state.semesterEdit} onChange={this.handleChange}/>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Thời gian bắt đầu đăng kí: </label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 startRegisterEdit={parseInt(this.state.startRegisterEdit)}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"startRegisterEdit"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="form-group">
+                                         <label>Thời gian kết thúc đăng kí: </label>
+                                         <div className="dropdown">
+                                             <DatePickerCustom
+                                                 endRegisterEdit={parseInt(this.state.endRegisterEdit)}
+                                                 handleChangeDate={this.handleChangeDate}
+                                                 name={"endRegisterEdit"}
+                                                 dateFormat="Y/M/d hh:mm"
+                                                 timeFormat="HH:mm"
+                                             />
+                                         </div>
                                      </div>
                                  </div>
                              }
