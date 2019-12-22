@@ -2,6 +2,7 @@ import { sendPostRequestWithoutToken, sendGetRequestRoute1, sendPutRequest } fro
 
 export function login(data) {
     let route = "/login";
+    console.log(route)
     return sendPostRequestWithoutToken(route, data);
 }
 

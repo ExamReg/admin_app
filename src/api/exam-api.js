@@ -6,5 +6,8 @@ export function getExams(id_semester, textSearch) {
 }
 export function addNewExam(data) {
     let route = "/exams";
-    return sendPostRequest(route, data);
+    let headers = {
+        token: localStorage.getItem("token")
+    }
+    return sendPostRequest(route, data, headers);
 }

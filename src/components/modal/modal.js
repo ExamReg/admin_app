@@ -5,12 +5,12 @@ import "./modal.css"
 class ModelCustom extends React.Component {
     render() {
         return (
-            <div id={this.props.idModal} className={"modal fade" + this.props.show} role="dialog">
-                <div className="modal-dialog">
+            <div id={this.props.idModal} className="modal fade"  data-backdrop="static" role="dialog" >
+                <div className="modal-dialog" >
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">{this.props.title}</h4>
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <button type="button" className="close" data-dismiss="modal" onClick={this.props.cancelButton}>&times;</button>
                         </div>
                         <div className="modal-body">
 
@@ -25,7 +25,7 @@ class ModelCustom extends React.Component {
                             </div>
                             <div className="modal-footer-right">
                                 <button type="button" className="btn btn-outline-dark btn-size"
-                                        data-dismiss="modal">Hủy
+                                        data-dismiss="modal" onClick={this.props.cancelButton}>Hủy
                                 </button>
                                 <button type="button" data-dismiss="modal" className="btn btn-primary btn-size btn-space"
                                         onClick={this.props.acceptButton}>
@@ -47,6 +47,7 @@ ModelCustom.propTypes = {
     title: PropTypes.string,
     brandButton: PropTypes.string,
     acceptButton: PropTypes.func.isRequired,
+    cancelButton: PropTypes.func.isRequired,
     childrenContent: PropTypes.node
 };
 
