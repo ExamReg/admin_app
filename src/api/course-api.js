@@ -27,3 +27,12 @@ export function getStudentInCourse(id_cs) {
     let route = `/courses/${id_cs}/students`;
     return sendGetRequestRoute1(route);
 }
+
+export function postStudentNotEnoughCondition(id_cs, payload) {
+    let route = `/courses/${id_cs}/import`;
+    let headers = {
+        token: localStorage.getItem("token"),
+        'content-type': 'multipart/form-data'
+    };
+    return sendPostRequest(route, payload, headers)
+}

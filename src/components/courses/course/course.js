@@ -1,9 +1,10 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import "./course.css";
-import queryString from "query-string";
+import qs from "query-string";
 import ModelCustom from "../../modal/modal";
-import {getCourseInfo, getStudentInCourse} from "../../../api/course-api";
+import {getCourseInfo, getStudentInCourse, postStudentNotEnoughCondition} from "../../../api/course-api";
+import {notification} from "../../../utils/noti";
 
 export default class Course extends React.Component {
     constructor(props) {
@@ -14,18 +15,17 @@ export default class Course extends React.Component {
                 course_name: ""
             },
             fileStudentEnoughCondition: "",
-            students: []
+            students: [],
+            reload: false
         };
     }
 
     async componentDidMount() {
         let a = this.props.location.search;
-        let parsed = queryString.parse(a);
+        let parsed = qs.parse(a);
         const res = await getCourseInfo(parsed.id_cs);
-        console.log(res);
         if (res.success) {
             const result = await getStudentInCourse(parsed.id_cs);
-            console.log(result);
             this.setState({
                 id_cs: parsed.id_cs,
                 course: res.data.course,
@@ -34,8 +34,12 @@ export default class Course extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+    }
+
     handleChange = e => {
-        if (e.target.name === "fileStudents") {
+        if (e.target.name === "fileStudentEnoughCondition") {
             this.setState({
                 [e.target.name]: e.target.files[0]
             });
@@ -45,9 +49,30 @@ export default class Course extends React.Component {
             });
         }
     };
-    handleImportFile = () => {
-    };
     handleEditInfoStudent = () => {
+        console.log(this.state);
+    };
+    handleImportFile = async () => {
+        if (!this.state.fileStudentEnoughCondition) {
+            notification("warning", "Vui lòng chọn 1 file");
+        } else {
+            let form_data = new FormData();
+            form_data.append("file_import", this.state.fileStudentEnoughCondition);
+            let result = await postStudentNotEnoughCondition(this.state.id_cs, form_data);
+            if (result.success) {
+                await this.reloadPage();
+                notification("success","Import danh sách sinh viên không đủ điều kiện dự thi thành công.")
+            } else {
+                notification("error", result.message)
+            }
+        }
+    };
+
+    reloadPage = async () => {
+        const result = await getStudentInCourse(this.state.id_cs);
+        this.setState({
+            students: result.data.students
+        });
     };
 
     render() {
@@ -85,47 +110,47 @@ export default class Course extends React.Component {
                 </div>
                 <div className="course-body">
                     <div className="tbl-course">
-                    <table className="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>MSSV</th>
-                            <th>Họ và tên</th>
-                            <th>Trạng thái</th>
-                            <th>Hoạt động</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {(this.state.students || []).map((e, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{++index}</td>
-                                    <td>{e.id_student}</td>
-                                    <td>{e.name}</td>
-                                    <td>
-                                        {e.is_eligible === 1 ? (
-                                            <span className="badge badge-success">
+                        <table className="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>MSSV</th>
+                                <th>Họ và tên</th>
+                                <th>Trạng thái</th>
+                                <th>Hoạt động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {(this.state.students || []).map((e, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{++index}</td>
+                                        <td>{e.id_student}</td>
+                                        <td>{e.name}</td>
+                                        <td>
+                                            {e.is_eligible === 1 ? (
+                                                <span className="badge badge-success">
                           Đủ điều kiện
                         </span>
-                                        ) : (
-                                            <span className="badge badge-danger">
+                                            ) : (
+                                                <span className="badge badge-danger">
                           Không đủ điều kiện
                         </span>
-                                        )}
-                                    </td>
-                                    <td style={{display: "inline-block"}}>
-                                        <button className="btn btn-secondary btn-sm btn-space-right">
-                                            Kích hoạt
-                                        </button>
-                                        <button className="btn btn-outline-secondary btn-sm">
-                                            Chỉnh sửa{" "}
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
+                                            )}
+                                        </td>
+                                        <td style={{display: "inline-block"}}>
+                                            <button className="btn btn-secondary btn-sm btn-space-right">
+                                                Kích hoạt
+                                            </button>
+                                            <button className="btn btn-danger btn-sm btn-space-right">
+                                                <i className="fas fa-trash-alt"/>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <ModelCustom
@@ -139,7 +164,7 @@ export default class Course extends React.Component {
                             <input
                                 type="file"
                                 className="form-control-file border"
-                                name="fileStudents"
+                                name="fileStudentEnoughCondition"
                                 onChange={this.handleChange}
                             />
                             <br/>

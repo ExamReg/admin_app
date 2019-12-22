@@ -284,7 +284,7 @@ export default class ListCourse extends React.Component {
                                                 <td>{++index}</td>
                                                 <td>{e.id_course}</td>
                                                 <td>{e.course_name}</td>
-                                                <td><button  type="button" className="btn btn-success btn-sm " onClick={() => {this.settingCourse(e.id_cs)}}>
+                                                <td><button  type="button" className="btn btn-success btn-sm " onClick={() => {this.settingCourse(e.id_cs, e.course_name)}}>
                                                     Cài đặt
                                                 </button></td>
                                             </tr>
