@@ -227,7 +227,7 @@ class Semester extends React.Component {
                                                  startRegisterEdit={parseInt(this.state.startRegisterEdit)}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"startRegisterEdit"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                              />
                                          </div>
@@ -239,7 +239,7 @@ class Semester extends React.Component {
                                                  endRegisterEdit={parseInt(this.state.endRegisterEdit)}
                                                  handleChangeDate={this.handleChangeDate}
                                                  name={"endRegisterEdit"}
-                                                 dateFormat="Y/M/d hh:mm"
+                                                 dateFormat="Y/M/d HH:mm"
                                                  timeFormat="HH:mm"
                                              />
                                          </div>
