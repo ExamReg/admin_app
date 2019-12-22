@@ -23,7 +23,6 @@ class Exam extends React.Component {
             textSearch: "",
             exams: [],
             checkChangeExams: false,
-            dateAdd: "",
 
             totalStudentAdd: "",
             timeStartAdd: "",
@@ -36,7 +35,16 @@ class Exam extends React.Component {
 
         }
     }
-
+    deleteData  = () =>{
+        this.setState({
+            totalStudentAdd: "",
+            timeStartAdd: "",
+            timeEndAdd: "",
+            idCourseAdd: "",
+            idRoomAdd: "",
+            idSemesterAdd: ""
+        })
+    }
     handleChange = e => {
         if (e.target.name === "fileStudents") {
             this.setState({
@@ -47,6 +55,7 @@ class Exam extends React.Component {
                 [e.target.name]: e.target.value
             });
         }
+        console.log("hello")
     };
     handleChangeDate = (date, column_state) => {
         const valueOfInput = moment(date).valueOf();
@@ -56,6 +65,7 @@ class Exam extends React.Component {
     };
     selectSemester = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
+        console.log(idSems);
         this.setState({idSemester: idSems, textSearch: ""});
     };
     selectCourseInAdd = (event) => {
@@ -116,20 +126,19 @@ class Exam extends React.Component {
             notification("error", res.message);
     };
     addNewExam = async () => {
-        const {idCourseAdd, dateAdd, timeStartAdd, timeEndAdd, idRoomAdd, totalStudentAdd} = this.state;
-        if (idCourseAdd && dateAdd && timeStartAdd && timeEndAdd && totalStudentAdd && idRoomAdd) {
+        const {idCourseAdd, timeStartAdd, timeEndAdd, idRoomAdd, totalStudentAdd} = this.state;
+        if (idCourseAdd && timeStartAdd && timeEndAdd && totalStudentAdd && idRoomAdd) {
             let data = {
                 id_cs: idCourseAdd,
                 time_start: timeStartAdd,
                 time_end: timeEndAdd,
-                date: dateAdd,
                 id_room: idRoomAdd,
                 maximum_seating: totalStudentAdd
             };
             console.log(data)
-            /*const res = await addNewExam(data)*/
+            const res = await addNewExam(data)
 
-            /*if(res.success)
+            if(res.success)
             {
                 notification("success", "Tạo mới ca thi thành công");
                 this.setState({checkChangeExams:true})
@@ -137,7 +146,7 @@ class Exam extends React.Component {
             }
             else {
                 notification("error", res.message);
-            }*/
+            }
         } else {
             notification("warning", "Xin điền đủ thông tin ");
         }
@@ -174,11 +183,11 @@ class Exam extends React.Component {
         if(this.state.totalStudentAdd !== prevState.totalStudentAdd){
             this.handleGetRooms()
         }
-        // if(this.state.checkChangeExams)
-        // {
-        //     this.handleGetExams();
-        //     this.setState({checkChangeExams:false})
-        // }
+        if(this.state.checkChangeExams)
+        {
+            this.handleGetExams();
+            this.setState({checkChangeExams:false})
+        }
     }
 
     render() {
@@ -204,8 +213,10 @@ class Exam extends React.Component {
                                     this.state.semesters.map((e, index) => {
                                         return (
                                             <option key={e.id_semester}
-                                                    selected={e.id_semester === this.state.idSemester ? "selected" : ""}
-                                                    value={e.id_semester}>{e.value}
+                                                    defaultValue={e.id_semester === this.state.idSemester ? "selected" : ""}
+                                                    value={e.id_semester}
+                                            >
+                                                {e.value}
                                             </option>
                                         );
                                     })
@@ -253,8 +264,8 @@ class Exam extends React.Component {
                                 <th>STT</th>
                                 <th>Tên môn thi</th>
                                 <th>Mã môn thi</th>
-                                <th>Ngày thi</th>
-                                <th>Giờ thi</th>
+                                <th>Bắt đầu</th>
+                                <th>Kết thúc</th>
                                 <th>Phòng thi</th>
                                 <th>Tổng SV</th>
 
@@ -268,8 +279,8 @@ class Exam extends React.Component {
                                             <td>{index + 1}</td>
                                             <td>{e.course_name}</td>
                                             <td>{e.id_course}</td>
-                                            <td>{e.date}</td>
-                                            <td>{e.time_start}-{e.time_end}</td>
+                                            <td>{moment(parseInt(e.time_start)).utcOffset(420).format("YYYY/MM/DD hh:mm")}</td>
+                                            <td>{moment(parseInt(e.time_end)).utcOffset(420).format("YYYY/MM/DD hh:mm")}</td>
                                             <td>{e.location}</td>
                                             <td>{e.maximum_seating}</td>
                                             <td>
@@ -286,16 +297,18 @@ class Exam extends React.Component {
                     </div>
                 </div>
                 <ModelCustom acceptButton={this.addNewExam}
+                             cancelButton={this.deleteData}
                              idModal="modalAddNewExam"
                              title="Thêm mới ca thi "
                              brandButton="Thêm mới "
+                             show=""
                              childrenContent={
                                  <div>
                                      <div className="form-group">
                                          <label>Kỳ học:</label>
                                          <div className="dropdown">
                                              <select className="select-item-form"
-                                                     onChange={this.changeCourseSemesterWhenAdd}>
+                                                     onChange={this.changeCourseSemesterWhenAdd} value={this.state.idSemesterAdd}>
                                                  <option key="" value="">---</option>
                                                  {
                                                      this.state.semesters.map((e, index) => {
@@ -315,7 +328,7 @@ class Exam extends React.Component {
                                      <div className="form-group">
                                          <label>Môn học:</label>
                                          <div className="dropdown">
-                                             <select className="select-item-form" onChange={this.selectCourseInAdd}>
+                                             <select className="select-item-form" onChange={this.selectCourseInAdd} value={this.state.idCourseAdd}>
                                                  <option key="" value="">---</option>
                                                  {
                                                      this.state.courses.map((e, index) => {
@@ -337,6 +350,7 @@ class Exam extends React.Component {
                                                  name={"timeStartAdd"}
                                                  dateFormat="Y/M/d hh:mm"
                                                  timeFormat="HH:mm"
+                                                 value = {this.state.timeStartAdd}
                                              />
                                          </div>
                                      </div>
@@ -349,18 +363,19 @@ class Exam extends React.Component {
                                                  name={"timeEndAdd"}
                                                  dateFormat="Y/M/d hh:mm"
                                                  timeFormat="HH:mm"
+                                                 value = {this.state.timeEndAdd}
                                              />
                                          </div>
                                      </div>
                                      <div className="form-group">
                                          <label>Tổng SV:</label>
                                          <input type="text" className="form-control" name="totalStudentAdd"
-                                                onChange={this.changeRoomsWhenAdd}/>
+                                                onChange={this.changeRoomsWhenAdd} value={this.state.totalStudentAdd}/>
                                      </div>
                                      <div className="form-group">
                                          <label>Phòng thi: </label>
                                          <div className="dropdown">
-                                             <select className="select-item-form" onChange={this.selectRoomInAdd}>
+                                             <select className="select-item-form" onChange={this.selectRoomInAdd} value={this.state.idRoomAdd}>
                                                  <option key="" value="">---</option>
                                                  {
                                                      this.state.rooms.map((e, index) => {

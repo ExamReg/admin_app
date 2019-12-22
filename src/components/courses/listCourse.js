@@ -61,7 +61,15 @@ export default class ListCourse extends React.Component {
         console.log(idSems)
         this.setState({idSemesterSelect: idSems});
     };
-
+    deleteData = () =>{
+        this.setState({
+            nameCourse: "",
+            idCourse: "",
+            fileCourse: "",
+            idClassCourse: "",
+            idSemesterSelect: ""
+        })
+    }
     handleGetSemester = async () => {
 
     };
@@ -292,17 +300,18 @@ export default class ListCourse extends React.Component {
                         title="Thêm mới khóa học "
                         brandButton="Thêm mới "
                         acceptButton={this.handleAddNewCourse}
+                        cancelButton={this.deleteData}
                         childrenContent={
                             <div>
                                 <div className="form-group">
                                     <label>Tên khóa học :</label>
                                     <input type="text" className="form-control" name="nameCourse"
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange} value={this.state.nameCourse}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Mã khóa học :</label>
                                     <input type="text" className="form-control" name="idCourse"
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange} value={this.state.idCourse}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Tệp danh sách khóa học:</label>
@@ -313,12 +322,12 @@ export default class ListCourse extends React.Component {
                                 <div className="form-group">
                                     <label>Mã số lớp học:</label>
                                     <input type="text" className="form-control" name="idClassCourse"
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange} value={this.state.idClassCourse}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Học kì:</label>
                                     <div className="dropdown">
-                                        <select className="select-item-form" onChange={this.selectSemesterInAdd}>
+                                        <select className="select-item-form" onChange={this.selectSemesterInAdd} value={this.state.idSemesterSelect}>
                                             <option key="" value="">---</option>
                                             {
                                                 this.state.semesters.map((e, index) => {
