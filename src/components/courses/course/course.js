@@ -106,10 +106,13 @@ export default class Course extends React.Component {
             });
         }
     };
+
+
     handleImportFile = async () => {
         if (!this.state.fileStudentEnoughCondition) {
             notification("warning", "Vui lòng chọn 1 file");
         } else {
+            this.setState({loading: true});
             let form_data = new FormData();
             form_data.append("file_import", this.state.fileStudentEnoughCondition);
             let result = await postStudentNotEnoughCondition(
@@ -117,6 +120,7 @@ export default class Course extends React.Component {
                 form_data
             );
             if (result.success) {
+                this.setState({loading: false});
                 await this.reloadPage();
                 notification(
                     "success",
@@ -149,13 +153,13 @@ export default class Course extends React.Component {
         this.setState({
             isOpenConfirm: !this.state.isOpenConfirm
         });
-    }
+    };
     toggleConfirmDel = (id_student) =>{
         this.setState({
             isStudentDel: id_student,
             isOpenConfirm: !this.state.isOpenConfirm
         });
-    }
+    };
     deleteData = () => {
         this.setState({
             fileStudentEnoughCondition: null,
@@ -313,6 +317,7 @@ export default class Course extends React.Component {
                     brandButton="Thêm"
                     cancelButton={this.deleteData}
                     isOpen={this.state.isOpenImportFileModal}
+                    loading={this.state.loading}
                     childrenContent={
                         <div className="form-group">
                             <label>Danh sách sinh viên:</label>
@@ -322,6 +327,7 @@ export default class Course extends React.Component {
                                 name="fileStudentEnoughCondition"
                                 onChange={this.handleChange}
                                 key={this.state.keyInput}
+                                disabled={this.state.loading}
                             />
                             <br/>
                             <i style={{color: "red"}}>

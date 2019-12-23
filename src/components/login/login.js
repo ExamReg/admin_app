@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {login} from "../../api/authentication-api"
 import {notification} from "../../utils/noti";
 import {Link, Redirect} from "react-router-dom";
+import SpinnerCustom from "../spinnerCustom/spinnerCustom";
 
 class Login extends React.Component {
 
@@ -18,7 +19,7 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: "",
-
+            loading: false,
             redirectTo: "",
             redirect: false
         }
@@ -33,6 +34,7 @@ class Login extends React.Component {
     async handleLogin() {
         const {username, password} = this.state;
         if (username && password) {
+            this.setState({loading: true});
             let data = {
                 user_name: username,
                 password: password
@@ -44,9 +46,11 @@ class Login extends React.Component {
                 window.location.replace("/dashboard/courses");
                 this.setState({
                     redirect: true,
-                    redirectTo: "/dashboard"
+                    redirectTo: "/dashboard",
+                    loading: false
                 })
             } else {
+                this.setState({loading: false});
                 notification("error", response.message);
             }
         } else {
@@ -74,19 +78,19 @@ class Login extends React.Component {
                             <form>
                                 <div className="login-group">
                                     <label>Tên đăng nhập: </label>
-                                    <input type="text" name="username" onChange={this.handleChange}/>
+                                    <input type="text" name="username" onChange={this.handleChange} disabled={this.state.loading}/>
                                 </div>
                                 <div className="login-group">
                                     <label>Mật khẩu : </label>
-                                    <input type="password" name="password" onChange={this.handleChange}/>
+                                    <input type="password" name="password" onChange={this.handleChange} disabled={this.state.loading}/>
                                 </div>
                             </form>
                         </div>
                         <div className="login-card-help">
                             <div className="group-link">
-                                <Link to="/register" className="link-help">Đăng kí</Link>
+                                <Link to={this.state.loading ? "#!" : "/register"} className="link-help">Đăng kí</Link>
                                 <button className="btn-forgetpass space" data-toggle="modal"
-                                        data-target="#modalForgotPass">Quên mật khẩu?
+                                        data-target="#modalForgotPass" disabled={this.state.loading}>Quên mật khẩu?
                                 </button>
                                 <div id="modalForgotPass" className="modal fade" role="dialog">
                                     <div className="modal-dialog">
@@ -99,11 +103,11 @@ class Login extends React.Component {
                                             <div className="modal-body">
                                                 <div className="form-group">
                                                     <label>Email của bạn :</label>
-                                                    <input type="text" className="form-control"/>
+                                                    <input type="text" className="form-control" />
                                                 </div>
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="button" className="btn btn-outline-dark"
+                                                <button type="button" className="btn btn-outline-dark" disabled={this.state.loading}
                                                         data-dismiss="modal">Hủy
                                                 </button>
                                                 <button type="button" className="btn btn-primary">Gửi</button>
@@ -115,8 +119,8 @@ class Login extends React.Component {
                             </div>
                         </div>
                         <div className="login-card-footer">
-                            <button className="btn-login" onClick={this.handleLogin}>
-                                Đăng nhập
+                            <button className="btn-login" onClick={this.handleLogin} disabled={this.state.loading}>
+                                {this.state.loading ? <SpinnerCustom loading={this.props.loading}/> : "Đăng nhập"}
                             </button>
                         </div>
                     </div>

@@ -22,7 +22,8 @@ export default class Student extends React.Component {
             idStuEdit:"",
             nameStudEdit:"",
             birthStuEdit:"",
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            loading: false
         };
         this.delayTime = null;
     }
@@ -87,7 +88,8 @@ export default class Student extends React.Component {
                     page_number: 1,
                     page_count: Math.ceil(result.data.count / this.state.page_size),
                     isOpenAdd: false,
-                    isOpenEdit: false
+                    isOpenEdit: false,
+                    loading: false
                 })
             }
         }, timeDelay);
@@ -159,14 +161,12 @@ export default class Student extends React.Component {
         if(!this.state.fileStudents){
             notification("warning", "Vui lòng điền đầy đủ thông tin.")
         }else{
+            this.setState({loading: true});
             let form_data = new FormData();
             form_data.append("file_import", this.state.fileStudents);
             let result = await importStudent(form_data);
             result.success === true ? notification("success", "Import success") : notification("error", result.message);
-            this.setState({
-                fileStudents: null
-            });
-            this.handleTimeOut(100);
+            this.handleTimeOut(10);
         }
     };
     resetPassword = async () => {
@@ -252,12 +252,13 @@ export default class Student extends React.Component {
                         brandButton="Thêm mới "
                         cancelButton={() => {this.deleteData("isOpenAdd")}}
                         isOpen={this.state.isOpenAdd}
+                        loading={this.state.loading}
                         childrenContent={
                             <div>
                                 <div className="form-group">
                                     <label>Danh sách sinh viên:</label>
                                     <input type="file" className="form-control-file border" name="fileStudents" key={this.state.keyInput}
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange} disabled={this.state.loading}/>
                                            <br/>
                                     <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
                                 </div>
