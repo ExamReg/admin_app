@@ -231,7 +231,7 @@ export default class ListCourse extends React.Component {
         return (
             <div className="list-course">
                 <div className="title">
-                    Quản lý danh sách khóa học
+                    Quản lý danh sách môn học
                 </div>
                 <div className="list-course-header">
 

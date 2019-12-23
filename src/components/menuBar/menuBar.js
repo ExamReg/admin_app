@@ -36,7 +36,7 @@ export default class MenuBar extends React.Component {
                             data-parent="#panelparent"
                         >
                             <i className="fas fa-home"></i>
-                            <span>Quản lý khóa học</span>
+                            <span>Quản lý môn học</span>
                         </NavLink>
                     </li>
                     <li onClick={() => {this.setState({check: "", show: false});}}>

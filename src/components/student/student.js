@@ -287,8 +287,8 @@ export default class Student extends React.Component {
                                 childrenContent={
                                     <div>
                                         <div className="modal-contentt">
-                                            <div>Bạn có chắc chắn muốn đặt lại mật khẩu ?</div>
-                                            <i className="fas fa-exclamation-triangle" style={{color:"yellow", fontSize:"30px"}}></i>
+                                            <div>Bạn có chắc chắn muốn đặt lại mật khẩu?</div>
+                                            <i className="fas fa-exclamation-circle" style={{color:"#2692ff", fontSize:"30px"}}></i>
                                         </div>
                                     </div>
                                 }
