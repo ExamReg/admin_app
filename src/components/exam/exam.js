@@ -3,11 +3,12 @@ import "./exam.css"
 import DatePickerCustom from "../datepicker/datepicker"
 import moment from "moment";
 import {getSemester, getCourse} from "../../api/course-api";
-import {addNewExam, getExams, editExam} from "../../api/exam-api";
+import {addNewExam, getExams, editExam, printStudentInExam} from "../../api/exam-api";
 import Pagination from "../pagination/pagination";
 import ModelCustom from "../modal/modal";
 import {notification} from "../../utils/noti";
 import {getListRoom} from "../../api/room-api";
+const URL_BASE = process.env.REACT_APP_API_URL;
 
 
 class Exam extends React.Component {
@@ -160,6 +161,7 @@ class Exam extends React.Component {
             if(res.success)
             {
                 notification("success", "Tạo mới ca thi thành công");
+                this.deleteData();
                 this.setState({checkChangeExams:true, isOpenAddExamModal: false})
             }
             else {
@@ -226,7 +228,21 @@ class Exam extends React.Component {
         }
         else notification("warning", "Xin điền đủ thông tin ")
     };
-
+    printStudentInExam = async (id_slot) => {
+          let res = await printStudentInExam(id_slot);
+        if(res.success)
+        {
+            let a_tag = document.createElement('a');
+            let href = URL_BASE + "/static/" + res.data.file_name;
+            a_tag.setAttribute('target', '_blank');
+            a_tag.setAttribute('href', href);
+            a_tag.click();
+        }
+        else
+        {
+            notification("error", res.message);
+        }
+    };
     componentDidMount() {
         this.handleGetSemester();
         /*this.handleGetCourse();*/
@@ -349,6 +365,12 @@ class Exam extends React.Component {
                                                         onClick={() => this.clickBtnEdit(e.id_slot, e.course_name,parseInt(e.time_start),parseInt(e.time_end),e.location, e.maximum_seating)}
                                                 >
                                                     Chỉnh sửa
+                                                </button>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <button className="btn btn-secondary btn-sm btn-space-right"
+                                                        onClick={() => this.printStudentInExam(e.id_slot)}
+                                                >
+                                                    In danh sách
                                                 </button>
                                             </td>
                                         </tr>

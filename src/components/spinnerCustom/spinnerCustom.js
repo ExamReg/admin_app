@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@emotion/core";
-import { BeatLoader } from "react-spinners";
+import {PulseLoader } from "react-spinners";
 
 // Can be a string as well. Need to ensure each key-value pair ends with ;
 const override = css`
@@ -19,7 +19,7 @@ export default class SpinnerCustom extends React.Component {
     render() {
         console.log(this.props.loading);
         return (
-                <BeatLoader
+                <PulseLoader
                     css={override}
                     size={16}
                     color={"white"}

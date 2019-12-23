@@ -15,3 +15,8 @@ export function editExam(data, idSlot) {
     let route = `/exams/${idSlot}`;
     return sendPutRequest(route, data);
 }
+
+export function printStudentInExam(id_slot) {
+    let route = `/exams/students/print?id_slot=${id_slot}`;
+    return sendGetRequestRoute1(route)
+}
