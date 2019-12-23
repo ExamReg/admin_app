@@ -90,7 +90,8 @@ export default class Course extends React.Component {
         const result = await getStudentInCourse(this.state.id_cs, {text: this.state.textSearch});
         this.setState({
             students: result.data.students,
-            reload: false
+            reload: false,
+            isOpenImportFileModal: false
         });
     };
 

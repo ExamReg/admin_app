@@ -85,7 +85,9 @@ export default class Student extends React.Component {
                 this.setState({
                     students: result.data.students,
                     page_number: 1,
-                    page_count: Math.ceil(result.data.count / this.state.page_size)
+                    page_count: Math.ceil(result.data.count / this.state.page_size),
+                    isOpenAdd: false,
+                    isOpenEdit: false
                 })
             }
         }, timeDelay);
@@ -176,7 +178,7 @@ export default class Student extends React.Component {
         this.setState({
             fileStudents: null,
             keyInput: Math.random().toString(36),
-            [nameState]: false
+            [nameState]: false,
         });
     };
 

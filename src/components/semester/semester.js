@@ -73,7 +73,8 @@ class Semester extends React.Component {
                     semesterAdd: "",
                     checkSemestersWhenAdd: true,
                     startRegisterAdd: "",
-                    endRegisterAdd: ""
+                    endRegisterAdd: "",
+                    isOpenAddSemesterModal: false
                 })
             } else {
                 notification("error", res.message)
@@ -91,11 +92,11 @@ class Semester extends React.Component {
         };
         if (semesterEdit) {
             const res = await editSemester(idSemester, data);
-
             if (res.success) {
                 notification("success", "Chỉnh sửa tên học kỳ thành công ");
                 this.setState({
-                    checkSemestersWhenAdd: true
+                    checkSemestersWhenAdd: true,
+                    isOpenEditSemesterModal: false
                 });
             } else {
                 notification("error", res.message)

@@ -65,24 +65,17 @@ class Room extends React.Component {
 
             const res = await addNewRoom(data);
             if (res.success) {
-                this.setState({
-                    nameRoom: "",
-                    numberSeat: "",
-                    changeRooms: true
-                });
                 notification("success", "Tạo mới khóa học thành công ")
+                this.deleteDataInAdd();
             } else
                 notification("error", res.message)
-                this.deleteDataInAdd();
         } else {
             notification("warning", "Xin điền đủ thông tin ")
-            this.deleteDataInAdd();
         }
     };
     editRoom = async () => {
         let {nameRoomEdit, numberSeatEdit, id_room_change} = this.state;
         if(nameRoomEdit && numberSeatEdit) {
-            console.log(this.state);
             let payload = {
                 location: nameRoomEdit,
                 maximum_seating: numberSeatEdit
@@ -90,18 +83,15 @@ class Room extends React.Component {
             let result = await editRoom(id_room_change, payload);
             if(result.success)
             {
-                this.setState({changeRooms:true});
-                this.deleteDataInEdit();
+                this.setState({changeRooms:true, isOpenEditRoomModal: false});
                 notification("success", "Chỉnh sửa thông tin lớp học thành công")
             }
             else {
                 notification("error", result.message);
-                this.deleteDataInEdit();
             }
         }
         else {
             notification("warning", "Xin điền đủ thông tin ")
-            this.deleteDataInEdit();
         }
     };
 
@@ -152,7 +142,6 @@ class Room extends React.Component {
                                             <td>{e.maximum_seating}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                                        data-toggle="modal" data-target="#modalEditRoom"
                                                         onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
                                                 >
                                                     Chỉnh sửa

@@ -128,7 +128,6 @@ export default class ListCourse extends React.Component {
     };
 
     async componentDidMount() {
-        console.log("1");
         let result = await getSemester();
         if (result.success && result.data.semesters.length > 0) {
             const res = await getCourse({
@@ -161,7 +160,7 @@ export default class ListCourse extends React.Component {
         }
         if (this.state.checkChangeListCourse) {
             this.handleGetCourse();
-            this.setState({checkChangeListCourse: false})
+            this.setState({checkChangeListCourse: false, isOpenAddCourseModal: true})
         }
         if (this.state.change_page_size) {
             this.reloadWhenChangePageSize();

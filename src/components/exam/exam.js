@@ -160,7 +160,7 @@ class Exam extends React.Component {
             if(res.success)
             {
                 notification("success", "Tạo mới ca thi thành công");
-                this.setState({checkChangeExams:true})
+                this.setState({checkChangeExams:true, isOpenAddExamModal: false})
             }
             else {
                 notification("error", res.message);
@@ -218,7 +218,7 @@ class Exam extends React.Component {
             if(res.success)
             {
                 notification("success", "Chỉnh sửa thông tin ca thi thành công ");
-                this.setState({checkChangeExams:true})
+                this.setState({checkChangeExams:true, isOpenEditExamModal: false})
             }
             else {
                 notification("error", res.message)
