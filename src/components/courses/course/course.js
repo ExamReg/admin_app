@@ -19,7 +19,8 @@ export default class Course extends React.Component {
             fileStudentEnoughCondition: "",
             students: [],
             reload: false,
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            isOpenImportFileModal: false
         };
         this.delayTime = null;
     }
@@ -105,7 +106,8 @@ export default class Course extends React.Component {
     deleteData = () =>{
         this.setState({
             fileStudentEnoughCondition: null,
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            isOpenImportFileModal: false
         });
     };
 
@@ -148,8 +150,7 @@ export default class Course extends React.Component {
                             <button
                                 type="button"
                                 className="btn btn-primary btn-size"
-                                data-toggle="modal"
-                                data-target="#modalImportFile"
+                                onClick={() => this.setState({isOpenImportFileModal: true})}
                             >
                                 <i className="fas fa-plus"/>
                                 Nhập file sinh viên
@@ -206,9 +207,9 @@ export default class Course extends React.Component {
                     acceptButton={this.handleImportFile}
                     idModal="modalImportFile"
                     title="Nhập file danh sách sinh viên đủ điều kiện dự thi"
-                    brandButton="Thêm "
+                    brandButton="Thêm"
                     cancelButton={this.deleteData}
-
+                    isOpen={this.state.isOpenImportFileModal}
                     childrenContent={
                         <div className="form-group">
                             <label>Danh sách sinh viên:</label>

@@ -66,6 +66,9 @@
 .container-exam .tbl-exam table thead th{
     position: sticky;
     top: 0;
-    z-index: 1;
     background-color: white;
+}
+
+.header-items .react-datepicker-popper{
+    z-index: 10000;
 }

@@ -21,7 +21,9 @@ class Semester extends React.Component {
             semesterAdd: "",
             startRegisterAdd: "",
             endRegisterAdd: "",
-            checkSemestersWhenAdd: false
+            checkSemestersWhenAdd: false,
+            isOpenAddSemesterModal: false,
+            isOpenEditSemesterModal: false
         };
         this.handleGetSemester = this.handleGetSemester.bind(this);
         this.selectSemester = this.selectSemester.bind(this);
@@ -41,12 +43,12 @@ class Semester extends React.Component {
     }
 
     selectSemester = (e) => {
-        console.log(e);
         this.setState({
             idSemester: e.id_semester,
             semesterEdit: e.value,
             startRegisterEdit: e.register_from,
-            endRegisterEdit: e.register_to
+            endRegisterEdit: e.register_to,
+            isOpenEditSemesterModal: true
         })
     };
 
@@ -108,6 +110,12 @@ class Semester extends React.Component {
             [column_state]: valueOfInput
         });
     };
+    deleteData = () => {
+        this.setState({
+            isOpenAddSemesterModal: false,
+            isOpenEditSemesterModal: false
+        })
+    };
     componentDidMount() {
         this.handleGetSemester();
     }
@@ -125,8 +133,7 @@ class Semester extends React.Component {
                     Quản lý học kỳ
                 </div>
                 <div className="header-semester">
-                    <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
-                            data-target="#modalAddNewSemester">
+                    <button type="button" className="btn btn-primary btn-size header-items" onClick={() => this.setState({isOpenAddSemesterModal: true})}>
                         <i className="fas fa-plus"/>
                         Thêm mới học kì
                     </button>
@@ -154,8 +161,6 @@ class Semester extends React.Component {
                                             <td>{e.register_to ? moment(parseInt(e.register_to)).utcOffset(420).format("YYYY/MM/DD HH:mm") : "Chưa có"}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                                        data-toggle="modal"
-                                                        data-target="#modalEditSemester"
                                                         onClick={() => this.selectSemester(e)}>
                                                     Chỉnh sửa
                                                 </button>
@@ -173,6 +178,8 @@ class Semester extends React.Component {
                              title="Thêm mới học kỳ "
                              brandButton="Thêm mới"
                              acceptButton={this.handleAddNewSemester}
+                             isOpen={this.state.isOpenAddSemesterModal}
+                             cancelButton={this.deleteData}
                              childrenContent={
                                  <div>
                                      <div className="form-group">
@@ -213,6 +220,8 @@ class Semester extends React.Component {
                              acceptButton={
                                  this.handleEditSemester
                              }
+                             cancelButton={this.deleteData}
+                             isOpen={this.state.isOpenEditSemesterModal}
                              childrenContent={
                                  <div>
                                      <div className="form-group">

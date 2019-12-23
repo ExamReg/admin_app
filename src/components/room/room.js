@@ -16,21 +16,25 @@ class Room extends React.Component {
             nameRoomEdit: "",
             numberSeatEdit: "",
             id_room_change: "",
-            changeRooms: false
+            changeRooms: false,
+            isOpenAddRoomModal: false,
+            isOpenEditRoomModal: false
         }
     }
     deleteDataInEdit = () =>{
         this.setState({
             nameRoomEdit: "",
-            numberSeatEdit: ""
+            numberSeatEdit: "",
+            isOpenEditRoomModal: false
         })
-    }
+    };
     deleteDataInAdd = () =>{
         this.setState({
             nameRoom: "",
-            numberSeat: ""
+            numberSeat: "",
+            isOpenAddRoomModal: false
         })
-    }
+    };
 
     handleChange = (e) => {
         let nam = e.target.name;
@@ -47,7 +51,8 @@ class Room extends React.Component {
         this.setState({
             nameRoomEdit: num,
             numberSeatEdit: seat,
-            id_room_change: key
+            id_room_change: key,
+            isOpenEditRoomModal: true
         })
     };
     addNewRoom = async () => {
@@ -120,9 +125,9 @@ class Room extends React.Component {
                     Quản lý phòng học
                 </div>
                 <div className="header-room">
-                    <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
-                            data-target="#modalAddNewRoom">
-                        <i className="fas fa-plus"></i>
+                    <button type="button" className="btn btn-primary btn-size header-items"
+                            onClick={() => {this.setState({isOpenAddRoomModal: true})}}>
+                        <i className="fas fa-plus"/>
                         Thêm mới phòng học
                     </button>
                 </div>
@@ -166,6 +171,7 @@ class Room extends React.Component {
                        title="Thêm mới phòng học "
                        brandButton="Thêm mới "
                        cancelButton={this.deleteDataInAdd}
+                       isOpen={this.state.isOpenAddRoomModal}
                        childrenContent={
                            <div>
                                <div className="form-group">
@@ -189,6 +195,7 @@ class Room extends React.Component {
                        title="Chỉnh sửa thông tin phòng học "
                        brandButton="Chỉnh sửa "
                        cancelButton={this.deleteDataInEdit}
+                       isOpen={this.state.isOpenEditRoomModal}
                        childrenContent={
                            <div>
                                <div className="form-group">
