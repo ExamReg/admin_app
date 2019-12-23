@@ -104,6 +104,8 @@ export default class Course extends React.Component {
             this.setState({
                 reload: true
             });
+        }else{
+            notification("error", result.message);
         }
     };
 
@@ -127,6 +129,7 @@ export default class Course extends React.Component {
                     "Import danh sách sinh viên không đủ điều kiện dự thi thành công."
                 );
             } else {
+                this.setState({loading: false})
                 notification("error", result.message);
             }
         }
