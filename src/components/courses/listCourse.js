@@ -83,31 +83,32 @@ export default class ListCourse extends React.Component {
         this.setState({
             loading: true
         });
-        setTimeout(() =>{this.setState({loading: false})}, 5000);
-        // if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
-        //     let form_data = new FormData();
-        //     form_data.append("id_semester", idSemesterSelect);
-        //     form_data.append("course_name", nameCourse);
-        //     form_data.append("id_course", idCourse);
-        //     form_data.append("file_import", fileCourse);
-        //     form_data.append("class_number", idClassCourse);
-        //     const res = await addNewCourse(form_data);
-        //     if (res.success) {
-        //         notification("success", "Thêm mới khóa học thành công");
-        //         this.setState({
-        //             checkChangeListCourse: true,
-        //             nameCourse: "",
-        //             idCourse: "",
-        //             fileCourse: "",
-        //             idClassCourse: "",
-        //             idSemesterSelect: ""
-        //         })
-        //     } else {
-        //         notification("error", res.message);
-        //     }
-        // } else {
-        //     notification("warning", "Xin điền đủ thông tin ")
-        // }
+        if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
+            let form_data = new FormData();
+            form_data.append("id_semester", idSemesterSelect);
+            form_data.append("course_name", nameCourse);
+            form_data.append("id_course", idCourse);
+            form_data.append("file_import", fileCourse);
+            form_data.append("class_number", idClassCourse);
+            const res = await addNewCourse(form_data);
+            if (res.success) {
+                notification("success", "Thêm mới khóa học thành công");
+                this.setState({
+                    checkChangeListCourse: true,
+                    nameCourse: "",
+                    idCourse: "",
+                    fileCourse: "",
+                    idClassCourse: "",
+                    idSemesterSelect: "",
+                    loading: false,
+                    isOpenAddCourseModal: false
+                })
+            } else {
+                notification("error", res.message);
+            }
+        } else {
+            notification("warning", "Xin điền đủ thông tin ")
+        }
     };
 
     handleGetCourse = () => {
@@ -124,7 +125,9 @@ export default class ListCourse extends React.Component {
                 this.setState({
                     courses: res.data.courses,
                     page_number: 1,
-                    page_count: Math.ceil(res.data.count / page_size)
+                    page_count: Math.ceil(res.data.count / page_size),
+                    checkChangeListCourse: false,
+
                 });
             } else {
                 console.log(res.message)
@@ -166,7 +169,6 @@ export default class ListCourse extends React.Component {
         }
         if (this.state.checkChangeListCourse) {
             this.handleGetCourse();
-            this.setState({checkChangeListCourse: false, isOpenAddCourseModal: true})
         }
         if (this.state.change_page_size) {
             this.reloadWhenChangePageSize();
@@ -317,7 +319,7 @@ export default class ListCourse extends React.Component {
                             <div className="form-group">
                                 <label>Học kì:</label>
                                 <div className="dropdown">
-                                    <select className="select-item-form" onChange={this.selectSemesterInAdd} value={this.state.idSemesterSelect}>
+                                    <select className="select-item-form" onChange={this.selectSemesterInAdd} disabled={this.state.loading} value={this.state.idSemesterSelect}>
                                         <option key="" value="">---</option>
                                         {
                                             this.state.semesters.map((e, index) => {
@@ -330,26 +332,26 @@ export default class ListCourse extends React.Component {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group" >
                                 <label>Tên khóa học :</label>
                                 <input type="text" className="form-control" name="nameCourse"
-                                       onChange={this.handleChange} value={this.state.nameCourse}/>
+                                       onChange={this.handleChange} value={this.state.nameCourse} disabled={this.state.loading}/>
                             </div>
                             <div className="form-group">
                                 <label>Mã khóa học :</label>
                                 <input type="text" className="form-control" name="idCourse"
-                                       onChange={this.handleChange} value={this.state.idCourse}/>
+                                       onChange={this.handleChange} value={this.state.idCourse} disabled={this.state.loading}/>
                             </div>
                             <div className="form-group">
                                 <label>Tệp danh sách khóa học:</label>
                                 <input type="file" className="form-control-file border" name="fileCourse" key={this.state.keyInput}
-                                       onChange={this.handleChange}/>
+                                       onChange={this.handleChange} disabled={this.state.loading}/>
                                 <i style={{color: "red"}}>*Các định dạng cho phép: .xlsx .csv </i>
                             </div>
                             <div className="form-group">
                                 <label>Mã số lớp học:</label>
                                 <input type="text" className="form-control" name="idClassCourse"
-                                       onChange={this.handleChange} value={this.state.idClassCourse}/>
+                                       onChange={this.handleChange} value={this.state.idClassCourse} disabled={this.state.loading}/>
                             </div>
                         </div>
                     }
