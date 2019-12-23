@@ -7,6 +7,7 @@ import ModelCustom from "../modal/modal";
 import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 import {redirect_to} from "../../utils/redirector";
+import SpinnerCustom from "../spinnerCustom/spinnerCustom";
 
 
 export default class ListCourse extends React.Component {
@@ -35,7 +36,8 @@ export default class ListCourse extends React.Component {
             next_page: false,
             change_page_size: false,
             keyInput: Math.random().toString(36),
-            isOpenAddCourseModal: false
+            isOpenAddCourseModal: false,
+            loading: false
         };
         this.delayTime = null;
     }
@@ -78,30 +80,34 @@ export default class ListCourse extends React.Component {
 
     handleAddNewCourse = async () => {
         const {nameCourse, idCourse, fileCourse, idClassCourse, idSemesterSelect} = this.state;
-        if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
-            let form_data = new FormData();
-            form_data.append("id_semester", idSemesterSelect);
-            form_data.append("course_name", nameCourse);
-            form_data.append("id_course", idCourse);
-            form_data.append("file_import", fileCourse);
-            form_data.append("class_number", idClassCourse);
-            const res = await addNewCourse(form_data);
-            if (res.success) {
-                notification("success", "Thêm mới khóa học thành công");
-                this.setState({
-                    checkChangeListCourse: true,
-                    nameCourse: "",
-                    idCourse: "",
-                    fileCourse: "",
-                    idClassCourse: "",
-                    idSemesterSelect: ""
-                })
-            } else {
-                notification("error", res.message);
-            }
-        } else {
-            notification("warning", "Xin điền đủ thông tin ")
-        }
+        this.setState({
+            loading: true
+        });
+        setTimeout(() =>{this.setState({loading: false})}, 5000);
+        // if (nameCourse && idCourse && fileCourse && idClassCourse && idSemesterSelect) {
+        //     let form_data = new FormData();
+        //     form_data.append("id_semester", idSemesterSelect);
+        //     form_data.append("course_name", nameCourse);
+        //     form_data.append("id_course", idCourse);
+        //     form_data.append("file_import", fileCourse);
+        //     form_data.append("class_number", idClassCourse);
+        //     const res = await addNewCourse(form_data);
+        //     if (res.success) {
+        //         notification("success", "Thêm mới khóa học thành công");
+        //         this.setState({
+        //             checkChangeListCourse: true,
+        //             nameCourse: "",
+        //             idCourse: "",
+        //             fileCourse: "",
+        //             idClassCourse: "",
+        //             idSemesterSelect: ""
+        //         })
+        //     } else {
+        //         notification("error", res.message);
+        //     }
+        // } else {
+        //     notification("warning", "Xin điền đủ thông tin ")
+        // }
     };
 
     handleGetCourse = () => {
@@ -305,6 +311,7 @@ export default class ListCourse extends React.Component {
                     acceptButton={this.handleAddNewCourse}
                     cancelButton={this.deleteData}
                     isOpen={this.state.isOpenAddCourseModal}
+                    loading={this.state.loading}
                     childrenContent={
                         <div>
                             <div className="form-group">
@@ -344,7 +351,6 @@ export default class ListCourse extends React.Component {
                                 <input type="text" className="form-control" name="idClassCourse"
                                        onChange={this.handleChange} value={this.state.idClassCourse}/>
                             </div>
-
                         </div>
                     }
                 />

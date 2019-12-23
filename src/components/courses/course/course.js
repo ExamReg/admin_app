@@ -6,7 +6,8 @@ import ModelCustom from "../../modal/modal";
 import {
     getCourseInfo,
     getStudentInCourse,
-    postStudentNotEnoughCondition
+    postStudentNotEnoughCondition,
+    addStudentToCourse
 } from "../../../api/course-api";
 import {notification} from "../../../utils/noti";
 import {
@@ -16,6 +17,7 @@ import {
 import ConfirmModal from "../../confirmModal/confirmModal";
 
 export default class Course extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,8 +33,11 @@ export default class Course extends React.Component {
             isOpenImportFileModal: false,
             isOpenCreateStudentModal: false,
 
+
             isOpenConfirm:false,
-            isStudentDel:""
+            isStudentDel:"",
+
+            idStuAdd:""
         };
         this.delayTime = null;
     }
@@ -65,7 +70,14 @@ export default class Course extends React.Component {
         if (!idStuAdd) {
             notification("warning", "Vui lòng điền đầy đủ thông tin.");
         } else {
-            console.log(this.state.idStuAdd)
+            let data = {
+                id_student: this.state.idStuAdd
+            };
+            const res2 = await addStudentToCourse(this.state.id_cs,data);
+            if(res2.success){
+                notification("success","Thêm sinh viên thành công")
+                this.reloadPage();
+            }
         }
     };
 
@@ -244,6 +256,7 @@ export default class Course extends React.Component {
                                                 <span className="badge badge-danger">
                             Không đủ điều kiện
                           </span>
+
                                             )}
                                         </td>
                                         <td style={{display: "inline-block"}}>
