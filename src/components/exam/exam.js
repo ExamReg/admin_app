@@ -39,9 +39,9 @@ class Exam extends React.Component {
             nameCourseEdit: "",
             idRoomEdit: "",
             nameSemesterEdit:"",
-
-            idSlot:""
-
+            idSlot:"",
+            isOpenAddExamModal: false,
+            isOpenEditExamModal: false
         }
     }
     deleteData  = () =>{
@@ -51,7 +51,9 @@ class Exam extends React.Component {
             timeEndAdd: "",
             idCourseAdd: "",
             idRoomAdd: "",
-            idSemesterAdd: ""
+            idSemesterAdd: "",
+            isOpenAddExamModal: false,
+            isOpenEditExamModal: false
         })
     };
     handleChange = e => {
@@ -92,7 +94,7 @@ class Exam extends React.Component {
     selectRoomInEdit = (event) =>{
         const idroom = event.target[event.target.selectedIndex].value;
         this.setState({idRoomEdit: idroom});
-    }
+    };
     handleGetSemester = async () => {
         let res = await getSemester();
         if (res.success && res.data.semesters.length > 0) {
@@ -153,12 +155,12 @@ class Exam extends React.Component {
                 id_room: idRoomAdd,
                 maximum_seating: totalStudentAdd
             };
-            const res = await addNewExam(data)
+            const res = await addNewExam(data);
 
             if(res.success)
             {
                 notification("success", "Tạo mới ca thi thành công");
-                this.setState({checkChangeExams:true})
+                this.setState({checkChangeExams:true, isOpenAddExamModal: false})
             }
             else {
                 notification("error", res.message);
@@ -166,7 +168,6 @@ class Exam extends React.Component {
             }
         } else {
             notification("warning", "Xin điền đủ thông tin ");
-            this.deleteData();
         }
     };
 
@@ -197,6 +198,7 @@ class Exam extends React.Component {
             timeEndEdit: timee,
             nameCourseEdit: cs_name,
             idRoomEdit: idroom,
+            isOpenEditExamModal: true
            /* nameSemesterEdit: a*/
         })
 
@@ -216,14 +218,14 @@ class Exam extends React.Component {
             if(res.success)
             {
                 notification("success", "Chỉnh sửa thông tin ca thi thành công ");
-                this.setState({checkChangeExams:true})
+                this.setState({checkChangeExams:true, isOpenEditExamModal: false})
             }
             else {
                 notification("error", res.message)
             }
         }
         else notification("warning", "Xin điền đủ thông tin ")
-    }
+    };
 
     componentDidMount() {
         this.handleGetSemester();
@@ -307,8 +309,7 @@ class Exam extends React.Component {
                     </div>
                     <div className="exam-header-right">
                         <div className="header-items btn-flex-right">
-                            <button className="btn btn-primary btn-size " data-toggle="modal"
-                                    data-target="#modalAddNewExam">
+                            <button className="btn btn-primary btn-size " onClick={() => {this.setState({isOpenAddExamModal: true})}}>
                                 <i className="fas fa-plus"/>
                                 Thêm mới ca thi
                             </button>
@@ -344,7 +345,7 @@ class Exam extends React.Component {
                                             <td>{e.location}</td>
                                             <td>{e.maximum_seating}</td>
                                             <td>
-                                                <button className="btn btn-info btn-sm" data-toggle="modal" data-target="#modalEditExam"
+                                                <button className="btn btn-info btn-sm"
                                                         onClick={() => this.clickBtnEdit(e.id_slot, e.course_name,parseInt(e.time_start),parseInt(e.time_end),e.location, e.maximum_seating)}
                                                 >
                                                     Chỉnh sửa
@@ -363,7 +364,7 @@ class Exam extends React.Component {
                              idModal="modalAddNewExam"
                              title="Thêm mới ca thi "
                              brandButton="Thêm mới "
-                             show=""
+                             isOpen={this.state.isOpenAddExamModal}
                              childrenContent={
                                  <div>
                                      <div className="form-group">
@@ -457,6 +458,8 @@ class Exam extends React.Component {
                              idModal="modalEditExam"
                              title="Chỉnh sửa ca thi "
                              brandButton="Chỉnh sửa "
+                             isOpen={this.state.isOpenEditExamModal}
+                             cancelButton={this.deleteData}
                              childrenContent={
                                  <div>
                                      <div className="form-group">

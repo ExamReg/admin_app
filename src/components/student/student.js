@@ -69,7 +69,8 @@ export default class Student extends React.Component {
             oldIdStu: id,
             idStuEdit:id,
             nameStudEdit:name,
-            birthStuEdit: birthday
+            birthStuEdit: birthday,
+            isOpenEdit: true
         })
     };
     handleTimeOut = (timeDelay) => {
@@ -84,7 +85,9 @@ export default class Student extends React.Component {
                 this.setState({
                     students: result.data.students,
                     page_number: 1,
-                    page_count: Math.ceil(result.data.count / this.state.page_size)
+                    page_count: Math.ceil(result.data.count / this.state.page_size),
+                    isOpenAdd: false,
+                    isOpenEdit: false
                 })
             }
         }, timeDelay);
@@ -171,10 +174,11 @@ export default class Student extends React.Component {
         result.success === true ? notification("success", "Reset mật khẩu thành công. ") : notification("error", result.message);
     };
 
-    deleteData = () =>{
+    deleteData = (nameState) =>{
         this.setState({
             fileStudents: null,
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            [nameState]: false,
         });
     };
 
@@ -189,8 +193,7 @@ export default class Student extends React.Component {
                                    onChange={this.handleChange} name="text"/>
                         </div>
                         <div className="student-input">
-                            <button className="btn btn-primary btn-size" data-toggle="modal"
-                                    data-target="#modalAddNewStudent">
+                            <button className="btn btn-primary btn-size" onClick={() => {this.setState({isOpenAdd: true})}}>
                                 <i className="fas fa-plus"/>
                                 Thêm mới học sinh
                             </button>
@@ -230,8 +233,6 @@ export default class Student extends React.Component {
                                     <td>{e.birthday}</td>
                                     <td className="style-center">
                                         <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                                data-toggle="modal"
-                                                data-target="#modalEditStudent"
                                                 onClick={() => this.selectStudentEdit(e.name, e.id_student, e.birthday)}
                                         >
                                             Chỉnh sửa
@@ -249,7 +250,8 @@ export default class Student extends React.Component {
                         title="Thêm mới học sinh "
                         acceptButton={this.addNewStudent}
                         brandButton="Thêm mới "
-                        cancelButton={this.deleteData}
+                        cancelButton={() => {this.deleteData("isOpenAdd")}}
+                        isOpen={this.state.isOpenAdd}
                         childrenContent={
                             <div>
                                 <div className="form-group">
@@ -268,6 +270,8 @@ export default class Student extends React.Component {
                            brandButton="Chỉnh sửa"
                            acceptButton={this.editStudent}
                            buttonLeft={this.resetPassword}
+                           isOpen={this.state.isOpenEdit}
+                           cancelButton={() => {this.deleteData("isOpenEdit")}}
                            childrenContent={
                                <div>
                                    <div className="form-group">

@@ -15,22 +15,22 @@ import {
 } from "../../../api/student-api";
 
 export default class Course extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id_cs: "",
-      course: {
-        course_name: ""
-      },
-      textSearch: "",
-      fileStudentEnoughCondition: "",
-      students: [],
-      reload: false,
-      keyInput: Math.random().toString(36),
-      idStuAdd: "",
-    };
-    this.delayTime = null;
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            id_cs: "",
+            course: {
+                course_name: ""
+            },
+            textSearch: "",
+            fileStudentEnoughCondition: "",
+            students: [],
+            reload: false,
+            keyInput: Math.random().toString(36),
+            isOpenImportFileModal: false
+        };
+        this.delayTime = null;
+    }
 
   async componentDidMount() {
     let a = this.props.location.search;
@@ -63,7 +63,7 @@ export default class Course extends React.Component {
         console.log(this.state.idStuAdd )
     }
   };
-
+  
   handleChange = e => {
     if (e.target.name === "fileStudentEnoughCondition") {
       this.setState({
@@ -110,16 +110,14 @@ export default class Course extends React.Component {
       }
     }
   };
-
-  reloadPage = async () => {
-    const result = await getStudentInCourse(this.state.id_cs, {
-      text: this.state.textSearch
-    });
-    this.setState({
-      students: result.data.students,
-      reload: false
-    });
-  };
+    reloadPage = async () => {
+        const result = await getStudentInCourse(this.state.id_cs, {text: this.state.textSearch});
+        this.setState({
+            students: result.data.students,
+            reload: false,
+            isOpenImportFileModal: false
+        });
+    };
 
   handleTimeOut = timeDelay => {
     clearTimeout(this.delayTime);
@@ -129,13 +127,14 @@ export default class Course extends React.Component {
       });
     }, timeDelay);
   };
+    deleteData = () =>{
+        this.setState({
+            fileStudentEnoughCondition: null,
+            keyInput: Math.random().toString(36),
+            isOpenImportFileModal: false
+        });
+    };
 
-  deleteData = () => {
-    this.setState({
-      fileStudentEnoughCondition: null,
-      keyInput: Math.random().toString(36)
-    });
-  };
 
   removeStudentFromCourse = async id_student => {
     let result = await removeStudentFromCourse({
@@ -257,29 +256,6 @@ export default class Course extends React.Component {
           </div>
         </div>
         <ModelCustom
-          acceptButton={this.handleImportFile}
-          idModal="modalImportFile"
-          title="Nhập file danh sách sinh viên đủ điều kiện dự thi"
-          brandButton="Thêm "
-          cancelButton={this.deleteData}
-          childrenContent={
-            <div className="form-group">
-              <label>Danh sách sinh viên:</label>
-              <input
-                type="file"
-                className="form-control-file border"
-                name="fileStudentEnoughCondition"
-                onChange={this.handleChange}
-                key={this.state.keyInput}
-              />
-              <br />
-              <i style={{ color: "red" }}>
-                *Các định dạng cho phép: .xlsx .csv{" "}
-              </i>
-            </div>
-          }
-        />
-        <ModelCustom
           idModal="modalAddStudent"
           title="Nhập thông tin sinh viên"
           brandButton="Thêm"
@@ -287,17 +263,43 @@ export default class Course extends React.Component {
           cancelButton={this.deleteData}
           childrenContent={
             <div>
-              <div className="form-group">
-                <label>MSSV :</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="idStuAdd"
-                  onChange={this.handleChange}
-                  value={this.state.idStuAdd}
-                />
-              </div>
+                <div className="form-group">
+                    <label>MSSV :</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        name="idStuAdd"
+                        onChange={this.handleChange}
+                        value={this.state.idStuAdd}/>
+                </div>
             </div>
+                }
+        />
+                
+                <ModelCustom
+                    acceptButton={this.handleImportFile}
+                    idModal="modalImportFile"
+                    title="Nhập file danh sách sinh viên đủ điều kiện dự thi"
+                    brandButton="Thêm"
+                    cancelButton={this.deleteData}
+                    isOpen={this.state.isOpenImportFileModal}
+                    childrenContent={
+                        <div className="form-group">
+                            <label>Danh sách sinh viên:</label>
+                            <input
+                                type="file"
+                                className="form-control-file border"
+                                name="fileStudentEnoughCondition"
+                                onChange={this.handleChange}
+                                key={this.state.keyInput}
+                            />
+                            <br/>
+                            <i style={{color: "red"}}>
+                                *Các định dạng cho phép: .xlsx .csv{" "}
+                            </i>
+                        </div>
+                    }
+                />
           }
         />
       </div>

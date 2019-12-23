@@ -34,7 +34,8 @@ export default class ListCourse extends React.Component {
             page_count: 1,
             next_page: false,
             change_page_size: false,
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            isOpenAddCourseModal: false
         };
         this.delayTime = null;
     }
@@ -58,18 +59,17 @@ export default class ListCourse extends React.Component {
 
     selectSemesterInAdd = (event) => {
         const idSems = event.target[event.target.selectedIndex].value;
-        console.log(idSems)
         this.setState({idSemesterSelect: idSems});
     };
     deleteData = () =>{
-        console.log("oki");
         this.setState({
             nameCourse: "",
             idCourse: "",
             fileCourse: "",
             idClassCourse: "",
             idSemesterSelect: "",
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+            isOpenAddCourseModal: false
         });
     };
     handleGetSemester = async () => {
@@ -86,7 +86,6 @@ export default class ListCourse extends React.Component {
             form_data.append("file_import", fileCourse);
             form_data.append("class_number", idClassCourse);
             const res = await addNewCourse(form_data);
-            console.log(form_data);
             if (res.success) {
                 notification("success", "Thêm mới khóa học thành công");
                 this.setState({
@@ -129,7 +128,6 @@ export default class ListCourse extends React.Component {
     };
 
     async componentDidMount() {
-        console.log("1");
         let result = await getSemester();
         if (result.success && result.data.semesters.length > 0) {
             const res = await getCourse({
@@ -162,7 +160,7 @@ export default class ListCourse extends React.Component {
         }
         if (this.state.checkChangeListCourse) {
             this.handleGetCourse();
-            this.setState({checkChangeListCourse: false})
+            this.setState({checkChangeListCourse: false, isOpenAddCourseModal: true})
         }
         if (this.state.change_page_size) {
             this.reloadWhenChangePageSize();
@@ -222,7 +220,6 @@ export default class ListCourse extends React.Component {
         redirect_to(`/dashboard/courses/setting?id_cs=${id_cs}&course_name=${course_name}`)
     };
     render() {
-        console.log("oki");
         return (
             <div className="list-course">
                 <div className="title">
@@ -251,8 +248,7 @@ export default class ListCourse extends React.Component {
                     </div>
                     <div className="list-course-header-right">
                         <div className="header-items btn-flex-right">
-                            <button type="button" className="btn btn-primary btn-size" data-toggle="modal"
-                                    data-target="#modalAddNewCourse">
+                            <button type="button" className="btn btn-primary btn-size" onClick={() => this.setState({isOpenAddCourseModal: true})}>
                                 <i className="fas fa-plus"/>
                                 Thêm mới khóa học
                             </button>
@@ -308,6 +304,7 @@ export default class ListCourse extends React.Component {
                     brandButton="Thêm mới "
                     acceptButton={this.handleAddNewCourse}
                     cancelButton={this.deleteData}
+                    isOpen={this.state.isOpenAddCourseModal}
                     childrenContent={
                         <div>
                             <div className="form-group">

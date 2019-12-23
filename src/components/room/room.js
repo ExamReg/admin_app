@@ -16,21 +16,25 @@ class Room extends React.Component {
             nameRoomEdit: "",
             numberSeatEdit: "",
             id_room_change: "",
-            changeRooms: false
+            changeRooms: false,
+            isOpenAddRoomModal: false,
+            isOpenEditRoomModal: false
         }
     }
     deleteDataInEdit = () =>{
         this.setState({
             nameRoomEdit: "",
-            numberSeatEdit: ""
+            numberSeatEdit: "",
+            isOpenEditRoomModal: false
         })
-    }
+    };
     deleteDataInAdd = () =>{
         this.setState({
             nameRoom: "",
-            numberSeat: ""
+            numberSeat: "",
+            isOpenAddRoomModal: false
         })
-    }
+    };
 
     handleChange = (e) => {
         let nam = e.target.name;
@@ -47,7 +51,8 @@ class Room extends React.Component {
         this.setState({
             nameRoomEdit: num,
             numberSeatEdit: seat,
-            id_room_change: key
+            id_room_change: key,
+            isOpenEditRoomModal: true
         })
     };
     addNewRoom = async () => {
@@ -60,24 +65,17 @@ class Room extends React.Component {
 
             const res = await addNewRoom(data);
             if (res.success) {
-                this.setState({
-                    nameRoom: "",
-                    numberSeat: "",
-                    changeRooms: true
-                });
                 notification("success", "Tạo mới khóa học thành công ")
+                this.deleteDataInAdd();
             } else
                 notification("error", res.message)
-                this.deleteDataInAdd();
         } else {
             notification("warning", "Xin điền đủ thông tin ")
-            this.deleteDataInAdd();
         }
     };
     editRoom = async () => {
         let {nameRoomEdit, numberSeatEdit, id_room_change} = this.state;
         if(nameRoomEdit && numberSeatEdit) {
-            console.log(this.state);
             let payload = {
                 location: nameRoomEdit,
                 maximum_seating: numberSeatEdit
@@ -85,18 +83,15 @@ class Room extends React.Component {
             let result = await editRoom(id_room_change, payload);
             if(result.success)
             {
-                this.setState({changeRooms:true});
-                this.deleteDataInEdit();
+                this.setState({changeRooms:true, isOpenEditRoomModal: false});
                 notification("success", "Chỉnh sửa thông tin lớp học thành công")
             }
             else {
                 notification("error", result.message);
-                this.deleteDataInEdit();
             }
         }
         else {
             notification("warning", "Xin điền đủ thông tin ")
-            this.deleteDataInEdit();
         }
     };
 
@@ -120,9 +115,9 @@ class Room extends React.Component {
                     Quản lý phòng học
                 </div>
                 <div className="header-room">
-                    <button type="button" className="btn btn-primary btn-size header-items" data-toggle="modal"
-                            data-target="#modalAddNewRoom">
-                        <i className="fas fa-plus"></i>
+                    <button type="button" className="btn btn-primary btn-size header-items"
+                            onClick={() => {this.setState({isOpenAddRoomModal: true})}}>
+                        <i className="fas fa-plus"/>
                         Thêm mới phòng học
                     </button>
                 </div>
@@ -147,7 +142,6 @@ class Room extends React.Component {
                                             <td>{e.maximum_seating}</td>
                                             <td className="style-center">
                                                 <button className="btn btn-info" style={{padding: "2px 5px"}}
-                                                        data-toggle="modal" data-target="#modalEditRoom"
                                                         onClick={() => this.clickEditRoom(e.location, e.maximum_seating, e.id_room)}
                                                 >
                                                     Chỉnh sửa
@@ -166,6 +160,7 @@ class Room extends React.Component {
                        title="Thêm mới phòng học "
                        brandButton="Thêm mới "
                        cancelButton={this.deleteDataInAdd}
+                       isOpen={this.state.isOpenAddRoomModal}
                        childrenContent={
                            <div>
                                <div className="form-group">
@@ -189,6 +184,7 @@ class Room extends React.Component {
                        title="Chỉnh sửa thông tin phòng học "
                        brandButton="Chỉnh sửa "
                        cancelButton={this.deleteDataInEdit}
+                       isOpen={this.state.isOpenEditRoomModal}
                        childrenContent={
                            <div>
                                <div className="form-group">
