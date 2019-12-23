@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import "./modal.css"
+import SpinnerCustom from "../spinnerCustom/spinnerCustom";
 
 class ModelCustom extends React.Component {
     render() {
@@ -21,12 +22,12 @@ class ModelCustom extends React.Component {
         return (
             <>
                 {this.props.isOpen ? <div className="modal-backdrop fade show"/> : null}
-                <div id={this.props.idModal} role="dialog" {...(this.props.isOpen ? open : close)} onClick={this.props.cancelButton}>
+                <div id={this.props.idModal} role="dialog" {...(this.props.isOpen ? open : close)} onClick={this.props.loading ? () => {} : this.props.cancelButton} >
                     <div className="modal-dialog" >
                         <div className="modal-content" onClick={(e) =>{e.stopPropagation()}}>
                             <div className="modal-header">
                                 <h4 className="modal-title">{this.props.title}</h4>
-                                <button type="button" className="close" data-dismiss="modal" onClick={this.props.cancelButton}>&times;</button>
+                                <button type="button" className="close" data-dismiss="modal" disabled={this.props.loading} onClick={this.props.cancelButton}>&times;</button>
                             </div>
                             <div className="modal-body">
 
@@ -40,12 +41,12 @@ class ModelCustom extends React.Component {
                                             password</button>}
                                 </div>
                                 <div className="modal-footer-right">
-                                    <button type="button" className="btn btn-outline-dark btn-size"
+                                    <button type="button" className="btn btn-outline-dark btn-size" disabled={this.props.loading}
                                             data-dismiss="modal" onClick={this.props.cancelButton}>Hủy
                                     </button>
-                                    <button type="button" data-dismiss="modal" className="btn btn-primary btn-size btn-space"
+                                    <button type="button" data-dismiss="modal" className="btn btn-primary btn-size btn-space" disabled={this.props.loading}
                                             onClick={this.props.acceptButton}>
-                                        {this.props.brandButton}
+                                        {this.props.loading ? <SpinnerCustom loading={this.props.loading}/> : this.props.brandButton}
                                     </button>
                                 </div>
                             </div>
