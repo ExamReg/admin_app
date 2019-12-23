@@ -5,6 +5,7 @@ import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 import ModelCustom from "../modal/modal";
 import {notification} from "../../utils/noti";
+import ConfirmModal from "../confirmModal/confirmModal";
 
 export default class Student extends React.Component {
     constructor(props) {
@@ -22,7 +23,9 @@ export default class Student extends React.Component {
             idStuEdit:"",
             nameStudEdit:"",
             birthStuEdit:"",
-            keyInput: Math.random().toString(36)
+            keyInput: Math.random().toString(36),
+
+            isOpenConfirm:false
         };
         this.delayTime = null;
     }
@@ -169,9 +172,21 @@ export default class Student extends React.Component {
             this.handleTimeOut(100);
         }
     };
+    toggleConfirm = () =>{
+        this.setState({
+            isOpenConfirm: !this.state.isOpenConfirm
+        })
+
+    }
     resetPassword = async () => {
         let result = await resetPasswordOfStudent(this.state.idStuEdit);
-        result.success === true ? notification("success", "Reset mật khẩu thành công. ") : notification("error", result.message);
+        if(result.success)
+        {
+            notification("success", "Reset mật khẩu thành công. ");
+            this.toggleConfirm();
+        }
+        else
+        notification("error", result.message);
     };
 
     deleteData = (nameState) =>{
@@ -264,12 +279,26 @@ export default class Student extends React.Component {
                             </div>
                         }
                     />
+                    <ConfirmModal
+                                show={this.state.isOpenConfirm}
+                                onClose={this.toggleConfirm}
+                                brandButton={"Đông ý "}
+                                onPress={this.resetPassword}
+                                childrenContent={
+                                    <div>
+                                        <div className="modal-contentt">
+                                            <div>Bạn có chắc chắn muốn đặt lại mật khẩu ?</div>
+                                            <i className="fas fa-exclamation-triangle" style={{color:"yellow", fontSize:"30px"}}></i>
+                                        </div>
+                                    </div>
+                                }
+                                />
                     <ModelCustom
                            idModal= "modalEditStudent"
                            title="Chỉnh sửa thông tin học sinh "
                            brandButton="Chỉnh sửa"
                            acceptButton={this.editStudent}
-                           buttonLeft={this.resetPassword}
+                           buttonLeft={this.toggleConfirm}
                            isOpen={this.state.isOpenEdit}
                            cancelButton={() => {this.deleteData("isOpenEdit")}}
                            childrenContent={

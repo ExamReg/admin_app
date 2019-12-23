@@ -10,11 +10,8 @@ class ConfirmModal extends React.Component{
             return (
                 <div className="backdrop-confirm">
                     <div className="modall">
-                        <div className="modal-contentt">
-                            {this.props.childrenContent}
-                            <i className="fas fa-times-circle" style={{color:"red", fontSize:"30px"}}></i>
 
-                        </div>
+                        {this.props.childrenContent}
 
                         <div className="modal-footerr">
                             <div className="footer-groupp">

@@ -335,7 +335,10 @@ export default class Course extends React.Component {
                               brandButton={"Đồng ý "}
                               show={this.state.isOpenConfirm}
                               childrenContent={
-                                  <div>Bạn có chắc chắn xóa không?</div>
+                                  <div className="modal-contentt">
+                                      <div>Bạn có chắc chắn xóa không?</div>
+                                      <i className="fas fa-times-circle" style={{color:"red", fontSize:"30px"}}></i>
+                                  </div>
                               }
                 />
             </div>
