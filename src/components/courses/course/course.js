@@ -13,6 +13,7 @@ import {
     changeStatusStudentInCourse,
     removeStudentFromCourse
 } from "../../../api/student-api";
+import ConfirmModal from "../../confirmModal/confirmModal";
 
 export default class Course extends React.Component {
     constructor(props) {
@@ -28,7 +29,10 @@ export default class Course extends React.Component {
             reload: false,
             keyInput: Math.random().toString(36),
             isOpenImportFileModal: false,
-            isOpenCreateStudentModal: false
+            isOpenCreateStudentModal: false,
+
+            isOpenConfirm:false,
+            isStudentDel:""
         };
         this.delayTime = null;
     }
@@ -129,6 +133,17 @@ export default class Course extends React.Component {
             });
         }, timeDelay);
     };
+    toggleExit = () =>{
+        this.setState({
+            isOpenConfirm: !this.state.isOpenConfirm
+        });
+    }
+    toggleConfirmDel = (id_student) =>{
+        this.setState({
+            isStudentDel: id_student,
+            isOpenConfirm: !this.state.isOpenConfirm
+        });
+    }
     deleteData = () => {
         this.setState({
             fileStudentEnoughCondition: null,
@@ -139,15 +154,17 @@ export default class Course extends React.Component {
     };
 
 
-    removeStudentFromCourse = async id_student => {
+    removeStudentFromCourse = async () => {
+        const {isStudentDel} = this.state;
         let result = await removeStudentFromCourse({
-            id_student,
+            isStudentDel,
             id_cs: this.state.id_cs
         });
         if (result.success) {
             notification("success", "Xoá sinh viên ra khỏi môn học thành công.");
             this.setState({
-                reload: true
+                reload: true,
+                isOpenConfirm: false
             });
         } else {
             notification("error", result.message);
@@ -241,7 +258,7 @@ export default class Course extends React.Component {
                                             <button
                                                 className="btn btn-danger btn-sm btn-space-right"
                                                 onClick={() => {
-                                                    this.removeStudentFromCourse(e.id_student);
+                                                    this.toggleConfirmDel(e.id_student);
                                                 }}
                                             >
                                                 <i className="fas fa-trash-alt"/>
@@ -299,6 +316,14 @@ export default class Course extends React.Component {
                             </i>
                         </div>
                     }
+                />
+                <ConfirmModal onClose={this.toggleExit}
+                              onPress={this.removeStudentFromCourse}
+                              brandButton={"Đồng ý "}
+                              show={this.state.isOpenConfirm}
+                              childrenContent={
+                                  <div>Bạn có chắc chắn xóa không?</div>
+                              }
                 />
             </div>
         );
