@@ -25,10 +25,19 @@ export function getCourseInfo(id_cs) {
 }
 export function getStudentInCourse(id_cs, query) {
     let route = `/courses/${id_cs}/students`;
-    if(query.text){
+    if (query.text) {
         route += `?text=${query.text}`
     }
     return sendGetRequestRoute1(route);
+}
+
+export function addStudentToCourse(id_cs, data) {
+    let route = `/courses/${id_cs}/students`;
+    let headers = {
+        "content-type": "application/json",
+        "token": localStorage.getItem("token")
+    }
+    return sendPostRequest(route, data, headers);
 }
 
 export function postStudentNotEnoughCondition(id_cs, payload) {
