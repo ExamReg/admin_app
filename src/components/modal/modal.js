@@ -37,8 +37,7 @@ class ModelCustom extends React.Component {
                             <div className="modal-footer">
                                 <div className="modal-footer-left">
                                     {!this.props.buttonLeft ? null :
-                                        <button className="btn btn-success" onClick={this.props.buttonLeft}>Reset
-                                            password</button>}
+                                        <button className="btn btn-success" onClick={this.props.buttonLeft}>Đặt lại mật khẩu </button>}
                                 </div>
                                 <div className="modal-footer-right">
                                     <button type="button" className="btn btn-outline-dark btn-size" disabled={this.props.loading}
