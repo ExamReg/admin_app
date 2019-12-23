@@ -152,7 +152,7 @@ export default class Course extends React.Component {
     }
     toggleConfirmDel = (id_student) =>{
         this.setState({
-            isStudentDel: id_student,
+            idStudentDel: id_student,
             isOpenConfirm: !this.state.isOpenConfirm
         });
     }
@@ -167,9 +167,9 @@ export default class Course extends React.Component {
 
 
     removeStudentFromCourse = async () => {
-        const {isStudentDel} = this.state;
+        const {idStudentDel} = this.state;
         let result = await removeStudentFromCourse({
-            isStudentDel,
+            id_student: idStudentDel,
             id_cs: this.state.id_cs
         });
         if (result.success) {
