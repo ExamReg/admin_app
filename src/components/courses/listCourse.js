@@ -7,8 +7,6 @@ import ModelCustom from "../modal/modal";
 import Pagination from "../pagination/pagination";
 import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 import {redirect_to} from "../../utils/redirector";
-import SpinnerCustom from "../spinnerCustom/spinnerCustom";
-
 
 export default class ListCourse extends React.Component {
     constructor(props) {

@@ -20,7 +20,8 @@
     "react-spinners": "^0.7.1",
     "react-toastify": "^5.4.1",
     "react-web-tabs": "^1.0.1",
-    "reactstrap": "^8.1.1"
+    "reactstrap": "^8.1.1",
+    "@emotion/core": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

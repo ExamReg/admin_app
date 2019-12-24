@@ -8,6 +8,7 @@ class Pagination extends React.Component{
             <div className="news-per-page">
                 Đang hiển thị: &nbsp; &nbsp;
                 <select defaultValue={this.props.page_size} onChange={this.props.changePageSize} >
+                    <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>

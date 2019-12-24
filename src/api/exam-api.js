@@ -1,7 +1,7 @@
 import {sendGetRequestRoute1, sendPostRequest, sendPutRequest} from "./api-send";
 
-export function getExams(id_semester, textSearch) {
-    let route = `/exams?id_semester=${id_semester}&text=${textSearch}`;
+export function getExams(query) {
+    let route = `/exams?id_semester=${query.id_semester}&text=${query.text}&page_size=${query.page_size}&page_number=${query.page_number}`;
     return sendGetRequestRoute1(route);
 }
 export function addNewExam(data) {

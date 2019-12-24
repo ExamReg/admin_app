@@ -4,10 +4,11 @@ import DatePickerCustom from "../datepicker/datepicker"
 import moment from "moment";
 import {getSemester, getCourse} from "../../api/course-api";
 import {addNewExam, getExams, editExam, printStudentInExam} from "../../api/exam-api";
-import Pagination from "../pagination/pagination";
 import ModelCustom from "../modal/modal";
 import {notification} from "../../utils/noti";
 import {getListRoom} from "../../api/room-api";
+import Pagination from "../pagination/pagination";
+import GetByNumberPages from "../getByNumberPages/getByNumberPages";
 const URL_BASE = process.env.REACT_APP_API_URL;
 
 
@@ -42,8 +43,12 @@ class Exam extends React.Component {
             nameSemesterEdit:"",
             idSlot:"",
             isOpenAddExamModal: false,
-            isOpenEditExamModal: false
-        }
+            isOpenEditExamModal: false,
+            page_size: 20,
+            page_number: 1,
+            page_count: 1
+        };
+        this.delayTime = null;
     }
     deleteData  = () =>{
         this.setState({
@@ -99,7 +104,12 @@ class Exam extends React.Component {
     handleGetSemester = async () => {
         let res = await getSemester();
         if (res.success && res.data.semesters.length > 0) {
-            let result = await getExams(res.data.semesters[0].id_semester, "");
+            let result = await getExams({
+                id_semester: res.data.semesters[0].id_semester,
+                text: "",
+                page_size: this.state.page_size ,
+                page_number: this.state.page_number - 1,
+            });
             this.setState({
                 semesters: res.data.semesters,
                 idSemester: res.data.semesters[0].id_semester,
@@ -130,22 +140,29 @@ class Exam extends React.Component {
             this.setState({rooms: res.data.rooms})
         }
     };
-    handleGetExams = async () => {
-        const {idSemester} = this.state;
-        const res = await getExams(idSemester, "");
-        if (res.success) {
-            this.setState({exams: res.data.exams})
-        } else
-            notification("error", res.message);
+
+    handleGetExams = (timeDelay) => {
+        const {textSearch, idSemester, page_size, page_number} = this.state;
+        clearTimeout(this.delayTime);
+        this.delayTime = setTimeout(async () => {
+            const res = await getExams({
+                id_semester: idSemester,
+                text: textSearch,
+                page_size,
+                page_number: page_number - 1
+            });
+            if (res.success) {
+                this.setState({
+                    exams: res.data.exams,
+                    page_number: 1,
+                    page_count: Math.ceil(res.data.count / page_size)
+                })
+            } else
+                notification("error", res.message);
+        }, timeDelay);
+
     };
-    handleGetExamByTextSeach = async () => {
-        const {idSemester, textSearch} = this.state;
-        const res = await getExams(idSemester, textSearch);
-        if (res.success) {
-            this.setState({exams: res.data.exams})
-        } else
-            notification("error", res.message);
-    };
+
     addNewExam = async () => {
         const {idCourseAdd, timeStartAdd, timeEndAdd, idRoomAdd, totalStudentAdd} = this.state;
         if (idCourseAdd && timeStartAdd && timeEndAdd && totalStudentAdd && idRoomAdd) {
@@ -243,18 +260,66 @@ class Exam extends React.Component {
             notification("error", res.message);
         }
     };
+
+    changePageSize = (event) => {
+        this.setState({
+            page_size: event.target.value,
+            change_page_size: true,
+            page_number: 1
+        })
+    };
+
+    chosePage = (event) => {
+        this.setState({
+            page_number: Number(event.target.id),
+            next_page: true
+        });
+    };
+    reloadWhenNextPage = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: this.state.page_number - 1,
+            text: this.state.textSearch,
+            id_semester: this.state.idSemester
+        };
+        const response = await getExams(query);
+        if (response.success) {
+            this.setState({
+                exams: response.data.exams,
+                next_page: false,
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
+
+    reloadWhenChangePageSize = async () => {
+        let query = {
+            page_size: this.state.page_size,
+            page_number: 0,
+            text: this.state.textSearch,
+            id_semester: this.state.idSemester
+        };
+        const response = await getExams(query);
+        if (response.success) {
+            this.setState({
+                exams: response.data.exams,
+                change_page_size: false,
+                page_count: Math.ceil(response.data.count / this.state.page_size),
+                page_number: 1
+            });
+        } else {
+            console.log(response.message);
+        }
+    };
+
     componentDidMount() {
         this.handleGetSemester();
-        /*this.handleGetCourse();*/
         this.handleGetRooms();
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // if(this.state.textSearch !== prevState.textSearch)
-        // {
-        //     this.handleGetExamByTextSeach();
-        // }
         if (this.state.idSemester !== prevState.idSemester && this.state.semesters.length === prevState.semesters.length) {
-            this.handleGetExams();
+            this.handleGetExams(100);
         }
         if (this.state.idSemesterAdd !== prevState.idSemesterAdd) {
             this.handleGetCourse()
@@ -264,8 +329,17 @@ class Exam extends React.Component {
         }
         if(this.state.checkChangeExams)
         {
-            this.handleGetExams();
+            this.handleGetExams(100);
             this.setState({checkChangeExams:false})
+        }
+        if(this.state.textSearch !== prevState.textSearch){
+            this.handleGetExams(500);
+        }
+        if(this.state.next_page){
+            this.reloadWhenNextPage()
+        }
+        if(this.state.change_page_size){
+            this.reloadWhenChangePageSize()
         }
     }
 
@@ -301,27 +375,6 @@ class Exam extends React.Component {
                                 }
                             </select>
                         </div>
-                        <div className="header-items">
-                            <label>Từ: &nbsp;</label>
-                            <DatePickerCustom
-                                startDate={this.state.startDate}
-                                handleChangeDate={this.handleChangeDate}
-                                name={"startDate"}
-                                dateFormat="Y/M/d HH:mm"
-                                timeFormat="HH:mm"
-                            />
-                        </div>
-                        <div className="header-items">
-                            <label>Đến: &nbsp;</label>
-                            <DatePickerCustom
-                                endDate={this.state.endDate}
-                                handleChangeDate={this.handleChangeDate}
-                                name={"endDate"}
-                                dateFormat="Y/M/d HH:mm"
-                                timeFormat="HH:mm"
-                            />
-
-                        </div>
                     </div>
                     <div className="exam-header-right">
                         <div className="header-items btn-flex-right">
@@ -330,7 +383,7 @@ class Exam extends React.Component {
                                 Thêm mới ca thi
                             </button>
                         </div>
-                        {/*<Pagination/>*/}
+                        <Pagination page_size={this.state.page_size} changePageSize={this.changePageSize}/>
                     </div>
                 </div>
                 <div className="exam-body">
@@ -380,6 +433,10 @@ class Exam extends React.Component {
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div >
+                    <GetByNumberPages chosePage={this.chosePage} pageNumbers={this.state.page_count}
+                                      currentPage={this.state.page_number}/>
                 </div>
                 <ModelCustom acceptButton={this.addNewExam}
                              cancelButton={this.deleteData}

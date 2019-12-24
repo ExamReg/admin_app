@@ -153,7 +153,7 @@ export default class Course extends React.Component {
         }, timeDelay);
     };
     toggleExit = () =>{
-        this.setState({
+         this.setState({
             isOpenConfirm: !this.state.isOpenConfirm
         });
     };
