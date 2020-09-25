@@ -1,0 +1,29 @@
+.container-room{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+.container-room .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.container-room .header-room{
+    margin: 10px 0px;
+}
+
+.container-room .body-room {
+    margin: 10px 0px;
+}
+
+.container-room .tbl-room{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.container-room .tbl-room table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}

@@ -1,0 +1,45 @@
+.list-menu {
+    width: 20%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+}
+    .list-menu .nav-link {
+        text-decoration: none;
+        padding: 15px 15px;
+        color: black;
+        display: flex;
+        align-items: center;
+        border:none;
+
+    }
+        .list-menu .nav-link i{
+            width: 30px;
+        }
+        .list-menu .nav-link.set-tab{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-menu .nav-link.child-tab {
+            background-color: #f4f7fe;
+        }
+        .list-menu .nav-link.child-tab i{
+            width: 40px;
+            padding-left: 5px;
+        }
+    .list-menu ul {
+        padding: 0;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .list-menu li {
+        list-style-type: none;
+    }
+
+    .list-menu li:hover {
+        background-color: #e8eefd;
+    }
+

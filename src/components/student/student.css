@@ -1,0 +1,65 @@
+/*STUDENT CSS*/
+.student {
+    margin: 15px 15px;
+    font-size: 14px;
+}
+
+.student .title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/*HEADER*/
+
+.student .student-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.student .student-header .student-header-left{
+    display: flex;
+}
+
+.student .student-header .student-input {
+    align-items: center;
+}
+
+.student .student-header .student-input .input-find {
+    border-radius: 3px;
+    border: 1px solid #007bff;
+    padding: 6px 5px;
+    margin-right: 10px;
+    width: 250px;
+}
+
+/*CONTENT*/
+.student .student-content {
+    margin: 10px 0px;
+}
+
+.student .tbl-student{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.student .tbl-student table thead th{
+    position: sticky;
+    top: 0;
+    /*z-index: 1;*/
+    background-color: white;
+}
+
+.table-bordered {
+     border: none;
+}
+.table th, .table td {
+    border: none;
+}
+.table thead th {
+    border-bottom: none;
+}
+

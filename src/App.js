@@ -1,32 +1,54 @@
-import React, { Component } from 'react';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import {Route,BrowserRouter as Router,Switch} from 'react-router-dom';
-// import Home from './HomeAdmin';
-import Login from './components/Login';
-import Courses from './components/ContentCourses';
-import Add from './components/Add';
-import Students from './components/ContentStudents';
-import System from './components/ContentSystem';
-import AddStudent from './components/AddStudent';
-
+import React, {Component} from 'react';
+import {Route, Switch} from 'react-router-dom';
+import {ToastContainer} from "react-toastify";
+import 'jquery'
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.bundle'
+import '@fortawesome/fontawesome-free/css/all.css'
+import {Redirect} from "react-router-dom";
+import {APP_ROUTES} from "./app-routes";
+import Redirector from "./utils/redirector";
+import {registerEvent} from "./service/authen-service";
+import "./App.css"
 class App extends Component {
+
+    componentDidMount() {
+        registerEvent("App", () => {
+            this.forceUpdate();
+        });
+    }
+
     render() {
-        return(
-            <Router>
+        return (
+            <div>
                 <Switch>
-                    <Route path="/" exact component={Login} />
-                    <Route path="/HomeAdmin" exact component={Courses} />
-                    <Route path="/HomeAdmin/Courses" exact component={Courses} />
-                    <Route path="/HomeAdmin/Students" exact component={Students} />
-                    <Route path="/HomeAdmin/System" exact component={System} />
-                    <Route path="/HomeAdmin/Add" exact component={Add} />
-                    <Route path="/HomeAdmin/AddStudent" exact component={AddStudent} />
+                    {
+                        APP_ROUTES.map(route => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                component={
+                                    route.require_authen ? checkAuthen(route.component) : checkUnAuthen(route.component)
+                                }
+                            />
+                        ))
+                    }
+                    <Redirect to={"/dashboard"}/>
                 </Switch>
-            </Router>
+                <Redirector/>
+                <ToastContainer/>
+            </div>
         );
     }
 }
 
-export default App;
+function checkAuthen(component) {
+    return localStorage.getItem("token") ? component : () => <Redirect to="/login"/>
+}
+
+function checkUnAuthen(component) {
+    return !localStorage.getItem("token") ? component : () => <Redirect to="/dashboard"/>
+}
+
+export default App

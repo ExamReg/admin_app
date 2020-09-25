@@ -1,0 +1,95 @@
+/*COURSE CSS */
+.list-course{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+.list-course .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/*HEADER*/
+
+.list-course-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.list-course-header .list-course-header-left{
+
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 66%;
+}
+.list-course-header .list-course-header-right{
+    align-items: center;
+    width: 34%;
+}
+.list-course-header .header-items {
+    display: flex;
+    align-items: center;
+    margin:0px 0px 10px 0px;
+}
+
+.list-course-header .header-items .input-find{
+    border-radius: 3px;
+    border: 1px solid #007bff;
+    padding:6px 5px;
+    width: 250px;
+    height: 35px;
+}
+.list-course-header .header-items .select-item{
+    margin-left: 10px;
+    width: 250px;
+    height: 35px;
+    background-color: #fff;
+    border-color: #007bff;
+    border-radius: 3px;
+}
+/*CONTENT*/
+.list-course-content{
+    margin: 10px 0px;
+}
+.btn-size{
+    font-size: 14px;
+
+}
+.btn-size i{
+    padding-right: 2px;
+}
+.select-item-form{
+    width: 466px;
+    background-color: #fff;
+    height: 38px;
+    border: 1px solid #bfbfbf;
+    border-radius: 3px;
+    font-size: 15px;
+    padding: 0px 12px;
+
+}
+
+.table-list-course{
+    max-height: calc(100vh - 18rem);
+    overflow: auto;
+    position: relative;
+}
+
+.table-list-course table thead tr th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}
+.table{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.table thead tr th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}

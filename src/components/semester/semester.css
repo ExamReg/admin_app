@@ -1,0 +1,29 @@
+.container-semester{
+    margin: 15px 15px;
+    font-size: 14px;
+}
+.container-semester .title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.container-semester .header-semester{
+    margin: 10px 0px;
+}
+
+.container-semester .body-semester {
+    margin: 10px 0px;
+}
+
+.container-semester .tbl-semester{
+    max-height: calc(100vh - 16rem);
+    overflow: auto;
+    position: relative;
+}
+
+.container-semester .tbl-semester table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+}

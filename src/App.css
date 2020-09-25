@@ -1,3 +1,4 @@
+/*
 .App {
   text-align: center;
 }
@@ -19,4 +20,18 @@
 
 .App-link {
   color: #09d3ac;
+}
+*/
+.style-center{
+    text-align: center;
+}
+.btn-space-right{
+    margin-right: 5px;
+}
+.btn-space{
+    margin-left: 10px;
+}
+.btn-flex-right{
+    display: flex;
+    justify-content: flex-end;
 }
